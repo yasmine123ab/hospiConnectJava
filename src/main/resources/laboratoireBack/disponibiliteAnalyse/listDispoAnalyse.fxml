@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="650.0" prefWidth="1112.0" style="-fx-background-color: #ffff;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.hospiconnect.controller.laboratoire.ListDisponibiliteAnalyseController">
+   <children>
+      <VBox prefHeight="650.0" prefWidth="224.0" style="-fx-background-color: #ADD8E6;">
+         <children>
+            <ImageView fitHeight="177.0" fitWidth="223.0" pickOnBounds="true" preserveRatio="true" />
+            <Button fx:id="menuAnalyseButton" graphicTextGap="15.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="227.0" style="-fx-background-color: #ADD8E5;" text="Analyses" textFill="#0e046e">
+               <graphic>
+                  <ImageView fitHeight="28.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../images/analyse.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+               <font>
+                  <Font name="System Bold" size="15.0" />
+               </font>
+            </Button>
+            <Button fx:id="menuTypeAnalyseButton" graphicTextGap="15.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="229.0" style="-fx-background-color: #ADD8E6;" text="Types Analyse" textFill="#0e046e">
+               <graphic>
+                  <ImageView fitHeight="28.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../images/typeAnalyse.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+               <font>
+                  <Font name="System Bold" size="15.0" />
+               </font>
+            </Button>
+            <Button fx:id="menuDispoAnalyseButton" graphicTextGap="15.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="229.0" style="-fx-background-color: #ADD8E6;" text="Disponibilités Analyse" textFill="#0e046e">
+               <graphic>
+                  <ImageView fitHeight="28.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../images/dispoAnalyse.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+               <font>
+                  <Font name="System Bold" size="15.0" />
+               </font>
+            </Button>
+            <Button fx:id="menuDashboardButton" graphicTextGap="15.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="233.0" style="-fx-background-color: #ADD8E6;" text="Dashboard" textFill="#0e046e">
+               <graphic>
+                  <ImageView fitHeight="28.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../images/dashboard.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+               <font>
+                  <Font name="System Bold" size="15.0" />
+               </font>
+            </Button>
+            <Button fx:id="menuHospiChatButton" graphicTextGap="15.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="233.0" style="-fx-background-color: #ADD8E6;" text="HospiChat" textFill="#0e046e">
+               <graphic>
+                  <ImageView fitHeight="28.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../images/hospiChat.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+               <font>
+                  <Font name="System Bold" size="15.0" />
+               </font>
+            </Button>
+            <Button fx:id="menuCalendrierButton" graphicTextGap="15.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="234.0" style="-fx-background-color: #ADD8E6;" text="Calendrier" textFill="#0e046e">
+               <graphic>
+                  <ImageView fitHeight="28.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../images/calendrier.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+               <font>
+                  <Font name="System Bold" size="15.0" />
+               </font>
+            </Button>
+         </children>
+      </VBox>
+      <Label layoutX="255.0" layoutY="34.0" prefHeight="35.0" prefWidth="374.0" text="Liste des Disponibilités Analyses" textFill="#1605ac">
+         <font>
+            <Font name="System Bold" size="24.0" />
+         </font>
+      </Label>
+      <TableView fx:id="dispoAnalyseTableView" layoutX="255.0" layoutY="193.0" prefHeight="362.0" prefWidth="834.0">
+        <columns>
+          <TableColumn fx:id="dispoAnalyseNumTableColumn" prefWidth="55.199981689453125" text="Num" />
+          <TableColumn fx:id="dispoAnalyseDateDispoTableColumn" prefWidth="217.5999755859375" text="Date Disponibilité" />
+            <TableColumn fx:id="dispoAnalyseHeureDebutTableColumn" prefWidth="147.99993896484375" text="Heure Debut" />
+            <TableColumn fx:id="dispoAnalyseHeureFinTableColumn" prefWidth="145.60003662109375" text="Heure Fin" />
+            <TableColumn fx:id="dispoAnalyseNbrPlacesTableColumn" prefWidth="119.20001220703125" text="Nbr Places" />
+            <TableColumn fx:id="dispoAnalyseActionsTableColumn" prefWidth="150.39990234375" text="Actions" />
+        </columns>
+      </TableView>
+      <Label layoutX="236.0" layoutY="106.0" text="Rechercher" textFill="#3351c9">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </Label>
+      <TextField fx:id="dispoAnalyseRechercherTextField" layoutX="326.0" layoutY="103.0" prefHeight="26.0" prefWidth="448.0" promptText="dispo analyse.." />
+      <Button fx:id="dispoAnalyseTrierButton" layoutX="236.0" layoutY="144.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="80.0" style="-fx-background-color: #ffff;" text="Trier" textFill="#3351c9">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </Button>
+      <Button fx:id="dispoAnalyseAjouterButton" layoutX="883.0" layoutY="569.0" mnemonicParsing="false" style="-fx-background-color: #ffff;" text="Enregistrer une Disponibilite" textFill="#3351c9">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </Button>
+      <Button fx:id="dispoAnalysePdfButton" layoutX="961.0" layoutY="606.0" mnemonicParsing="false" style="-fx-background-color: #ffff;" text="Télécharger PDF" textFill="#3351c9">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </Button>
+      <Button fx:id="FermerFenetreButton" layoutX="1074.0" mnemonicParsing="false" style="-fx-background-color: #ffff;" text="x" textFill="#f40505">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Button>
+      <Button fx:id="ReduireFenetreButton" layoutX="1048.0" mnemonicParsing="false" style="-fx-background-color: #ffff;" text="-" textFill="#07f259">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Button>
+   </children>
+</AnchorPane>
