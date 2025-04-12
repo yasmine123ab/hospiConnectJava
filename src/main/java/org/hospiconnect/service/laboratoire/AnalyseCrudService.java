@@ -108,7 +108,7 @@ public class AnalyseCrudService {
                         ID_COL
                 ))
         ) {
-            ps.setLong(1, analyse.getIdRdv());
+            ps.setObject(1, analyse.getIdRdv());
             ps.setLong(2, analyse.getIdPatient());
             ps.setLong(3, analyse.getIdPersonnel());
             ps.setString(4, analyse.getEtat());

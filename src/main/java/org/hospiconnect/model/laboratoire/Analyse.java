@@ -1,6 +1,7 @@
 package org.hospiconnect.model.laboratoire;
 
 import java.time.LocalDate;
+import java.util.Objects;
 
 public class Analyse {
 
@@ -126,4 +127,15 @@ public class Analyse {
                 '}';
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Analyse analyse)) return false;
+        return Objects.equals(idRdv, analyse.idRdv) && Objects.equals(idPatient, analyse.idPatient) && Objects.equals(idPersonnel, analyse.idPersonnel) && Objects.equals(etat, analyse.etat) && Objects.equals(idTypeAnalyse, analyse.idTypeAnalyse) && Objects.equals(resultat, analyse.resultat) && Objects.equals(dateResultat, analyse.dateResultat) && Objects.equals(datePrelevement, analyse.datePrelevement);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(idRdv, idPatient, idPersonnel, etat, idTypeAnalyse, resultat, dateResultat, datePrelevement);
+    }
 }

@@ -14,12 +14,12 @@ public class EditRemoveButtons<S> extends TableCell<S, Button> {
     private final Button removeButton;
 
     public EditRemoveButtons(Consumer<S> editCallback, Consumer<S> removeCallback) {
-        var editImage = new ImageView("/images/analyse.png");
+        var editImage = new ImageView("/images/edit.png");
         editImage.setFitHeight(16.0);
         editImage.setFitWidth(16.0);
         editImage.preserveRatioProperty().set(true);
 
-        var removeImage = new ImageView("/images/analyse.png");
+        var removeImage = new ImageView("/images/delete.png");
         removeImage.setFitHeight(16.0);
         removeImage.setFitWidth(16.0);
         removeImage.preserveRatioProperty().set(true);

@@ -69,12 +69,13 @@ public class FormAnalyseController {
         FermerFenetreButton.setOnAction(e -> ((Stage) FermerFenetreButton.getScene().getWindow()).close());
         ReduireFenetreButton.setOnAction(e -> ((Stage) ReduireFenetreButton.getScene().getWindow()).setIconified(true));
         analyseFormEnregistrerButton.setOnAction(e -> {
-            saveForm(toEdit);
-            SceneUtils.openNewScene(
-                    "/laboratoireBack/analyse/listAnalyse.fxml",
-                    analyseFormEnregistrerButton.getScene(),
-                    null
-            );
+            if (saveForm(toEdit)) {
+                SceneUtils.openNewScene(
+                        "/laboratoireBack/analyse/listAnalyse.fxml",
+                        analyseFormEnregistrerButton.getScene(),
+                        null
+                );
+            }
         });
 
         menuAnalyseButton.setOnAction(e -> SceneUtils.openNewScene(
@@ -190,11 +191,12 @@ public class FormAnalyseController {
         analyseFormResultatTextField.setText(toEdit.getResultat());
     }
 
-    private void saveForm(Analyse toEdit) {
+    private boolean saveForm(Analyse toEdit) {
         Analyse toSave = (toEdit == null) ? new Analyse() : toEdit;
+        System.out.println(toSave);
         toSave.setIdPatient(analyseFormPatientComboBox.getValue() != null ? analyseFormPatientComboBox.getValue().getId() : null);
         toSave.setIdPersonnel(analyseFormPersonnelComboBox.getValue() != null ? analyseFormPersonnelComboBox.getValue().getId() : null);
-        toSave.setIdRdv(analyseFormRdvComboBox.getValue() != null ? analyseFormRdvComboBox.getValue().getId() : null);
+        toSave.setIdRdv(analyseFormRdvComboBox.getValue() != null ? analyseFormRdvComboBox.getValue().getId() : 0);
         toSave.setIdTypeAnalyse(analyseFormTypeAnalyseComboBox.getValue() != null ? analyseFormTypeAnalyseComboBox.getValue().getId() : null);
 
         if (analyseFormEnAttenteRadioButton.selectedProperty().get()) {
@@ -207,17 +209,33 @@ public class FormAnalyseController {
         toSave.setDatePrelevement(analyseFormDatePrelevDatePicker.getValue());
         toSave.setDateResultat(analyseFormDateResultatDatePicker.getValue());
         toSave.setResultat(analyseFormResultatTextField.getText());
+        System.out.println(toSave);
+        System.out.println(AnalyseCrudService.getInstance().findAll());
 
         var errors = AnalyseValidationService.getInstance().validate(toSave);
         if (!errors.isEmpty()) {
-            var msg = String.join("\n", errors);
+            var msg = String.join("\n- ", errors);
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Analyse invalide");
+            alert.setContentText("Analyse saisie est invalide:\n- "+msg);
+            alert.show();
+            return false;
         }
 
         if (toEdit != null) {
             AnalyseCrudService.getInstance().update(toSave);
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Analyse mise à jour");
+            alert.setContentText("Analyse mise à jour avec succés!");
+            alert.show();
         } else {
             AnalyseCrudService.getInstance().createNew(toSave);
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Analyse crée");
+            alert.setContentText("Analyse insérée avec succés!");
+            alert.show();
         }
+        return true;
     }
 
 }
