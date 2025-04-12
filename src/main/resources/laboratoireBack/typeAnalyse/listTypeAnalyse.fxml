@@ -115,7 +115,7 @@
             <Font name="System Bold" size="14.0" />
          </font>
       </Button>
-      <Button fx:id="typeAnalyseAjouterButton" layoutX="941.0" layoutY="576.0" mnemonicParsing="false" style="-fx-background-color: #ffff;" text="Enregistrer un Type" textFill="#3351c9">
+      <Button fx:id="typeAnalyseAjouterButton" layoutX="955.0" layoutY="576.0" mnemonicParsing="false" style="-fx-background-color: #ffff;" text="Ajouter un Type" textFill="#3351c9">
          <font>
             <Font name="System Bold" size="14.0" />
          </font>

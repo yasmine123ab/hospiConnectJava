@@ -84,22 +84,22 @@ public class FormAnalyseController {
                 null
         ));
         menuTypeAnalyseButton.setOnAction(e -> SceneUtils.openNewScene(
-                "/laboratoireBack/analyse/listAnalyse.fxml",
+                "/laboratoireBack/typeAnalyse/listTypeAnalyse.fxml",
                 menuTypeAnalyseButton.getScene(),
                 null
         ));
         menuDispoAnalyseButton.setOnAction(e -> SceneUtils.openNewScene(
-                "/laboratoireBack/analyse/listAnalyse.fxml",
+                "/laboratoireBack/disponibiliteAnalyse/listDispoAnalyse.fxml",
                 menuDispoAnalyseButton.getScene(),
                 null
         ));
         menuDashboardButton.setOnAction(e -> SceneUtils.openNewScene(
-                "/laboratoireBack/analyse/listAnalyse.fxml",
+                "/laboratoireBack/dashboardLabo.fxml",
                 menuDashboardButton.getScene(),
                 null
         ));
         menuHospiChatButton.setOnAction(e -> SceneUtils.openNewScene(
-                "/laboratoireBack/analyse/listAnalyse.fxml",
+                "/laboratoireBack/hospiChatLabo.fxml",
                 menuHospiChatButton.getScene(),
                 null
         ));

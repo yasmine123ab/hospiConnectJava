@@ -116,7 +116,7 @@
             <Font name="System Bold" size="14.0" />
          </font>
       </Button>
-      <Button fx:id="dispoAnalyseAjouterButton" layoutX="883.0" layoutY="569.0" mnemonicParsing="false" style="-fx-background-color: #ffff;" text="Enregistrer une Disponibilite" textFill="#3351c9">
+      <Button fx:id="dispoAnalyseAjouterButton" layoutX="903.0" layoutY="569.0" mnemonicParsing="false" style="-fx-background-color: #ffff;" text="Ajouter une Disponibilite" textFill="#3351c9">
          <font>
             <Font name="System Bold" size="14.0" />
          </font>
