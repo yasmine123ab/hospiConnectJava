@@ -16,8 +16,8 @@ public class AnalyseValidationService {
 
     public List<String> validate(Analyse analyse) {
         var errors = new ArrayList<String>();
-        if (analyse.getDatePrelevement() == null || !analyse.getDatePrelevement().isAfter(LocalDate.now())) {
-            errors.add("Date prelevement doit etre posterieure a aujourdhui");
+        if (analyse.getDatePrelevement() == null || analyse.getDatePrelevement().isBefore(LocalDate.now())) {
+            errors.add("Date prelevement doit etre egale ou posterieure a aujourdhui");
         }
         if (analyse.getIdPatient() == null) {
             errors.add("Patient ne doit pas etre vide");
@@ -30,6 +30,9 @@ public class AnalyseValidationService {
         }
         if (analyse.getEtat() == null) {
             errors.add("Etat ne doit pas etre vide");
+        }
+        if ( analyse.getDateResultat() != null && analyse.getDateResultat().isBefore(LocalDate.now())) {
+            errors.add("Date Resultat doit etre egale ou posterieure a aujourdhui");
         }
         var all = AnalyseCrudService.getInstance().findAll();
         var nbr = all.stream().filter(a -> a.equals(analyse) && !a.getId().equals(analyse.getId()))

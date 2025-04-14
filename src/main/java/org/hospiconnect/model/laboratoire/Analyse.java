@@ -131,7 +131,7 @@ public class Analyse {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Analyse analyse)) return false;
-        return Objects.equals(idRdv, analyse.idRdv) && Objects.equals(idPatient, analyse.idPatient) && Objects.equals(idPersonnel, analyse.idPersonnel) && Objects.equals(etat, analyse.etat) && Objects.equals(idTypeAnalyse, analyse.idTypeAnalyse) && Objects.equals(resultat, analyse.resultat) && Objects.equals(dateResultat, analyse.dateResultat) && Objects.equals(datePrelevement, analyse.datePrelevement);
+        return Objects.equals(idPatient, analyse.idPatient) && Objects.equals(idPersonnel, analyse.idPersonnel) && Objects.equals(etat, analyse.etat) && Objects.equals(idTypeAnalyse, analyse.idTypeAnalyse) && Objects.equals(resultat, analyse.resultat) && Objects.equals(dateResultat, analyse.dateResultat) && Objects.equals(datePrelevement, analyse.datePrelevement);
     }
 
     @Override

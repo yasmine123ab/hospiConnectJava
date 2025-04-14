@@ -77,17 +77,15 @@ public class TypeAnalyseCrudService {
         try (
                 Connection c = DatabaseUtils.getConnection();
                 PreparedStatement ps = c.prepareStatement(String.format(
-                        "insert into type_analyse(%s,%s,%s,%s) values (?,?,?,?)",
-                        ID_COL,
+                        "insert into type_analyse(%s,%s,%s) values (?,?,?)",
                         LIBELLE_COL,
                         NOM_COL,
                         PRIX_COL
                 ))
         ) {
-            ps.setLong(1, newTypeAnalyse.getId());
-            ps.setString(2, newTypeAnalyse.getLibelle());
-            ps.setString(3, newTypeAnalyse.getNom());
-            ps.setFloat(4, newTypeAnalyse.getPrix());
+            ps.setString(1, newTypeAnalyse.getLibelle());
+            ps.setString(2, newTypeAnalyse.getNom());
+            ps.setFloat(3, newTypeAnalyse.getPrix());
 
             ps.execute();
         } catch (SQLException e) {

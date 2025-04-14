@@ -193,10 +193,10 @@ public class FormAnalyseController {
 
     private boolean saveForm(Analyse toEdit) {
         Analyse toSave = (toEdit == null) ? new Analyse() : toEdit;
-        System.out.println(toSave);
+        //System.out.println(toSave);
         toSave.setIdPatient(analyseFormPatientComboBox.getValue() != null ? analyseFormPatientComboBox.getValue().getId() : null);
         toSave.setIdPersonnel(analyseFormPersonnelComboBox.getValue() != null ? analyseFormPersonnelComboBox.getValue().getId() : null);
-        toSave.setIdRdv(analyseFormRdvComboBox.getValue() != null ? analyseFormRdvComboBox.getValue().getId() : 0);
+        toSave.setIdRdv(analyseFormRdvComboBox.getValue() != null ? analyseFormRdvComboBox.getValue().getId() : null);
         toSave.setIdTypeAnalyse(analyseFormTypeAnalyseComboBox.getValue() != null ? analyseFormTypeAnalyseComboBox.getValue().getId() : null);
 
         if (analyseFormEnAttenteRadioButton.selectedProperty().get()) {
@@ -209,8 +209,8 @@ public class FormAnalyseController {
         toSave.setDatePrelevement(analyseFormDatePrelevDatePicker.getValue());
         toSave.setDateResultat(analyseFormDateResultatDatePicker.getValue());
         toSave.setResultat(analyseFormResultatTextField.getText());
-        System.out.println(toSave);
-        System.out.println(AnalyseCrudService.getInstance().findAll());
+        //System.out.println(toSave);
+        //System.out.println(AnalyseCrudService.getInstance().findAll());
 
         var errors = AnalyseValidationService.getInstance().validate(toSave);
         if (!errors.isEmpty()) {

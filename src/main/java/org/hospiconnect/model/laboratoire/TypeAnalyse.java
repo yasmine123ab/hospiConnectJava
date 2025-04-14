@@ -1,5 +1,7 @@
 package org.hospiconnect.model.laboratoire;
 
+import java.util.Objects;
+
 public class TypeAnalyse {
 
     private Long id;
@@ -56,5 +58,17 @@ public class TypeAnalyse {
                 ", nom=" + nom +
                 ", prix=" + prix +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof TypeAnalyse that)) return false;
+        return Objects.equals(libelle, that.libelle) && Objects.equals(nom, that.nom) && Objects.equals(prix, that.prix);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, libelle, nom, prix);
     }
 }
