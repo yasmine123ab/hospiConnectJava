@@ -2,12 +2,12 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
@@ -95,16 +95,6 @@
             <Font name="System Bold" size="24.0" />
          </font>
       </Label>
-      <TableView fx:id="dispoAnalyseTableView" layoutX="255.0" layoutY="193.0" prefHeight="362.0" prefWidth="834.0">
-        <columns>
-          <TableColumn fx:id="dispoAnalyseNumTableColumn" prefWidth="55.199981689453125" text="Num" />
-          <TableColumn fx:id="dispoAnalyseDateDispoTableColumn" prefWidth="217.5999755859375" text="Date Disponibilité" />
-            <TableColumn fx:id="dispoAnalyseHeureDebutTableColumn" prefWidth="147.99993896484375" text="Heure Debut" />
-            <TableColumn fx:id="dispoAnalyseHeureFinTableColumn" prefWidth="145.60003662109375" text="Heure Fin" />
-            <TableColumn fx:id="dispoAnalyseNbrPlacesTableColumn" prefWidth="119.20001220703125" text="Nbr Places" />
-            <TableColumn fx:id="dispoAnalyseActionsTableColumn" prefWidth="150.39990234375" text="Actions" />
-        </columns>
-      </TableView>
       <Label layoutX="236.0" layoutY="106.0" text="Rechercher" textFill="#3351c9">
          <font>
             <Font name="System Bold" size="14.0" />
@@ -136,5 +126,35 @@
             <Font name="System Bold" size="18.0" />
          </font>
       </Button>
+      <HBox layoutX="265.0" layoutY="210.0" prefHeight="35.0" prefWidth="627.0" spacing="10.0">
+         <children>
+            <Label prefWidth="140.0" text="Date Disponibilite" textFill="#1605ac">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+            </Label>
+            <Label prefWidth="140.0" text="Heure Debut" textFill="#1605ac">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+            </Label>
+            <Label prefHeight="20.0" prefWidth="100.0" text="Heure Fin" textFill="#1605ac">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+            </Label>
+            <Label layoutX="621.0" layoutY="10.0" prefHeight="20.0" prefWidth="100.0" text="Nbr Places" textFill="#1605ac">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+            </Label>
+            <Label layoutX="311.0" layoutY="10.0" prefHeight="20.0" prefWidth="100.0" text="Actions" textFill="#1605ac">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+            </Label>
+         </children>
+      </HBox>
+      <ListView fx:id="dispoAnalyseListView" layoutX="264.0" layoutY="245.0" prefHeight="312.0" prefWidth="627.0" />
    </children>
 </AnchorPane>

@@ -2,12 +2,12 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
@@ -95,15 +95,6 @@
             <Font name="System Bold" size="24.0" />
          </font>
       </Label>
-      <TableView fx:id="typeAnalyseTableView" layoutX="255.0" layoutY="193.0" prefHeight="362.0" prefWidth="834.0">
-        <columns>
-          <TableColumn fx:id="typeAnalyseNumTableColumn" prefWidth="97.59999084472656" text="Num" />
-            <TableColumn fx:id="typeAnalyseLibelleTableColumn" prefWidth="213.5999755859375" text="Libellé" />
-          <TableColumn fx:id="typeAnalyseNomTableColumn" prefWidth="173.60000610351562" text="Nom" />
-            <TableColumn fx:id="typeAnalysePrixTableColumn" prefWidth="167.99993896484375" text="Prix" />
-            <TableColumn fx:id="typeAnalyseActionsTableColumn" prefWidth="184.00006103515625" text="Actions" />
-        </columns>
-      </TableView>
       <Label layoutX="236.0" layoutY="106.0" text="Rechercher" textFill="#3351c9">
          <font>
             <Font name="System Bold" size="14.0" />
@@ -135,5 +126,30 @@
             <Font name="System Bold" size="18.0" />
          </font>
       </Button>
+      <HBox layoutX="255.0" layoutY="200.0" prefHeight="35.0" prefWidth="522.0" spacing="10.0">
+         <children>
+            <Label prefWidth="140.0" text="Libelle" textFill="#1605ac">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+            </Label>
+            <Label prefWidth="140.0" text="Nom" textFill="#1605ac">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+            </Label>
+            <Label prefHeight="20.0" prefWidth="100.0" text="Prix" textFill="#1605ac">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+            </Label>
+            <Label layoutX="621.0" layoutY="10.0" prefHeight="20.0" prefWidth="100.0" text="Actions" textFill="#1605ac">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+            </Label>
+         </children>
+      </HBox>
+      <ListView fx:id="typeAnalyseListView" layoutX="254.0" layoutY="235.0" prefHeight="312.0" prefWidth="521.0" />
    </children>
 </AnchorPane>

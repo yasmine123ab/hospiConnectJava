@@ -12,10 +12,11 @@ public class RdvAnalyse {
 
     public RdvAnalyse() {}
 
-    public RdvAnalyse(Long id, Long idDisponibilite, Long idPatient, String statut) {
+    public RdvAnalyse(Long id, Long idDisponibilite, Long idPatient, LocalDate dateRdv, String statut) {
         this.id = id;
         this.idDisponibilite = idDisponibilite;
         this.idPatient = idPatient;
+        this.dateRdv = dateRdv;
         this.statut = statut;
     }
 

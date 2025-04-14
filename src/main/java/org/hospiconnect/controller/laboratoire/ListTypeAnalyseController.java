@@ -1,16 +1,14 @@
 package org.hospiconnect.controller.laboratoire;
 
-import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
-import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.geometry.Pos;
+import javafx.scene.control.*;
+import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
+import org.hospiconnect.model.laboratoire.Analyse;
 import org.hospiconnect.model.laboratoire.TypeAnalyse;
-import org.hospiconnect.service.laboratoire.TypeAnalyseCrudService;
+import org.hospiconnect.service.laboratoire.*;
 
 import java.util.Comparator;
 
@@ -18,6 +16,19 @@ public class ListTypeAnalyseController {
 
     private final TypeAnalyseCrudService typeAnalyseCrudService = TypeAnalyseCrudService.getInstance();
 
+
+    @FXML
+    private ListView<TypeAnalyse> typeAnalyseListView;
+
+    @FXML
+    private Button typeAnalyseTrierButton;
+    @FXML
+    private TextField typeAnalyseRechercherTextField;
+
+    @FXML
+    private Button typeAnalysePdfButton;
+    @FXML
+    private Button typeAnalyseAjouterButton;
     @FXML
     private Button FermerFenetreButton;
     @FXML
@@ -35,100 +46,78 @@ public class ListTypeAnalyseController {
     private Button menuHospiChatButton;
 
     @FXML
-    private Button typeAnalyseTrierButton;
-    @FXML
-    private TextField typeAnalyseRechercherTextField;
-
-    @FXML
-    private Button typeAnalysePdfButton;
-    @FXML
-    private Button typeAnalyseAjouterButton;
-
-
-    @FXML
-    private TableView<TypeAnalyse> typeAnalyseTableView;
-
-    @FXML
-    private TableColumn<TypeAnalyse, Long> typeAnalyseNumTableColumn;
-    @FXML
-    private TableColumn<TypeAnalyse, String> typeAnalyseLibelleTableColumn;
-    @FXML
-    private TableColumn<TypeAnalyse, String> typeAnalyseNomTableColumn;
-    @FXML
-    private TableColumn<TypeAnalyse, Float> typeAnalysePrixTableColumn;
-    @FXML
-    private TableColumn<TypeAnalyse, Button> typeAnalyseActionsTableColumn;
-
-    @FXML
     public void initialize() {
-        resetTableItems();
+        resetListItems();
 
-        typeAnalyseNumTableColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
-        typeAnalyseLibelleTableColumn.setCellValueFactory(new PropertyValueFactory<>("libelle"));
-        typeAnalyseNomTableColumn.setCellValueFactory(new PropertyValueFactory<>("nom"));
-        typeAnalysePrixTableColumn.setCellValueFactory(new PropertyValueFactory<>("prix"));
-        typeAnalyseActionsTableColumn.setCellFactory(cell ->
-                new EditRemoveButtons<>(
-                        a -> SceneUtils.openNewScene(
-                                "/laboratoireBack/typeAnalyse/formTypeAnalyse.fxml",
-                                typeAnalyseAjouterButton.getScene(),
-                                a
-                        ),
-                        a -> {
-                            TypeAnalyseCrudService.getInstance().deleteById(a.getId());
-                            resetTableItems();
-                        })
-        );
+        typeAnalyseListView.setCellFactory(list -> new ListCell<>() {
+            @Override
+            protected void updateItem(TypeAnalyse typeAnalyse, boolean empty) {
+                super.updateItem(typeAnalyse, empty);
+                if (empty || typeAnalyse == null) {
+                    setGraphic(null);
+                } else {
+                    HBox row = new HBox(10);
+                    row.setAlignment(Pos.CENTER_LEFT);
 
-        //analysePdfButton.setOnAction(e -> AnalyseService.getInstance().exportAnalyses("analyses.pdf"));
-        typeAnalyseAjouterButton.setOnAction(e -> SceneUtils.openNewScene(
-                "/laboratoireBack/typeAnalyse/formTypeAnalyse.fxml",
-                typeAnalyseAjouterButton.getScene(),
-                null
-        ));
-        FermerFenetreButton.setOnAction(e -> ((Stage) FermerFenetreButton.getScene().getWindow()).close());
-        ReduireFenetreButton.setOnAction(e -> ((Stage) ReduireFenetreButton.getScene().getWindow()).setIconified(true));
-        typeAnalyseTrierButton.setOnAction(e -> typeAnalyseTableView.setItems(
-                typeAnalyseTableView.getItems().sorted(Comparator.comparing(TypeAnalyse::getNom))
-        ));
+                    Label libelle = new Label(typeAnalyse.getLibelle());
+                    Label nom = new Label(typeAnalyse.getNom());
+                    Label prix = new Label(typeAnalyse.getPrix().toString());
+
+                    EditRemoveButtonsBox<TypeAnalyse> actionsFactory = new EditRemoveButtonsBox<>();
+                    HBox actionBox = actionsFactory.create(typeAnalyse,
+                            a -> SceneUtils.openNewScene(
+                                    "/laboratoireBack/typeAnalyse/formTypeAnalyse.fxml",
+                                    typeAnalyseAjouterButton.getScene(),
+                                    a
+                            ),
+                            a -> {
+                                typeAnalyseCrudService.deleteById(a.getId());
+                                resetListItems();
+                            }
+                    );
+
+                    // Set width for consistent alignment
+                    libelle.setPrefWidth(140);
+                    nom.setPrefWidth(140);
+                    prix.setPrefWidth(100);
+                    actionBox.setPrefWidth(100);
+
+                    row.getChildren().addAll(libelle, nom, prix, actionBox);
+                    setGraphic(row);
+                }
+            }
+        });
+
+        typeAnalyseTrierButton.setOnAction(e -> {
+            typeAnalyseListView.setItems(typeAnalyseListView.getItems().sorted(Comparator.comparing(TypeAnalyse::getNom)));
+        });
+
         typeAnalyseRechercherTextField.setOnKeyReleased(e -> {
             String recherche = typeAnalyseRechercherTextField.getText().strip();
-            typeAnalyseTableView.setItems(FXCollections.observableList(typeAnalyseCrudService.findAll()
+            typeAnalyseListView.setItems(FXCollections.observableList(typeAnalyseCrudService.findAll()
                     .stream()
                     .filter(a -> recherche.isBlank() || typeAnalyseCrudService.findTypeNameById(a.getId()).contains(recherche))
                     .toList()
             ));
         });
 
+        FermerFenetreButton.setOnAction(e -> ((Stage) FermerFenetreButton.getScene().getWindow()).close());
+        ReduireFenetreButton.setOnAction(e -> ((Stage) ReduireFenetreButton.getScene().getWindow()).setIconified(true));
+
+        // Menu navigation
         menuAnalyseButton.setOnAction(e -> SceneUtils.openNewScene(
-                "/laboratoireBack/analyse/listAnalyse.fxml",
-                menuAnalyseButton.getScene(),
-                null
-        ));
+                "/laboratoireBack/analyse/listAnalyse.fxml", menuAnalyseButton.getScene(), null));
         menuTypeAnalyseButton.setOnAction(e -> SceneUtils.openNewScene(
-                "/laboratoireBack/typeAnalyse/listTypeAnalyse.fxml",
-                menuTypeAnalyseButton.getScene(),
-                null
-        ));
+                "/laboratoireBack/typeAnalyse/listTypeAnalyse.fxml", menuTypeAnalyseButton.getScene(), null));
         menuDispoAnalyseButton.setOnAction(e -> SceneUtils.openNewScene(
-                "/laboratoireBack/disponibiliteAnalyse/listDispoAnalyse.fxml",
-                menuDispoAnalyseButton.getScene(),
-                null
-        ));
+                "/laboratoireBack/disponibiliteAnalyse/listDispoAnalyse.fxml", menuDispoAnalyseButton.getScene(), null));
         menuDashboardButton.setOnAction(e -> SceneUtils.openNewScene(
-                "/laboratoireBack/dashboardLabo.fxml",
-                menuDashboardButton.getScene(),
-                null
-        ));
+                "/laboratoireBack/dashboardLabo.fxml", menuDashboardButton.getScene(), null));
         menuHospiChatButton.setOnAction(e -> SceneUtils.openNewScene(
-                "/laboratoireBack/hospiChatLabo.fxml",
-                menuHospiChatButton.getScene(),
-                null
-        ));
+                "/laboratoireBack/hospiChatLabo.fxml", menuHospiChatButton.getScene(), null));
     }
 
-    private void resetTableItems() {
-        typeAnalyseTableView.setItems(FXCollections.observableList(typeAnalyseCrudService.findAll()));
+    private void resetListItems() {
+        typeAnalyseListView.setItems(FXCollections.observableList(typeAnalyseCrudService.findAll()));
     }
-
 }
