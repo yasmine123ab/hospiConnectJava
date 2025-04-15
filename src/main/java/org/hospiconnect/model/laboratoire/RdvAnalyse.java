@@ -1,6 +1,7 @@
 package org.hospiconnect.model.laboratoire;
 
 import java.time.LocalDate;
+import java.util.Objects;
 
 public class RdvAnalyse {
 
@@ -71,10 +72,15 @@ public class RdvAnalyse {
                 '}';
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof RdvAnalyse that)) return false;
+        return Objects.equals(idDisponibilite, that.idDisponibilite) && Objects.equals(idPatient, that.idPatient) && Objects.equals(dateRdv, that.dateRdv) && Objects.equals(statut, that.statut);
+    }
 
-
-
-
-
-
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, idDisponibilite, idPatient, dateRdv, statut);
+    }
 }
