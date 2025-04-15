@@ -8,33 +8,23 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
 public class HospiConnectMain extends Application {
-    private double x, y;
+    public static Stage primaryStage;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
         var file= getClass().getResource("/laboratoireBack/disponibiliteAnalyse/listDispoAnalyse.fxml");
-        System.out.println(file);
         Parent root = FXMLLoader.load(file);
         primaryStage.setScene(new Scene(root));
         //set stage borderless
         primaryStage.initStyle(StageStyle.UNDECORATED);
 
-        //drag it here
-        root.setOnMousePressed(event -> {
-            x = event.getSceneX();
-            y = event.getSceneY();
-        });
-        root.setOnMouseDragged(event -> {
-
-            primaryStage.setX(event.getScreenX() - x);
-            primaryStage.setY(event.getScreenY() - y);
-
-        });
+        HospiConnectMain.primaryStage = primaryStage;
         primaryStage.show();
     }
 
 
     public static void main(String[] args) {
+        System.setProperty("prism.maxvram", "2G");
         launch(args);
     }
 }

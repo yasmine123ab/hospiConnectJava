@@ -10,12 +10,12 @@ import java.util.function.Consumer;
 public class EditRemoveButtonsBox<S> {
 
     public HBox create(S item, Consumer<S> editCallback, Consumer<S> removeCallback) {
-        var editImage = new ImageView("/images/edit.png");
+        var editImage = new ImageView("/imagesLabo/edit.png");
         editImage.setFitHeight(16.0);
         editImage.setFitWidth(16.0);
         editImage.setPreserveRatio(true);
 
-        var removeImage = new ImageView("/images/delete.png");
+        var removeImage = new ImageView("/imagesLabo/delete.png");
         removeImage.setFitHeight(16.0);
         removeImage.setFitWidth(16.0);
         removeImage.setPreserveRatio(true);
