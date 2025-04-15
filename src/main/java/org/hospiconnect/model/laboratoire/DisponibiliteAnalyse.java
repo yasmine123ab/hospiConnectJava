@@ -7,12 +7,12 @@ public class DisponibiliteAnalyse {
     private Long id;
     private LocalDateTime debut;
     private LocalDateTime fin;
-    private Long nbrPlaces;
+    private Integer nbrPlaces;
 
     public DisponibiliteAnalyse() {
     }
 
-    public DisponibiliteAnalyse(Long id, LocalDateTime debut, LocalDateTime fin, Long nbrPlaces) {
+    public DisponibiliteAnalyse(Long id, LocalDateTime debut, LocalDateTime fin, Integer nbrPlaces) {
         this.id = id;
         this.debut = debut;
         this.fin = fin;
@@ -43,11 +43,11 @@ public class DisponibiliteAnalyse {
         this.fin = fin;
     }
 
-    public Long getNbrPlaces() {
+    public Integer getNbrPlaces() {
         return nbrPlaces;
     }
 
-    public void setNbrPlaces(Long nbrPlaces) {
+    public void setNbrPlaces(Integer nbrPlaces) {
         this.nbrPlaces = nbrPlaces;
     }
 

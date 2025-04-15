@@ -141,6 +141,23 @@ public class AnalyseRdvCrudService {
         }
     }
 
+    public String findRdvDateById(Long id) {
+        try (
+                Connection c = DatabaseUtils.getConnection();
+                PreparedStatement ps = c.prepareStatement("select date_rdv from rendez_vous_analyse where id = ?")
+        ) {
+            ps.setLong(1, id);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getString("date_rdv");
+                }
+                throw new RuntimeException("Object Rdv Analyse not found with id " + id);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Failed due to an SQL Error", e);
+        }
+    }
+
     public Map<Long, String> findRdvsWithId() {
         try (
                 Connection c = DatabaseUtils.getConnection();

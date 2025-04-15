@@ -126,24 +126,19 @@
             <Font name="System Bold" size="18.0" />
          </font>
       </Button>
-      <HBox layoutX="265.0" layoutY="210.0" prefHeight="35.0" prefWidth="627.0" spacing="10.0">
+      <HBox layoutX="265.0" layoutY="210.0" prefHeight="35.0" prefWidth="489.0" spacing="10.0">
          <children>
-            <Label prefWidth="140.0" text="Date Disponibilite" textFill="#1605ac">
+            <Label prefWidth="150.0" text="Date et Heure Debut" textFill="#1605ac">
                <font>
                   <Font name="System Bold" size="14.0" />
                </font>
             </Label>
-            <Label prefWidth="140.0" text="Heure Debut" textFill="#1605ac">
+            <Label prefHeight="20.0" prefWidth="150.0" text="Date et Heure Fin" textFill="#1605ac">
                <font>
                   <Font name="System Bold" size="14.0" />
                </font>
             </Label>
-            <Label prefHeight="20.0" prefWidth="100.0" text="Heure Fin" textFill="#1605ac">
-               <font>
-                  <Font name="System Bold" size="14.0" />
-               </font>
-            </Label>
-            <Label layoutX="621.0" layoutY="10.0" prefHeight="20.0" prefWidth="100.0" text="Nbr Places" textFill="#1605ac">
+            <Label layoutX="621.0" layoutY="10.0" prefHeight="20.0" prefWidth="80.0" text="Nbr Places" textFill="#1605ac">
                <font>
                   <Font name="System Bold" size="14.0" />
                </font>
@@ -155,6 +150,6 @@
             </Label>
          </children>
       </HBox>
-      <ListView fx:id="dispoAnalyseListView" layoutX="264.0" layoutY="245.0" prefHeight="312.0" prefWidth="627.0" />
+      <ListView fx:id="dispoAnalyseListView" layoutX="264.0" layoutY="245.0" prefHeight="312.0" prefWidth="506.0" />
    </children>
 </AnchorPane>

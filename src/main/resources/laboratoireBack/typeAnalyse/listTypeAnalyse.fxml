@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="650.0" prefWidth="1112.0" style="-fx-background-color: #ffff;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.hospiconnect.controller.laboratoire.ListTypeAnalyseController">
+<AnchorPane prefHeight="650.0" prefWidth="1112.0" style="-fx-background-color: #ffff;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.hospiconnect.controller.laboratoire.ListTypeAnalyseControllerCopy">
    <children>
       <VBox prefHeight="650.0" prefWidth="224.0" style="-fx-background-color: #ADD8E6;">
          <children>

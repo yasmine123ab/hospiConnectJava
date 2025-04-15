@@ -54,6 +54,40 @@ public class DisponibiliteAnalyseCrudService {
         }
     }
 
+    public String findDispoPlaceById(Long id) {
+        try (
+                Connection c = DatabaseUtils.getConnection();
+                PreparedStatement ps = c.prepareStatement("select nb_places from disponibilite_analyse where id = ?")
+        ) {
+            ps.setLong(1, id);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getString("nb_places");
+                }
+                throw new RuntimeException("Object Dispo Analyse not found with id " + id);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Failed due to an SQL Error", e);
+        }
+    }
+
+    public String findDispoHDebutById(Long id) {
+        try (
+                Connection c = DatabaseUtils.getConnection();
+                PreparedStatement ps = c.prepareStatement("select heure_debut from disponibilite_analyse where id = ?")
+        ) {
+            ps.setLong(1, id);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getString("heure_debut");
+                }
+                throw new RuntimeException("Object Dispo Analyse not found with id " + id);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Failed due to an SQL Error", e);
+        }
+    }
+
     public void createNew(DisponibiliteAnalyse newDisponibilite) {
         try (
                 Connection c = DatabaseUtils.getConnection();
@@ -120,7 +154,7 @@ public class DisponibiliteAnalyseCrudService {
                 rs.getLong(ID_COL),
                 rs.getTime(HEURE_DEBUT_COL).toLocalTime().atDate(dateDispo.toLocalDate()),
                 rs.getTime(HEURE_FIN_COL).toLocalTime().atDate(dateDispo.toLocalDate()),
-                rs.getLong(NBR_PLACES_COL)
+                rs.getInt(NBR_PLACES_COL)
         );
 
     }

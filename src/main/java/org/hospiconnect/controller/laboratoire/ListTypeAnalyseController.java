@@ -101,6 +101,12 @@ public class ListTypeAnalyseController {
             ));
         });
 
+        typeAnalyseAjouterButton.setOnAction(e -> SceneUtils.openNewScene(
+                "/laboratoireBack/typeAnalyse/formTypeAnalyse.fxml",
+                typeAnalyseAjouterButton.getScene(),
+                null
+        ));
+
         FermerFenetreButton.setOnAction(e -> ((Stage) FermerFenetreButton.getScene().getWindow()).close());
         ReduireFenetreButton.setOnAction(e -> ((Stage) ReduireFenetreButton.getScene().getWindow()).setIconified(true));
 
