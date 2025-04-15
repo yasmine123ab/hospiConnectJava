@@ -42,6 +42,8 @@ public class FormDisponibiliteAnalyseController {
         DisponibiliteAnalyse toEdit = (DisponibiliteAnalyse) SceneUtils.getContext();
         boolean editMode = toEdit != null;
 
+        dispoAnalyseFormNbrPlaceSpinner.setValueFactory(
+                new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 10));
 
         if (editMode) {
             fillForm(toEdit);
@@ -87,23 +89,18 @@ public class FormDisponibiliteAnalyseController {
     }
 
     private void fillForm(DisponibiliteAnalyse toEdit) {
-        dispoAnalyseFormDateDispoDatePicker.setValue(toEdit.getDebut().toLocalDate());
+        dispoAnalyseFormDateDispoDatePicker.setValue(toEdit.getDispo());
         dispoAnalyseFormHeureDebutTextField.setText(toEdit.getDebut().toString());
         dispoAnalyseFormHeureFinTextField.setText(toEdit.getFin().toString());
-        dispoAnalyseFormNbrPlaceSpinner.setValueFactory(
-                new SpinnerValueFactory.IntegerSpinnerValueFactory(0,10)
-        );
         dispoAnalyseFormNbrPlaceSpinner.getValueFactory().setValue(toEdit.getNbrPlaces());
     }
 
     private boolean saveForm(DisponibiliteAnalyse toEdit) {
         DisponibiliteAnalyse toSave = (toEdit == null) ? new DisponibiliteAnalyse() : toEdit;
-        toSave.set(analyseFormDatePrelevDatePicker.getValue());
-        toSave.setDebut(dispoAnalyseFormHeureDebutTextField.getText().);
-
-
-        toSave.setNom(typeAnalyseFormNomTextField.getText());
-        toSave.setPrix(Float.valueOf(typeAnalyseFormPrixTextField.getText()));
+        toSave.setDispo(dispoAnalyseFormDateDispoDatePicker.getValue());
+        toSave.setDebut(java.time.LocalTime.parse(dispoAnalyseFormHeureDebutTextField.getText()));
+        toSave.setFin(java.time.LocalTime.parse(dispoAnalyseFormHeureFinTextField.getText()));
+        toSave.setNbrPlaces(dispoAnalyseFormNbrPlaceSpinner.getValue());
 
         /*var errors = TypeAnalyseValidationService.getInstance().validate(toSave);
         if (!errors.isEmpty()) {

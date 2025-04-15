@@ -73,7 +73,7 @@ public class FormRdvAnalyseController {
         rdvAnalyseFormDispoComboBox.getItems().addAll(DisponibiliteAnalyseCrudService.getInstance()
                 .findAll()
                 .stream()
-                .map(e -> new ComboBoxItemWithId(e.getId(), e.getDebut().toLocalTime().toString()))
+                .map(e -> new ComboBoxItemWithId(e.getId(), e.getDebut().toString()))
                 .toList()
         );
     }

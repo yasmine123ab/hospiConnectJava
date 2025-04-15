@@ -101,9 +101,9 @@ public class DisponibiliteAnalyseCrudService {
                 ))
         ) {
             ps.setLong(1, newDisponibilite.getId());
-            ps.setDate(2, Date.valueOf(newDisponibilite.getDebut().toLocalDate()));
-            ps.setTime(3, Time.valueOf(newDisponibilite.getDebut().toLocalTime()));
-            ps.setTime(4, Time.valueOf(newDisponibilite.getFin().toLocalTime()));
+            ps.setDate(2, DatabaseUtils.toSqlDate(newDisponibilite.getDispo()));
+            ps.setTime(3, Time.valueOf(newDisponibilite.getDebut()));
+            ps.setTime(4, Time.valueOf(newDisponibilite.getFin()));
             ps.setLong(5, newDisponibilite.getNbrPlaces());
 
             ps.execute();
@@ -124,9 +124,9 @@ public class DisponibiliteAnalyseCrudService {
                         ID_COL
                 ))
         ) {
-            ps.setDate(1, Date.valueOf(disponibilite.getDebut().toLocalDate()));
-            ps.setTime(2, Time.valueOf(disponibilite.getDebut().toLocalTime()));
-            ps.setTime(3, Time.valueOf(disponibilite.getFin().toLocalTime()));
+            ps.setDate(1, DatabaseUtils.toSqlDate(disponibilite.getDispo()));
+            ps.setTime(2, Time.valueOf(disponibilite.getDebut()));
+            ps.setTime(3, Time.valueOf(disponibilite.getFin()));
             ps.setLong(4, disponibilite.getNbrPlaces());
             ps.setLong(5, disponibilite.getId());
 
@@ -152,8 +152,9 @@ public class DisponibiliteAnalyseCrudService {
         Date dateDispo = rs.getDate(DATE_DISPO_COL);
         return new DisponibiliteAnalyse(
                 rs.getLong(ID_COL),
-                rs.getTime(HEURE_DEBUT_COL).toLocalTime().atDate(dateDispo.toLocalDate()),
-                rs.getTime(HEURE_FIN_COL).toLocalTime().atDate(dateDispo.toLocalDate()),
+                rs.getDate(DATE_DISPO_COL).toLocalDate(),   // LocalDate
+                rs.getTime(HEURE_DEBUT_COL).toLocalTime(),  // LocalTime
+                rs.getTime(HEURE_FIN_COL).toLocalTime(),
                 rs.getInt(NBR_PLACES_COL)
         );
 
