@@ -106,12 +106,12 @@
             <Font name="System Bold" size="14.0" />
          </font>
       </Button>
-      <Button fx:id="dispoAnalyseAjouterButton" layoutX="903.0" layoutY="557.0" mnemonicParsing="false" text="Ajouter une Disponibilite" textFill="#3351c9">
+      <Button fx:id="dispoAnalyseAjouterButton" layoutX="903.0" layoutY="564.0" mnemonicParsing="false" text="Ajouter une Disponibilite" textFill="#3351c9">
          <font>
             <Font name="System Bold" size="14.0" />
          </font>
       </Button>
-      <Button fx:id="dispoAnalysePdfButton" layoutX="961.0" layoutY="599.0" mnemonicParsing="false" text="Télécharger PDF" textFill="#3351c9">
+      <Button fx:id="dispoAnalysePdfButton" layoutX="961.0" layoutY="606.0" mnemonicParsing="false" text="Télécharger PDF" textFill="#3351c9">
          <font>
             <Font name="System Bold" size="14.0" />
          </font>
@@ -126,30 +126,35 @@
             <Font name="System Bold" size="18.0" />
          </font>
       </Button>
-      <HBox layoutX="265.0" layoutY="210.0" prefHeight="35.0" prefWidth="489.0" spacing="10.0">
+      <HBox layoutX="265.0" layoutY="210.0" prefHeight="35.0" prefWidth="678.0" spacing="10.0">
          <children>
-            <Label prefWidth="150.0" text="Date et Heure Debut" textFill="#1605ac">
+            <Label alignment="CENTER" contentDisplay="CENTER" prefWidth="150.0" text="Date Disponibilite" textAlignment="CENTER" textFill="#1605ac">
                <font>
                   <Font name="System Bold" size="14.0" />
                </font>
             </Label>
-            <Label prefHeight="20.0" prefWidth="150.0" text="Date et Heure Fin" textFill="#1605ac">
+            <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="20.0" prefWidth="150.0" text="Heure Debut" textAlignment="CENTER" textFill="#1605ac">
                <font>
                   <Font name="System Bold" size="14.0" />
                </font>
             </Label>
-            <Label layoutX="621.0" layoutY="10.0" prefHeight="20.0" prefWidth="80.0" text="Nbr Places" textFill="#1605ac">
+            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="621.0" layoutY="10.0" prefHeight="20.0" prefWidth="150.0" text="Heure Fin" textAlignment="CENTER" textFill="#1605ac">
                <font>
                   <Font name="System Bold" size="14.0" />
                </font>
             </Label>
-            <Label layoutX="311.0" layoutY="10.0" prefHeight="20.0" prefWidth="100.0" text="Actions" textFill="#1605ac">
+            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="311.0" layoutY="10.0" prefHeight="20.0" prefWidth="80.0" text="Nbr Places" textAlignment="CENTER" textFill="#1605ac">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+            </Label>
+            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="10.0" layoutY="10.0" prefWidth="100.0" text="Actions" textAlignment="CENTER" textFill="#1605ac">
                <font>
                   <Font name="System Bold" size="14.0" />
                </font>
             </Label>
          </children>
       </HBox>
-      <ListView fx:id="dispoAnalyseListView" layoutX="264.0" layoutY="245.0" prefHeight="312.0" prefWidth="506.0" />
+      <ListView fx:id="dispoAnalyseListView" layoutX="264.0" layoutY="245.0" prefHeight="312.0" prefWidth="678.0" />
    </children>
 </AnchorPane>

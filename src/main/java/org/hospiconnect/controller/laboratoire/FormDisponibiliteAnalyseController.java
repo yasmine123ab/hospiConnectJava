@@ -5,8 +5,15 @@ import javafx.scene.control.*;
 import javafx.stage.Stage;
 import org.hospiconnect.model.laboratoire.DisponibiliteAnalyse;
 import org.hospiconnect.model.laboratoire.TypeAnalyse;
+import org.hospiconnect.service.laboratoire.DisponibiliteAnalyseCrudService;
+import org.hospiconnect.service.laboratoire.DisponibiliteAnalyseValidationService;
 import org.hospiconnect.service.laboratoire.TypeAnalyseCrudService;
 import org.hospiconnect.service.laboratoire.TypeAnalyseValidationService;
+
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.util.ArrayList;
 
 public class FormDisponibiliteAnalyseController {
 
@@ -97,34 +104,43 @@ public class FormDisponibiliteAnalyseController {
 
     private boolean saveForm(DisponibiliteAnalyse toEdit) {
         DisponibiliteAnalyse toSave = (toEdit == null) ? new DisponibiliteAnalyse() : toEdit;
+        var errors = new ArrayList<String>();
+        var timeFormat = DateTimeFormatter.ofPattern("HH:mm");
         toSave.setDispo(dispoAnalyseFormDateDispoDatePicker.getValue());
-        toSave.setDebut(java.time.LocalTime.parse(dispoAnalyseFormHeureDebutTextField.getText()));
-        toSave.setFin(java.time.LocalTime.parse(dispoAnalyseFormHeureFinTextField.getText()));
+        try{
+            toSave.setDebut(dispoAnalyseFormHeureDebutTextField.getText().isBlank() ? null : LocalTime.parse(dispoAnalyseFormHeureDebutTextField.getText(),timeFormat));
+        } catch (DateTimeParseException e) {
+            errors.add("Heure Debut doit avoir le format HH:mm");
+        }
+        try{
+            toSave.setFin(dispoAnalyseFormHeureFinTextField.getText().isBlank() ? null : LocalTime.parse(dispoAnalyseFormHeureFinTextField.getText(),timeFormat));
+        } catch (DateTimeParseException e) {
+            errors.add("Heure Fin doit avoir le format HH:mm");
+        }
         toSave.setNbrPlaces(dispoAnalyseFormNbrPlaceSpinner.getValue());
-
-        /*var errors = TypeAnalyseValidationService.getInstance().validate(toSave);
+        errors.addAll(DisponibiliteAnalyseValidationService.getInstance().validate(toSave));
         if (!errors.isEmpty()) {
             var msg = String.join("\n- ", errors);
             Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Type analyse invalide");
-            alert.setContentText("Type analyse saisie est invalide:\n- "+msg);
+            alert.setTitle("Dispo analyse invalide");
+            alert.setContentText("Dispo analyse saisie est invalide:\n- "+msg);
             alert.show();
             return false;
         }
 
         if (toEdit != null) {
-            TypeAnalyseCrudService.getInstance().update(toSave);
+            DisponibiliteAnalyseCrudService.getInstance().update(toSave);
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Type analyse mise à jour");
-            alert.setContentText("Type analyse mise à jour avec succés!");
+            alert.setTitle("Dispo analyse mise à jour");
+            alert.setContentText("Dispo analyse mise à jour avec succés!");
             alert.show();
         } else {
-            TypeAnalyseCrudService.getInstance().createNew(toSave);
+            DisponibiliteAnalyseCrudService.getInstance().createNew(toSave);
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Type analyse crée");
-            alert.setContentText("Type analyse insérée avec succés!");
+            alert.setTitle("Dispo analyse crée");
+            alert.setContentText("Dispo analyse insérée avec succés!");
             alert.show();
-        }*/
+        }
         return true;
     }
 

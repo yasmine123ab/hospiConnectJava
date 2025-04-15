@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="650.0" prefWidth="1112.0" style="-fx-background-color: #ffff;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.hospiconnect.controller.laboratoire.ListTypeAnalyseControllerCopy">
+<AnchorPane prefHeight="650.0" prefWidth="1112.0" style="-fx-background-color: #ffff;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.hospiconnect.controller.laboratoire.ListTypeAnalyseController">
    <children>
       <VBox prefHeight="650.0" prefWidth="224.0" style="-fx-background-color: #ADD8E6;">
          <children>
@@ -128,22 +128,22 @@
       </Button>
       <HBox layoutX="255.0" layoutY="200.0" prefHeight="35.0" prefWidth="522.0" spacing="10.0">
          <children>
-            <Label prefWidth="140.0" text="Libelle" textFill="#1605ac">
+            <Label alignment="CENTER" contentDisplay="CENTER" prefWidth="140.0" text="Libelle" textAlignment="CENTER" textFill="#1605ac">
                <font>
                   <Font name="System Bold" size="14.0" />
                </font>
             </Label>
-            <Label prefWidth="140.0" text="Nom" textFill="#1605ac">
+            <Label alignment="CENTER" contentDisplay="CENTER" prefWidth="140.0" text="Nom" textAlignment="CENTER" textFill="#1605ac">
                <font>
                   <Font name="System Bold" size="14.0" />
                </font>
             </Label>
-            <Label prefHeight="20.0" prefWidth="100.0" text="Prix" textFill="#1605ac">
+            <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="20.0" prefWidth="100.0" text="Prix" textAlignment="CENTER" textFill="#1605ac">
                <font>
                   <Font name="System Bold" size="14.0" />
                </font>
             </Label>
-            <Label layoutX="621.0" layoutY="10.0" prefHeight="20.0" prefWidth="100.0" text="Actions" textFill="#1605ac">
+            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="621.0" layoutY="10.0" prefHeight="20.0" prefWidth="100.0" text="Actions" textAlignment="CENTER" textFill="#1605ac">
                <font>
                   <Font name="System Bold" size="14.0" />
                </font>

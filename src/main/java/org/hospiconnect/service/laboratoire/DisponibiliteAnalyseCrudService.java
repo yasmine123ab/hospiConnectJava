@@ -92,19 +92,17 @@ public class DisponibiliteAnalyseCrudService {
         try (
                 Connection c = DatabaseUtils.getConnection();
                 PreparedStatement ps = c.prepareStatement(String.format(
-                        "insert into disponibilite_analyse(%s,%s,%s,%s,%s) values (?,?,?,?,?)",
-                        ID_COL,
+                        "insert into disponibilite_analyse(%s,%s,%s,%s) values (?,?,?,?)",
                         DATE_DISPO_COL,
                         HEURE_DEBUT_COL,
                         HEURE_FIN_COL,
                         NBR_PLACES_COL
                 ))
         ) {
-            ps.setLong(1, newDisponibilite.getId());
-            ps.setDate(2, DatabaseUtils.toSqlDate(newDisponibilite.getDispo()));
-            ps.setTime(3, Time.valueOf(newDisponibilite.getDebut()));
-            ps.setTime(4, Time.valueOf(newDisponibilite.getFin()));
-            ps.setLong(5, newDisponibilite.getNbrPlaces());
+            ps.setDate(1, DatabaseUtils.toSqlDate(newDisponibilite.getDispo()));
+            ps.setTime(2, Time.valueOf(newDisponibilite.getDebut()));
+            ps.setTime(3, Time.valueOf(newDisponibilite.getFin()));
+            ps.setLong(4, newDisponibilite.getNbrPlaces());
 
             ps.execute();
         } catch (SQLException e) {

@@ -7,6 +7,7 @@ import org.hospiconnect.model.laboratoire.Analyse;
 import org.hospiconnect.model.laboratoire.TypeAnalyse;
 import org.hospiconnect.service.laboratoire.*;
 
+import java.util.ArrayList;
 import java.util.stream.Collectors;
 
 public class FormTypeAnalyseController {
@@ -94,11 +95,15 @@ public class FormTypeAnalyseController {
 
     private boolean saveForm(TypeAnalyse toEdit) {
         TypeAnalyse toSave = (toEdit == null) ? new TypeAnalyse() : toEdit;
+        var errors = new ArrayList<String>();
         toSave.setLibelle(typeAnalyseFormLibelleTextField.getText());
         toSave.setNom(typeAnalyseFormNomTextField.getText());
-        toSave.setPrix(Float.valueOf(typeAnalyseFormPrixTextField.getText()));
-
-        var errors = TypeAnalyseValidationService.getInstance().validate(toSave);
+        try{
+            toSave.setPrix(Float.valueOf(typeAnalyseFormPrixTextField.getText()));
+        } catch (NumberFormatException e){
+            errors.add("Prix doit etre un decimal");
+        }
+        errors.addAll(TypeAnalyseValidationService.getInstance().validate(toSave));
         if (!errors.isEmpty()) {
             var msg = String.join("\n- ", errors);
             Alert alert = new Alert(Alert.AlertType.ERROR);

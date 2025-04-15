@@ -29,8 +29,7 @@ public class TypeAnalyseValidationService {
         }
         if (typeAnalyse.getPrix() == null) {
             errors.add("Prix ne doit pas etre vide");
-        }
-        if (typeAnalyse.getPrix() <= 0) {
+        } else if (typeAnalyse.getPrix() <= 0) {
             errors.add("Prix ne doit pas etre negatif");
         }
 

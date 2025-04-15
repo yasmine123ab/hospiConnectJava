@@ -60,6 +60,7 @@ public class ListDisponibiliteAnalyseController {
                     HBox row = new HBox(10);
                     row.setAlignment(Pos.CENTER_LEFT);
 
+                    Label dispo = new Label(dispoAnalyse.getDispo().toString());
                     Label heureDebut = new Label(dispoAnalyse.getDebut().toString());
                     Label heureFin = new Label(dispoAnalyse.getFin().toString());
                     Label nbrPlaces = new Label(dispoAnalyse.getNbrPlaces().toString());
@@ -67,7 +68,7 @@ public class ListDisponibiliteAnalyseController {
                     EditRemoveButtonsBox<DisponibiliteAnalyse> actionsFactory = new EditRemoveButtonsBox<>();
                     HBox actionBox = actionsFactory.create(dispoAnalyse,
                             a -> SceneUtils.openNewScene(
-                                    "/laboratoireBack/disponibiliteAnalyse/listDispoAnalyse.fxml",
+                                    "/laboratoireBack/disponibiliteAnalyse/formDispoAnalyse.fxml",
                                     dispoAnalyseAjouterButton.getScene(),
                                     a
                             ),
@@ -78,13 +79,14 @@ public class ListDisponibiliteAnalyseController {
                     );
 
 
+                    dispo.setPrefWidth(150);
                     heureDebut.setPrefWidth(150);
                     heureFin.setPrefWidth(150);
                     nbrPlaces.setPrefWidth(80);
 
                     actionBox.setPrefWidth(100);
 
-                    row.getChildren().addAll(heureDebut, heureFin, nbrPlaces, actionBox);
+                    row.getChildren().addAll(dispo, heureDebut, heureFin, nbrPlaces, actionBox);
                     setGraphic(row);
                 }
             }

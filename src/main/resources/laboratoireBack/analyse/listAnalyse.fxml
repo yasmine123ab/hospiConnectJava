@@ -128,42 +128,42 @@
       </Button>
       <HBox layoutX="245.0" layoutY="190.0" prefHeight="35.0" prefWidth="1021.0" spacing="10.0">
          <children>
-            <Label prefWidth="140.0" text="Patient" textFill="#1605ac">
+            <Label alignment="CENTER" contentDisplay="CENTER" prefWidth="140.0" text="Patient" textAlignment="CENTER" textFill="#1605ac">
                <font>
                   <Font name="System Bold" size="14.0" />
                </font>
             </Label>
-            <Label prefWidth="140.0" text="Personnel" textFill="#1605ac">
+            <Label alignment="CENTER" contentDisplay="CENTER" prefWidth="140.0" text="Personnel" textAlignment="CENTER" textFill="#1605ac">
                <font>
                   <Font name="System Bold" size="14.0" />
                </font>
             </Label>
-            <Label prefHeight="20.0" prefWidth="100.0" text="Date Rdv" textFill="#1605ac">
+            <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="20.0" prefWidth="100.0" text="Date Rdv" textAlignment="CENTER" textFill="#1605ac">
                <font>
                   <Font name="System Bold" size="14.0" />
                </font>
             </Label>
-            <Label prefWidth="140.0" text="Date Prélèvement" textFill="#1605ac">
+            <Label alignment="CENTER" contentDisplay="CENTER" prefWidth="140.0" text="Date Prélèvement" textAlignment="CENTER" textFill="#1605ac">
                <font>
                   <Font name="System Bold" size="14.0" />
                </font>
             </Label>
-            <Label prefWidth="80.0" text="État" textFill="#1605ac">
+            <Label alignment="CENTER" contentDisplay="CENTER" prefWidth="80.0" text="État" textAlignment="CENTER" textFill="#1605ac">
                <font>
                   <Font name="System Bold" size="14.0" />
                </font>
             </Label>
-            <Label prefHeight="20.0" prefWidth="100.0" text="Résultat" textFill="#1605ac">
+            <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="20.0" prefWidth="100.0" text="Résultat" textAlignment="CENTER" textFill="#1605ac">
                <font>
                   <Font name="System Bold" size="14.0" />
                </font>
             </Label>
-            <Label layoutX="653.0" layoutY="10.0" prefHeight="20.0" prefWidth="120.0" text="Date Résultat" textFill="#1605ac">
+            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="653.0" layoutY="10.0" prefHeight="20.0" prefWidth="120.0" text="Date Résultat" textAlignment="CENTER" textFill="#1605ac">
                <font>
                   <Font name="System Bold" size="14.0" />
                </font>
             </Label>
-            <Label layoutX="621.0" layoutY="10.0" prefHeight="20.0" prefWidth="100.0" text="Actions" textFill="#1605ac">
+            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="621.0" layoutY="10.0" prefHeight="20.0" prefWidth="100.0" text="Actions" textAlignment="CENTER" textFill="#1605ac">
                <font>
                   <Font name="System Bold" size="14.0" />
                </font>

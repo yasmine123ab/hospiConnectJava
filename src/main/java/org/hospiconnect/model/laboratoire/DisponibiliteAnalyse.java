@@ -3,6 +3,7 @@ package org.hospiconnect.model.laboratoire;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.Objects;
 
 public class DisponibiliteAnalyse {
 
@@ -72,5 +73,17 @@ public class DisponibiliteAnalyse {
                 ", fin=" + fin +
                 ", nbrPlaces=" + nbrPlaces +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof DisponibiliteAnalyse that)) return false;
+        return Objects.equals(dispo, that.dispo) && Objects.equals(debut, that.debut) && Objects.equals(fin, that.fin) && Objects.equals(nbrPlaces, that.nbrPlaces);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, dispo, debut, fin, nbrPlaces);
     }
 }
