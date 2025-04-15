@@ -1,4 +1,4 @@
-/*package org.hospiconnect.controller.laboratoire;
+package org.hospiconnect.controller.laboratoire;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -96,14 +96,16 @@ public class FormDisponibiliteAnalyseController {
         dispoAnalyseFormNbrPlaceSpinner.getValueFactory().setValue(toEdit.getNbrPlaces());
     }
 
-    /*private boolean saveForm(DisponibiliteAnalyse toEdit) {
+    private boolean saveForm(DisponibiliteAnalyse toEdit) {
         DisponibiliteAnalyse toSave = (toEdit == null) ? new DisponibiliteAnalyse() : toEdit;
         toSave.set(analyseFormDatePrelevDatePicker.getValue());
         toSave.setDebut(dispoAnalyseFormHeureDebutTextField.getText().);
+
+
         toSave.setNom(typeAnalyseFormNomTextField.getText());
         toSave.setPrix(Float.valueOf(typeAnalyseFormPrixTextField.getText()));
 
-        var errors = TypeAnalyseValidationService.getInstance().validate(toSave);
+        /*var errors = TypeAnalyseValidationService.getInstance().validate(toSave);
         if (!errors.isEmpty()) {
             var msg = String.join("\n- ", errors);
             Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -125,8 +127,8 @@ public class FormDisponibiliteAnalyseController {
             alert.setTitle("Type analyse crée");
             alert.setContentText("Type analyse insérée avec succés!");
             alert.show();
-        }
+        }*/
         return true;
     }
 
-}*/
+}

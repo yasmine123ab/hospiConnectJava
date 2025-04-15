@@ -100,18 +100,18 @@
             <Font name="System Bold" size="14.0" />
          </font>
       </Label>
-      <TextField fx:id="dispoAnalyseRechercherTextField" layoutX="326.0" layoutY="103.0" prefHeight="26.0" prefWidth="448.0" promptText="dispo analyse.." />
-      <Button fx:id="dispoAnalyseTrierButton" layoutX="236.0" layoutY="144.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="80.0" style="-fx-background-color: #ffff;" text="Trier" textFill="#3351c9">
+      <TextField fx:id="dispoAnalyseRechercherTextField" layoutX="326.0" layoutY="103.0" prefHeight="26.0" prefWidth="448.0" promptText="Nbr places..." />
+      <Button fx:id="dispoAnalyseTrierButton" layoutX="945.0" layoutY="142.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="80.0" text="Trier" textFill="#3351c9">
          <font>
             <Font name="System Bold" size="14.0" />
          </font>
       </Button>
-      <Button fx:id="dispoAnalyseAjouterButton" layoutX="903.0" layoutY="569.0" mnemonicParsing="false" style="-fx-background-color: #ffff;" text="Ajouter une Disponibilite" textFill="#3351c9">
+      <Button fx:id="dispoAnalyseAjouterButton" layoutX="903.0" layoutY="557.0" mnemonicParsing="false" text="Ajouter une Disponibilite" textFill="#3351c9">
          <font>
             <Font name="System Bold" size="14.0" />
          </font>
       </Button>
-      <Button fx:id="dispoAnalysePdfButton" layoutX="961.0" layoutY="606.0" mnemonicParsing="false" style="-fx-background-color: #ffff;" text="Télécharger PDF" textFill="#3351c9">
+      <Button fx:id="dispoAnalysePdfButton" layoutX="961.0" layoutY="599.0" mnemonicParsing="false" text="Télécharger PDF" textFill="#3351c9">
          <font>
             <Font name="System Bold" size="14.0" />
          </font>
@@ -121,7 +121,7 @@
             <Font name="System Bold" size="18.0" />
          </font>
       </Button>
-      <Button fx:id="ReduireFenetreButton" layoutX="1048.0" mnemonicParsing="false" style="-fx-background-color: #ffff;" text="-" textFill="#07f259">
+      <Button fx:id="ReduireFenetreButton" layoutX="1033.0" mnemonicParsing="false" style="-fx-background-color: #ffff;" text="-" textFill="#07f259">
          <font>
             <Font name="System Bold" size="18.0" />
          </font>

@@ -12,7 +12,7 @@ public class HospiConnectMain extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        var file= getClass().getResource("/laboratoireFront/rdvAnalyse/listRdvAnalyse.fxml");
+        var file= getClass().getResource("/laboratoireBack/disponibiliteAnalyse/listDispoAnalyse.fxml");
         System.out.println(file);
         Parent root = FXMLLoader.load(file);
         primaryStage.setScene(new Scene(root));
