@@ -11,7 +11,7 @@ public class HospiConnectMain extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         System.out.println( "Hello World!");
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/AddMatriel.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/ListMateriel.fxml"));
         Parent root = fxmlLoader.load();
         Scene scene = new Scene(root);
         stage.setScene(scene);

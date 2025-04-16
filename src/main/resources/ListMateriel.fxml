@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox spacing="10.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.hospiconnect.controller.afficherMateriel" style="-fx-padding: 20;">
+
+   <!-- Titre des colonnes -->
+   <HBox spacing="10" alignment="CENTER_LEFT" style="-fx-padding: 10; -fx-background-color: #E0E0E0;">
+      <Label text="Nom" prefWidth="100"/>
+      <Label text="Quantité" prefWidth="60"/>
+      <Label text="Catégorie" prefWidth="100"/>
+      <Label text="État" prefWidth="80"/>
+      <Label text="Emplacement" prefWidth="100"/>
+      <Label text="Date d'ajout" prefWidth="120"/>
+      <Label text="Actions" prefWidth="160"/>
+   </HBox>
+
+   <!-- ListView des matériels -->
+   <ListView fx:id="matrielTable" prefHeight="400"/>
+
+   <!-- Boutons -->
+   <HBox spacing="10" alignment="CENTER_RIGHT">
+      <Button onAction="#afficherMateriels" text="afficher" />
+      <Button onAction="#ajouter" text="ajouter" />
+      <Button onAction="#mouvement" text="mouvement" />
+      <Button onAction="#trier" text="trier" />
+   </HBox>
+
+</VBox>

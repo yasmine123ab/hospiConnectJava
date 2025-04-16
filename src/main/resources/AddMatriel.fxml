@@ -8,18 +8,20 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="514.0" prefWidth="723.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.hospiconnect.controller.AddMatriel">
    <children>
-      <Label layoutX="225.0" layoutY="100.0" text="nom" />
-      <Label layoutX="213.0" layoutY="130.0" text="categorie" />
-      <Label layoutX="228.0" layoutY="160.0" text="etat" />
-      <Label layoutX="223.0" layoutY="193.0" text="quantite " />
-      <Label layoutX="211.0" layoutY="221.0" text="emplacement" />
-      <TextField fx:id="nom" layoutX="305.0" layoutY="96.0" promptText="ajouter nom" />
-      <Label layoutX="206.0" layoutY="257.0" text="date d'ajout" />
-      <TextField fx:id="categorie" layoutX="305.0" layoutY="126.0" />
-      <TextField fx:id="etat" layoutX="305.0" layoutY="156.0" />
-      <TextField fx:id="quantite" layoutX="305.0" layoutY="189.0" />
-      <TextField fx:id="emplacement" layoutX="305.0" layoutY="217.0" />
+      <Label layoutX="215.0" layoutY="135.0" text="nom" />
+      <Label layoutX="212.0" layoutY="173.0" text="categorie" />
+      <Label layoutX="227.0" layoutY="210.0" text="etat" />
+      <Label layoutX="214.0" layoutY="248.0" text="quantite " />
+      <Label layoutX="211.0" layoutY="280.0" text="emplacement" />
+      <TextField fx:id="nom" layoutX="305.0" layoutY="131.0" promptText="ajouter nom" />
+      <Label layoutX="215.0" layoutY="316.0" text="date d'ajout" />
+      <TextField fx:id="categorie" layoutX="305.0" layoutY="169.0" promptText="ajouter categorie" />
+      <TextField fx:id="etat" layoutX="305.0" layoutY="206.0" promptText="ajouter etat" />
+      <TextField fx:id="quantite" layoutX="305.0" layoutY="244.0" promptText="ajouter quantite" />
+      <TextField fx:id="emplacement" layoutX="305.0" layoutY="276.0" promptText="ajouter emplacement" />
       <Button layoutX="502.0" layoutY="360.0" mnemonicParsing="false" onAction="#ajouter" text="ajouter" />
-      <DatePicker fx:id="date" layoutX="305.0" layoutY="262.0" />
+
+      <DatePicker fx:id="date" layoutX="305.0" layoutY="312.0" promptText="ajouter date" />
+      <Label layoutX="256.0" layoutY="48.0" prefHeight="18.0" prefWidth="290.0" text="                ajouter materiel " textFill="#a3242b" />
    </children>
 </AnchorPane>

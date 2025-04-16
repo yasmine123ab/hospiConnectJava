@@ -57,6 +57,8 @@ public class MaterielService1 implements Icrud<Materiel>  {
     }
     @Override
     public List<Materiel> findAll() throws SQLException {
+
+
         String sql = "SELECT * FROM materiel";
         PreparedStatement ps = con.prepareStatement(sql);
         ResultSet rs = ps.executeQuery();
