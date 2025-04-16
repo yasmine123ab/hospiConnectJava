@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" 
+            fx:controller="org.hospiconnect.controller.MainController">
+    <top>
+        <VBox spacing="10">
+            <padding>
+                <Insets bottom="20" left="20" right="20" top="20"/>
+            </padding>
+            
+            <Label text="HospiConnect Management System" style="-fx-font-size: 24; -fx-font-weight: bold;"/>
+            
+            <HBox spacing="10">
+                <Button text="Consultations" onAction="#openConsultations" prefWidth="150"/>
+                <Button text="Medication Reservations" onAction="#openReservations" prefWidth="200"/>
+            </HBox>
+        </VBox>
+    </top>
+    
+    <center>
+        <StackPane fx:id="contentArea">
+            <Label text="Welcome to HospiConnect. Please select a module from the menu above." 
+                   style="-fx-font-size: 16;" alignment="CENTER"/>
+        </StackPane>
+    </center>
+</BorderPane>
