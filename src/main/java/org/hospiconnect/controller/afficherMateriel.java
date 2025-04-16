@@ -5,6 +5,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
+import org.hospiconnect.controller.laboratoire.SceneUtils;
 import org.hospiconnect.model.Materiel;
 import org.hospiconnect.service.MaterielService1;
 import javafx.event.ActionEvent;
@@ -22,6 +23,16 @@ import java.util.List;
 public class afficherMateriel {
     @FXML
     private ListView<Materiel> matrielTable;
+
+    @FXML
+    private Button menuHomeButton;
+
+    @FXML
+    public void initialize() {
+
+        menuHomeButton.setOnAction(e -> SceneUtils.openNewScene(
+                "/HomePages/backList.fxml", menuHomeButton.getScene(), null));
+    }
 
     @FXML
     void afficherMateriels(ActionEvent event) {

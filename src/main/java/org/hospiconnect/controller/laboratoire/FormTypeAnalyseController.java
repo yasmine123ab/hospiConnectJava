@@ -27,6 +27,8 @@ public class FormTypeAnalyseController {
     private Button menuDashboardButton;
     @FXML
     private Button menuHospiChatButton;
+    @FXML
+    private Button menuHomeButton;
 
     @FXML
     private TextField typeAnalyseFormLibelleTextField;
@@ -85,6 +87,8 @@ public class FormTypeAnalyseController {
                 menuHospiChatButton.getScene(),
                 null
         ));
+        menuHomeButton.setOnAction(e -> SceneUtils.openNewScene(
+                "/HomePages/backList.fxml", menuHomeButton.getScene(), null));
     }
 
     private void fillForm(TypeAnalyse toEdit) {

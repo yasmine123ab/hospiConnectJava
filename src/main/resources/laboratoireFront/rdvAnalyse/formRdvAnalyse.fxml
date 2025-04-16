@@ -30,7 +30,7 @@
                   <Font name="System Bold" size="15.0" />
                </font>
             </Button>
-            <Button fx:id="menuHospiChatButton" graphicTextGap="15.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="233.0" style="-fx-background-color: #ADD8E6;" text="HospiChat" textFill="#0e046e">
+            <!--<Button fx:id="menuHospiChatButton" graphicTextGap="15.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="233.0" style="-fx-background-color: #ADD8E6;" text="HospiChat" textFill="#0e046e">
                <graphic>
                   <ImageView fitHeight="28.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -41,7 +41,7 @@
                <font>
                   <Font name="System Bold" size="15.0" />
                </font>
-            </Button>
+            </Button>-->
             <Button fx:id="menuHomeButton" graphicTextGap="15.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="233.0" style="-fx-background-color: #ADD8E6;" text="Home" textFill="#0e046e">
                <font>
                   <Font name="System Bold" size="15.0" />

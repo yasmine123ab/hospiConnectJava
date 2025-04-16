@@ -52,6 +52,7 @@
         <VBox style="-fx-background-color: #1d2135; -fx-padding: 20;"
               spacing="10" prefWidth="200">
 
+            <Button fx:id="menuHomeButton" text="Home" styleClass="sidebar-button"/>
             <Button fx:id="btnDashboard" text="📊 Dashboard" styleClass="sidebar-button"/>
 
             <!-- Utilisateurs -->

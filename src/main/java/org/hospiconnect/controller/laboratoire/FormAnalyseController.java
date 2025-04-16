@@ -28,6 +28,8 @@ public class FormAnalyseController {
     private Button menuDashboardButton;
     @FXML
     private Button menuHospiChatButton;
+    @FXML
+    private Button menuHomeButton;
 
 
     @FXML
@@ -103,6 +105,8 @@ public class FormAnalyseController {
                 menuHospiChatButton.getScene(),
                 null
         ));
+        menuHomeButton.setOnAction(e -> SceneUtils.openNewScene(
+                "/HomePages/backList.fxml", menuHomeButton.getScene(), null));
     }
 
     private void initComponents() {

@@ -28,6 +28,8 @@ public class DashboardLaboController {
     private Button menuDashboardButton;
     @FXML
     private Button menuHospiChatButton;
+    @FXML
+    private Button menuHomeButton;
 
     @FXML private PieChart laboPieChart;
     @FXML private BarChart<String, Number> laboBarChart;
@@ -50,6 +52,8 @@ public class DashboardLaboController {
                 "/laboratoireBack/dashboardLabo.fxml", menuDashboardButton.getScene(), null));
         menuHospiChatButton.setOnAction(e -> SceneUtils.openNewScene(
                 "/laboratoireBack/hospiChatLabo.fxml", menuHospiChatButton.getScene(), null));
+        menuHomeButton.setOnAction(e -> SceneUtils.openNewScene(
+                "/HomePages/backList.fxml", menuHomeButton.getScene(), null));
 
         loadPieChart();
         loadBarChart();

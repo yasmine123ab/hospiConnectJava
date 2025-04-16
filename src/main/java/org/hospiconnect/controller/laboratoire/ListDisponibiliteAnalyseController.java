@@ -45,6 +45,8 @@ public class ListDisponibiliteAnalyseController {
     private Button menuDashboardButton;
     @FXML
     private Button menuHospiChatButton;
+    @FXML
+    private Button menuHomeButton;
 
     @FXML
     public void initialize() {
@@ -126,6 +128,8 @@ public class ListDisponibiliteAnalyseController {
                 "/laboratoireBack/dashboardLabo.fxml", menuDashboardButton.getScene(), null));
         menuHospiChatButton.setOnAction(e -> SceneUtils.openNewScene(
                 "/laboratoireBack/hospiChatLabo.fxml", menuHospiChatButton.getScene(), null));
+        menuHomeButton.setOnAction(e -> SceneUtils.openNewScene(
+                "/HomePages/backList.fxml", menuHomeButton.getScene(), null));
     }
 
     private void resetListItems() {

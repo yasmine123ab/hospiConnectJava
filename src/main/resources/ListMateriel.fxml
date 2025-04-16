@@ -21,6 +21,7 @@
 
    <!-- Boutons -->
    <HBox spacing="10" alignment="CENTER_RIGHT">
+      <Button fx:id="menuHomeButton" text="Home" />
       <Button onAction="#afficherMateriels" text="afficher" />
       <Button onAction="#ajouter" text="ajouter" />
       <Button onAction="#mouvement" text="mouvement" />

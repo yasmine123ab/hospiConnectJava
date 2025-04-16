@@ -25,22 +25,12 @@
                   <Font name="System Bold" size="15.0" />
                </font>
             </Button>
-            <Button fx:id="menuDonButton" graphicTextGap="15.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="237.0" style="-fx-background-color: #ADD8E6;" text="Dons" textFill="#0e046e">
-               <font>
-                  <Font name="System Bold" size="15.0" />
-               </font>
-            </Button>
             <Button fx:id="menuStockButton" graphicTextGap="15.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="237.0" style="-fx-background-color: #ADD8E6;" text="Stock Materiel" textFill="#0e046e">
                <font>
                   <Font name="System Bold" size="15.0" />
                </font>
             </Button>
-            <Button fx:id="menuOpButton" graphicTextGap="15.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="237.0" style="-fx-background-color: #ADD8E6;" text="Operations" textFill="#0e046e">
-               <font>
-                  <Font name="System Bold" size="15.0" />
-               </font>
-            </Button>
-            <Button fx:id="menuConsulButton" graphicTextGap="15.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="237.0" style="-fx-background-color: #ADD8E6;" text="Consultations" textFill="#0e046e">
+            <Button fx:id="menuBFHomeButton" graphicTextGap="15.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="237.0" style="-fx-background-color: #ADD8E6;" text="Home" textFill="#0e046e">
                <font>
                   <Font name="System Bold" size="15.0" />
                </font>

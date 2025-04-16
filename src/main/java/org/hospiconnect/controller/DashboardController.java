@@ -13,6 +13,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
+import org.hospiconnect.controller.laboratoire.SceneUtils;
 import org.hospiconnect.model.User;
 import org.hospiconnect.utils.SecurityUtils;
 
@@ -31,11 +32,18 @@ public class DashboardController {
     @FXML private ImageView userPhoto;
     @FXML private ImageView logoImage;
 
+    @FXML
+    private Button menuHomeButton;
+
     private final ContextMenu contextMenu = new ContextMenu();
     private User connectedUser;
 
     @FXML
     public void initialize() {
+
+        menuHomeButton.setOnAction(e -> SceneUtils.openNewScene(
+                "/HomePages/backList.fxml", menuHomeButton.getScene(), null));
+
         this.connectedUser = SecurityUtils.getConnectedUser();
 
         // Actions sur les boutons

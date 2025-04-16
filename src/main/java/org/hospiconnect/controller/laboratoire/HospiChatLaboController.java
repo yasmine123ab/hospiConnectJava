@@ -34,6 +34,8 @@ public class HospiChatLaboController {
     private Button menuDashboardButton;
     @FXML
     private Button menuHospiChatButton;
+    @FXML
+    private Button menuHomeButton;
 
     @FXML
     private Button hospiChatLaboButton;
@@ -59,6 +61,8 @@ public class HospiChatLaboController {
                 "/laboratoireBack/dashboardLabo.fxml", menuDashboardButton.getScene(), null));
         menuHospiChatButton.setOnAction(e -> SceneUtils.openNewScene(
                 "/laboratoireBack/hospiChatLabo.fxml", menuHospiChatButton.getScene(), null));
+        menuHomeButton.setOnAction(e -> SceneUtils.openNewScene(
+                "/HomePages/backList.fxml", menuHomeButton.getScene(), null));
 
         hospiChatLaboButton.setOnAction(event -> {
             String question = hospiChatLaboQuestionTextField.getText().trim();

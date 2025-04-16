@@ -91,6 +91,11 @@
                   <Font name="System Bold" size="15.0" />
                </font>
             </Button>
+            <Button fx:id="menuHomeButton" graphicTextGap="15.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="233.0" style="-fx-background-color: #ADD8E6;" text="Home" textFill="#0e046e">
+               <font>
+                  <Font name="System Bold" size="15.0" />
+               </font>
+            </Button>
          </children>
       </VBox>
       <Label layoutX="255.0" layoutY="34.0" text="I'm HospiChat, how can i assist you?" textFill="#1605ac">
