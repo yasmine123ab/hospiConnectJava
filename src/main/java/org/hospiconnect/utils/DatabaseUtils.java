@@ -6,7 +6,7 @@ import java.time.LocalDateTime;
 
 public class DatabaseUtils {
 
-    private static final String url = "jdbc:mysql://127.0.0.1:3307/HISTO";
+    private static final String url = "jdbc:mysql://127.0.0.1:3306/HISTO";
     private static final String user = "root";
     private static final String password = "";
 
