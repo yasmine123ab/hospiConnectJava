@@ -1,30 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
 
-<BorderPane xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" 
-            fx:controller="org.hospiconnect.controller.MainController">
+<BorderPane prefHeight="684.0" prefWidth="730.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.hospiconnect.controller.MainController">
     <top>
         <VBox spacing="10">
             <padding>
-                <Insets bottom="20" left="20" right="20" top="20"/>
+                <Insets bottom="20" left="20" right="20" top="20" />
             </padding>
             
-            <Label text="HospiConnect Management System" style="-fx-font-size: 24; -fx-font-weight: bold;"/>
+            <Label style="-fx-font-size: 24; -fx-font-weight: bold;" text="HospiConnect Management System" />
             
             <HBox spacing="10">
-                <Button text="Consultations" onAction="#openConsultations" prefWidth="150"/>
-                <Button text="Medication Reservations" onAction="#openReservations" prefWidth="200"/>
+                <Button onAction="#openConsultations" prefWidth="150" text="Consultations" />
+                <Button onAction="#openReservations" prefWidth="200" text="Medication Reservations" />
             </HBox>
         </VBox>
     </top>
     
     <center>
         <StackPane fx:id="contentArea">
-            <Label text="Welcome to HospiConnect. Please select a module from the menu above." 
-                   style="-fx-font-size: 16;" alignment="CENTER"/>
+            <Label alignment="CENTER" style="-fx-font-size: 16;" text="Welcome to HospiConnect. Please select a module from the menu above." />
         </StackPane>
     </center>
 </BorderPane>
