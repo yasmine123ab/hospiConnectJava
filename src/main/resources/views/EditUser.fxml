@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<?import javafx.collections.FXCollections?>
+<?import java.lang.String?>
+
+<AnchorPane xmlns:fx="http://javafx.com/fxml"
+            fx:controller="controller.EditUserController"
+            prefWidth="500" prefHeight="500"
+            stylesheets="@/styles/edit-user.css"
+            styleClass="root">
+
+    <GridPane hgap="20" vgap="15" alignment="CENTER" AnchorPane.topAnchor="20" AnchorPane.leftAnchor="20" AnchorPane.rightAnchor="20">
+        <columnConstraints>
+            <ColumnConstraints halignment="CENTER" percentWidth="50" />
+            <ColumnConstraints halignment="CENTER" percentWidth="50" />
+        </columnConstraints>
+
+        <!-- Titre -->
+        <Label text="✏️ Modifier Utilisateur" style="-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: #3a4c68;" GridPane.columnSpan="2" GridPane.halignment="CENTER"/>
+
+        <!-- Formulaire -->
+        <!-- Champ Nom -->
+        <HBox spacing="10" alignment="CENTER_LEFT" GridPane.rowIndex="1" GridPane.columnIndex="0">
+            <Label text="Nom :" styleClass="form-label"/>
+            <TextField fx:id="tfNom" promptText="Entrez le nom" prefWidth="250"/>
+        </HBox>
+
+        <!-- Champ Prénom -->
+        <HBox spacing="10" alignment="CENTER_LEFT" GridPane.rowIndex="1" GridPane.columnIndex="1">
+            <Label text="Prénom :" styleClass="form-label"/>
+            <TextField fx:id="tfPrenom" promptText="Entrez le prénom" prefWidth="250"/>
+        </HBox>
+
+        <!-- Champ Email -->
+        <HBox spacing="10" alignment="CENTER_LEFT" GridPane.rowIndex="2" GridPane.columnIndex="0">
+            <Label text="Email :" styleClass="form-label"/>
+            <TextField fx:id="tfEmail" promptText="Entrez l'email" prefWidth="250"/>
+        </HBox>
+
+        <!-- Champ Statut -->
+        <HBox spacing="10" alignment="CENTER_LEFT" GridPane.rowIndex="2" GridPane.columnIndex="1">
+            <Label text="Statut :" styleClass="form-label"/>
+            <ComboBox fx:id="comboStatut" prefWidth="150"/>
+        </HBox>
+
+        <!-- Champ Rôle -->
+        <HBox spacing="10" alignment="CENTER_LEFT" GridPane.rowIndex="3" GridPane.columnIndex="0">
+            <Label text="Rôle :" styleClass="form-label"/>
+            <ComboBox fx:id="comboRole" prefWidth="150"/>
+        </HBox>
+
+        <!-- Champ Photo -->
+        <HBox spacing="10" alignment="CENTER_LEFT" GridPane.rowIndex="3" GridPane.columnIndex="1">
+            <Label text="Photo :" styleClass="form-label"/>
+            <TextField fx:id="tfPhoto" promptText="Nom du fichier photo" prefWidth="180"/>
+            <Button text="Parcourir" onAction="#handleBrowsePhoto"/>
+        </HBox>
+
+        <!-- Champ Groupe Sanguin -->
+        <HBox spacing="10" alignment="CENTER_LEFT" GridPane.rowIndex="4" GridPane.columnIndex="0">
+            <Label text="Groupe Sanguin :" styleClass="form-label"/>
+            <ComboBox fx:id="comboGroupeSanguin" prefWidth="150">
+                <items>
+                    <FXCollections fx:factory="observableArrayList">
+                        <String fx:value="O+" />
+                        <String fx:value="O-" />
+                        <String fx:value="A+" />
+                        <String fx:value="A-" />
+                        <String fx:value="B+" />
+                        <String fx:value="B-" />
+                        <String fx:value="AB+" />
+                        <String fx:value="AB-" />
+                    </FXCollections>
+                </items>
+            </ComboBox>
+        </HBox>
+
+        <!-- Champ Gouvernorat -->
+        <HBox spacing="10" alignment="CENTER_LEFT" GridPane.rowIndex="4" GridPane.columnIndex="1">
+            <Label text="Gouvernorat :" styleClass="form-label"/>
+            <ComboBox fx:id="comboGouvernorat" prefWidth="150">
+                <items>
+                    <FXCollections fx:factory="observableArrayList">
+                        <String fx:value="Tunis" />
+                        <String fx:value="Ariana" />
+                        <String fx:value="Ben Arous" />
+                        <String fx:value="Manouba" />
+                        <String fx:value="Nabeul" />
+                        <String fx:value="Bizerte" />
+                        <String fx:value="Kairouan" />
+                        <String fx:value="Sousse" />
+                        <String fx:value="Sfax" />
+                        <String fx:value="Gabes" />
+                        <String fx:value="Medenine" />
+                        <String fx:value="Tataouine" />
+                        <String fx:value="Tozeur" />
+                        <String fx:value="Kasserine" />
+                        <String fx:value="Sidi Bouzid" />
+                        <String fx:value="Kef" />
+                        <String fx:value="Jendouba" />
+                        <String fx:value="Zaghouan" />
+                        <String fx:value="Mahdia" />
+                        <String fx:value="Siliana" />
+                        <String fx:value="Gafsa" />
+                    </FXCollections>
+                </items>
+            </ComboBox>
+        </HBox>
+
+        <!-- Champ Poids -->
+        <HBox spacing="10" alignment="CENTER_LEFT" GridPane.rowIndex="5" GridPane.columnIndex="0">
+            <Label text="Poids (kg) :" styleClass="form-label"/>
+            <TextField fx:id="tfPoids" promptText="Entrez le poids" prefWidth="250"/>
+        </HBox>
+
+        <!-- Champ Taille -->
+        <HBox spacing="10" alignment="CENTER_LEFT" GridPane.rowIndex="5" GridPane.columnIndex="1">
+            <Label text="Taille (cm) :" styleClass="form-label"/>
+            <TextField fx:id="tfTaille" promptText="Entrez la taille" prefWidth="250"/>
+        </HBox>
+
+        <!-- Champ IMC -->
+        <HBox spacing="10" alignment="CENTER_LEFT" GridPane.rowIndex="6" GridPane.columnIndex="0">
+            <Label text="IMC :" styleClass="form-label"/>
+            <TextField fx:id="tfIMC" promptText="IMC calculé" prefWidth="250" />
+        </HBox>
+
+        <!-- Champ Téléphone -->
+        <HBox spacing="10" alignment="CENTER_LEFT" GridPane.rowIndex="6" GridPane.columnIndex="1">
+            <Label text="Téléphone :" styleClass="form-label"/>
+            <TextField fx:id="tfTel" promptText="Entrez le numéro de téléphone" prefWidth="250"/>
+        </HBox>
+
+        <!-- Champ Sexe -->
+        <HBox spacing="10" alignment="CENTER_LEFT" GridPane.rowIndex="7" GridPane.columnIndex="0">
+            <Label text="Sexe :" styleClass="form-label"/>
+            <ComboBox fx:id="comboSexe" prefWidth="150">
+                <items>
+                    <FXCollections fx:factory="observableArrayList">
+                        <String fx:value="Masculin" />
+                        <String fx:value="Féminin" />
+                        <String fx:value="Autre" />
+                    </FXCollections>
+                </items>
+            </ComboBox>
+        </HBox>
+
+        <!-- Champ Code Postal -->
+        <HBox spacing="10" alignment="CENTER_LEFT" GridPane.rowIndex="7" GridPane.columnIndex="1">
+            <Label text="Code Postal :" styleClass="form-label"/>
+            <TextField fx:id="tfCodePostal" promptText="Entrez le code postal" prefWidth="250"/>
+        </HBox>
+
+        <!-- Champ Adresse -->
+        <HBox spacing="10" alignment="CENTER_LEFT" GridPane.rowIndex="8" GridPane.columnIndex="0" GridPane.columnSpan="2">
+            <Label text="Adresse :" styleClass="form-label"/>
+            <TextField fx:id="tfAdresse" promptText="Entrez l'adresse" prefWidth="250"/>
+        </HBox>
+
+        <!-- Bouton enregistrer -->
+        <Button text="💾 Enregistrer les modifications" onAction="#handleSave" GridPane.rowIndex="9" GridPane.columnSpan="2"/>
+    </GridPane>
+</AnchorPane>
