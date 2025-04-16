@@ -143,6 +143,7 @@ public class ListAnalyseController {
     }
 
     private void resetListItems() {
+        System.out.println(analyseListView);
         analyseListView.setItems(FXCollections.observableList(analyseCrudService.findAll()));
     }
 }
