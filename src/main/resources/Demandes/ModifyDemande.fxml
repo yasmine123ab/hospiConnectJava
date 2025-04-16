@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane prefHeight="400.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.hospiconnect.controller.demandes.ModifyDemande">
+
+    <!-- ===== MENU LATÉRAL GAUCHE ===== -->
+    <left>
+        <VBox alignment="CENTER" spacing="15" style="-fx-background-color: #ADD8E6;">
+            <padding>
+                <Insets bottom="20" left="20" right="20" top="20" />
+            </padding>
+            <!-- Logo en haut à gauche -->
+            <ImageView fitHeight="50.0" fitWidth="90.0">
+                <image>
+                    <Image url="@../images/logo.png" />
+                </image>
+            </ImageView>
+            <!-- Logo -->
+            <AnchorPane />
+
+            <!-- Boutons de navigation avec icônes -->
+            <HBox alignment="CENTER_LEFT" spacing="10">
+                <ImageView fitHeight="26.0" fitWidth="26.0">
+                    <image>
+                        <Image url="@../icons/donation.png" /> <!-- icône don -->
+                    </image>
+                </ImageView>
+                <Button prefHeight="26.0" prefWidth="134.0" text="Faire un Don">
+                    <font>
+                        <Font name="System Bold Italic" size="14.0" />
+                    </font></Button>
+            </HBox>
+
+            <HBox alignment="CENTER_LEFT" spacing="10">
+                <ImageView fitHeight="28.0" fitWidth="27.0">
+                    <image>
+                        <Image url="@../icons/request.png" /> <!-- icône demande -->
+                    </image>
+                </ImageView>
+                <Button prefHeight="26.0" prefWidth="134.0" text="Demande de Don">
+                    <font>
+                        <Font name="System Bold Italic" size="14.0" />
+                    </font></Button>
+            </HBox>
+
+            <HBox alignment="CENTER_LEFT" spacing="10">
+                <ImageView fitHeight="28.0" fitWidth="27.0">
+                    <image>
+                        <Image url="@../icons/request.png" /> <!-- icône demande -->
+                    </image>
+                </ImageView>
+                <Button prefHeight="26.0" prefWidth="134.0" text="Attribution des Dons">
+                    <font>
+                        <Font name="System Bold Italic" size="14.0" />
+                    </font></Button>
+            </HBox>
+
+            <HBox alignment="CENTER_LEFT" spacing="10">
+                <ImageView fitHeight="29.0" fitWidth="28.0">
+                    <image>
+                        <Image url="@../icons/stats.png" /> <!-- icône stats -->
+                    </image>
+                </ImageView>
+                <Button prefHeight="26.0" prefWidth="134.0" text="Statistiques">
+                    <font>
+                        <Font name="System Bold Italic" size="14.0" />
+                    </font></Button>
+            </HBox>
+
+            <HBox alignment="CENTER_LEFT" spacing="10">
+                <ImageView fitHeight="28.0" fitWidth="27.0">
+                    <image>
+                        <Image url="@../icons/pdf.png" /> <!-- icône PDF -->
+                    </image>
+                </ImageView>
+                <Button prefHeight="26.0" prefWidth="134.0" text="Exporter PDF">
+                    <font>
+                        <Font name="System Bold Italic" size="14.0" />
+                    </font></Button>
+            </HBox>
+        </VBox>
+    </left>
+    <!-- ===== CONTENU PRINCIPAL : FORMULAIRE ===== -->
+    <center>
+        <AnchorPane>
+            <VBox alignment="CENTER" spacing="15" AnchorPane.bottomAnchor="20" AnchorPane.leftAnchor="20" AnchorPane.rightAnchor="20" AnchorPane.topAnchor="20">
+
+                <Label style="-fx-font-size: 40px; -fx-font-weight: bold;" text="Modifier une Demande" textFill="#0826cf">
+                    <font>
+                        <Font name="Arial Bold Italic" size="24.0" />
+                    </font>
+                </Label>
+
+                <ComboBox fx:id="patientComboBox" prefHeight="26.0" prefWidth="611.0" promptText="Choisir un patient" />
+                <TextField fx:id="typeBesoinTF" promptText="Type de Besoin" />
+                <TextArea fx:id="detailsTA" prefRowCount="3" promptText="Détails du besoin" wrapText="true" />
+                <DatePicker fx:id="dateDemandeDP" prefHeight="26.0" prefWidth="576.0" promptText="Date de la Demande" />
+                <ComboBox fx:id="statutComboBox" promptText="Statut (En attente, Acceptée, Refusée)" />
+
+                <Button fx:id="saveButton" onAction="#handleSave" text="Sauvegarder" />
+                <Button fx:id="annulerButton" onAction="#handleCancel" text="Annuler" />
+            </VBox>
+        </AnchorPane>
+    </center>
+
+</BorderPane>
