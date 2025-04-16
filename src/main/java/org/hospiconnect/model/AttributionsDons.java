@@ -13,7 +13,7 @@ public class AttributionsDons {
     // Objets liés (facultatifs mais pratiques)
     private Dons don;
     private DemandesDons demande;
-    private user beneficiaire;
+    private User beneficiaire;
 
     public AttributionsDons() {}
 
@@ -91,11 +91,11 @@ public class AttributionsDons {
         this.demande = demande;
     }
 
-    public user getBeneficiaire() {
+    public User getBeneficiaire() {
         return beneficiaire;
     }
 
-    public void setBeneficiaire(user beneficiaire) {
+    public void setBeneficiaire(User beneficiaire) {
         this.beneficiaire = beneficiaire;
     }
 

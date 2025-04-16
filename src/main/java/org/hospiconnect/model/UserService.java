@@ -1,8 +1,8 @@
 package org.hospiconnect.model;
 
-import model.User;
-import utils.DBConnection;
-import utils.PasswordUtils;
+import org.hospiconnect.model.User;
+import org.hospiconnect.utils.DatabaseUtils;
+import org.hospiconnect.utils.PasswordUtils;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -12,7 +12,7 @@ public class UserService {
 
     public void register(User user) {
         String sql = "INSERT INTO user(nom, prenom, email, password, roles, statut) VALUES (?, ?, ?, ?, ?, ?)";
-        try (Connection conn = DBConnection.getConnection();
+        try (Connection conn = DatabaseUtils.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, user.getNom());
             ps.setString(2, user.getPrenom());
@@ -29,7 +29,7 @@ public class UserService {
 
     public boolean emailExists(String email) {
         String sql = "SELECT COUNT(*) FROM user WHERE email = ?";
-        try (Connection conn = DBConnection.getConnection();
+        try (Connection conn = DatabaseUtils.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, email);
             ResultSet rs = ps.executeQuery();
@@ -45,7 +45,7 @@ public class UserService {
     public List<User> getUsersPage(int page, int pageSize) {
         List<User> users = new ArrayList<>();
         String sql = "SELECT * FROM user LIMIT ? OFFSET ?";
-        try (Connection conn = DBConnection.getConnection();
+        try (Connection conn = DatabaseUtils.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, pageSize);
             ps.setInt(2, (page - 1) * pageSize);
@@ -61,7 +61,7 @@ public class UserService {
 
     public int countUsers() {
         String sql = "SELECT COUNT(*) FROM user";
-        try (Connection conn = DBConnection.getConnection();
+        try (Connection conn = DatabaseUtils.getConnection();
              Statement st = conn.createStatement();
              ResultSet rs = st.executeQuery(sql)) {
             if (rs.next()) return rs.getInt(1);
@@ -73,7 +73,7 @@ public class UserService {
 
     public User login(String email, String passwordPlain) {
         String sql = "SELECT * FROM user WHERE email = ?";
-        try (Connection conn = DBConnection.getConnection();
+        try (Connection conn = DatabaseUtils.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setString(1, email);
@@ -94,7 +94,7 @@ public class UserService {
     public List<User> searchUsersPageSQL(String keyword, int page, int pageSize) {
         List<User> users = new ArrayList<>();
         String sql = "SELECT * FROM user WHERE nom LIKE ? OR prenom LIKE ? OR email LIKE ? OR groupe_sanguin LIKE ? OR tel LIKE ? OR sexe LIKE ? LIMIT ? OFFSET ?";
-        try (Connection conn = DBConnection.getConnection();
+        try (Connection conn = DatabaseUtils.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
 
             String likeKeyword = "%" + keyword + "%";
@@ -123,7 +123,7 @@ public class UserService {
 
     public int countUsersWithKeyword(String keyword) {
         String sql = "SELECT COUNT(*) FROM user WHERE nom LIKE ? OR prenom LIKE ? OR email LIKE ?";
-        try (Connection conn = DBConnection.getConnection();
+        try (Connection conn = DatabaseUtils.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
 
             String likeKeyword = "%" + keyword + "%";
@@ -142,7 +142,7 @@ public class UserService {
     public List<User> getAllUsers() {
         List<User> users = new ArrayList<>();
         String query = "SELECT * FROM user";
-        try (Connection conn = DBConnection.getConnection();
+        try (Connection conn = DatabaseUtils.getConnection();
              PreparedStatement stmt = conn.prepareStatement(query);
              ResultSet rs = stmt.executeQuery()) {
             while (rs.next()) {
@@ -156,7 +156,7 @@ public class UserService {
 
     public void deleteUserById(int userId) {
         String sql = "DELETE FROM user WHERE id = ?";
-        try (Connection conn = DBConnection.getConnection();
+        try (Connection conn = DatabaseUtils.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, userId);
             ps.executeUpdate();
@@ -170,7 +170,7 @@ public class UserService {
         String sql = "UPDATE user SET nom=?, prenom=?, email=?, roles=?, statut=?, photo=?, " +
                 "groupe_sanguin=?, gouvernorat=?, poids=?, taille=?, imc=?, sexe=?, zipcode=?, adresse=? " +
                 "WHERE id=?";
-        try (Connection conn = DBConnection.getConnection();
+        try (Connection conn = DatabaseUtils.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
 
             // Remplissage des paramètres de la requête
@@ -201,7 +201,7 @@ public class UserService {
 
     public void updateUserWithPassword(User user) {
         String sql = "UPDATE user SET nom=?, prenom=?, email=?, photo=?, password=? WHERE id=?";
-        try (Connection conn = DBConnection.getConnection();
+        try (Connection conn = DatabaseUtils.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, user.getNom());
             ps.setString(2, user.getPrenom());
@@ -218,7 +218,7 @@ public class UserService {
 
     public User getUserByEmail(String email) {
         String sql = "SELECT * FROM user WHERE email = ?";
-        try (Connection conn = DBConnection.getConnection();
+        try (Connection conn = DatabaseUtils.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, email);
             ResultSet rs = stmt.executeQuery();
@@ -259,7 +259,7 @@ public class UserService {
     public void AddUser(User user) {
         String sql = "INSERT INTO user (nom, prenom, email, roles, tel, statut, photo, groupe_sanguin, gouvernorat, " +
                 "poids, taille, imc, sexe, zipcode, adresse) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-        try (Connection conn = DBConnection.getConnection();
+        try (Connection conn = DatabaseUtils.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
 
             // Remplissage des paramètres de la requête

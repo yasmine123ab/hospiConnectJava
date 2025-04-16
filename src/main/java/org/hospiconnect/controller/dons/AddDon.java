@@ -12,7 +12,7 @@ import javafx.scene.control.*;
 import javafx.stage.Stage;
 import javafx.util.StringConverter;
 import org.hospiconnect.model.Dons;
-import org.hospiconnect.model.user;
+import org.hospiconnect.model.User;
 import org.hospiconnect.service.DonService;
 import org.hospiconnect.utils.DatabaseUtils;
 
@@ -39,7 +39,7 @@ public class AddDon {
     private DatePicker dateDonDP;
 
     @FXML
-    private ComboBox<user> donateurComboBox;
+    private ComboBox<User> donateurComboBox;
     @FXML
     private Button revenirButton;
 
@@ -104,7 +104,7 @@ public class AddDon {
     @FXML
     public void initialize() {
         try {
-            ObservableList<user> donateurs = FXCollections.observableArrayList(loadUsersFromDB());
+            ObservableList<User> donateurs = FXCollections.observableArrayList(loadUsersFromDB());
 
             if (donateurs.isEmpty()) {
                 System.out.println("Aucun donateur trouvé.");
@@ -113,9 +113,9 @@ public class AddDon {
             donateurComboBox.setItems(donateurs);
 
             // Affichage des noms et prénoms dans la liste déroulante
-            donateurComboBox.setCellFactory(param -> new ListCell<user>() {
+            donateurComboBox.setCellFactory(param -> new ListCell<User>() {
                 @Override
-                protected void updateItem(user user, boolean empty) {
+                protected void updateItem(User user, boolean empty) {
                     super.updateItem(user, empty);
                     if (empty || user == null) {
                         setText(null);
@@ -126,9 +126,9 @@ public class AddDon {
             });
 
             // Affichage du nom sélectionné dans le bouton
-            donateurComboBox.setButtonCell(new ListCell<user>() {
+            donateurComboBox.setButtonCell(new ListCell<User>() {
                 @Override
-                protected void updateItem(user user, boolean empty) {
+                protected void updateItem(User user, boolean empty) {
                     super.updateItem(user, empty);
                     if (empty || user == null) {
                         setText(null);
@@ -139,15 +139,15 @@ public class AddDon {
             });
 
             // Ajout du converter pour bien lier texte <-> objet
-            donateurComboBox.setConverter(new StringConverter<user>() {
+            donateurComboBox.setConverter(new StringConverter<User>() {
                 @Override
-                public String toString(user user) {
+                public String toString(User user) {
                     if (user == null) return "";
                     return user.getNom() + " " + user.getPrenom();
                 }
 
                 @Override
-                public user fromString(String string) {
+                public User fromString(String string) {
                     return null; // Non utilisé car la sélection se fait via la liste
                 }
             });
@@ -174,15 +174,15 @@ public class AddDon {
     }
 
 
-    private List<user> loadUsersFromDB() throws SQLException {
-        List<user> users = new ArrayList<>();
+    private List<User> loadUsersFromDB() throws SQLException {
+        List<User> users = new ArrayList<>();
         String sql = "SELECT id, nom, prenom FROM user";
         Connection conn = DatabaseUtils.getConnection();
         PreparedStatement stmt = conn.prepareStatement(sql);
         ResultSet rs = stmt.executeQuery();
 
         while (rs.next()) {
-            user u = new user();
+            User u = new User();
             u.setId(rs.getInt("id")); // <-- ESSENTIEL !
             u.setNom(rs.getString("nom"));
             u.setPrenom(rs.getString("prenom"));
@@ -239,7 +239,7 @@ public class AddDon {
                 return;
             }
 
-            user selectedDonateur = donateurComboBox.getValue();
+            User selectedDonateur = donateurComboBox.getValue();
             if (selectedDonateur == null) {
                 showAlert(Alert.AlertType.WARNING, "Donateur manquant", "Veuillez sélectionner un donateur.");
                 return;

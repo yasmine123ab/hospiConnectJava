@@ -6,7 +6,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 import org.hospiconnect.model.DemandesDons;
-import org.hospiconnect.model.user;
+import org.hospiconnect.model.User;
 import org.hospiconnect.service.DemandeDonService;
 import org.hospiconnect.utils.DatabaseUtils;
 
@@ -26,7 +26,7 @@ public class ModifyDemande {
     private DatePicker dateDemandeDP;
 
     @FXML
-    private ComboBox<user> patientComboBox;
+    private ComboBox<User> patientComboBox;
 
     @FXML
     private ComboBox<String> statutComboBox;
@@ -56,12 +56,12 @@ public class ModifyDemande {
         statutComboBox.setValue(demande.getStatut());
 
         try {
-            ObservableList<user> patients = FXCollections.observableArrayList(loadUsersFromDB());
+            ObservableList<User> patients = FXCollections.observableArrayList(loadUsersFromDB());
             patientComboBox.setItems(patients);
 
             patientComboBox.setCellFactory(param -> new ListCell<>() {
                 @Override
-                protected void updateItem(user user, boolean empty) {
+                protected void updateItem(User user, boolean empty) {
                     super.updateItem(user, empty);
                     if (empty || user == null) {
                         setText(null);
@@ -73,7 +73,7 @@ public class ModifyDemande {
 
             patientComboBox.setButtonCell(new ListCell<>() {
                 @Override
-                protected void updateItem(user user, boolean empty) {
+                protected void updateItem(User user, boolean empty) {
                     super.updateItem(user, empty);
                     if (empty || user == null) {
                         setText(null);
@@ -88,15 +88,15 @@ public class ModifyDemande {
         }
     }
 
-    private List<user> loadUsersFromDB() throws SQLException {
-        List<user> users = new ArrayList<>();
+    private List<User> loadUsersFromDB() throws SQLException {
+        List<User> users = new ArrayList<>();
         String sql = "SELECT id, nom, prenom FROM user";
         Connection conn = DatabaseUtils.getConnection();
         PreparedStatement stmt = conn.prepareStatement(sql);
         ResultSet rs = stmt.executeQuery();
 
         while (rs.next()) {
-            user u = new user();
+            User u = new User();
             u.setId(rs.getInt("id"));
             u.setNom(rs.getString("nom"));
             u.setPrenom(rs.getString("prenom"));
@@ -135,7 +135,7 @@ public class ModifyDemande {
             }
 
             // Contrôle de sélection du patient
-            user patient = patientComboBox.getValue();
+            User patient = patientComboBox.getValue();
             if (patient == null) {
                 showErrorAlert("Erreur de saisie", "Veuillez sélectionner un patient.");
                 return;

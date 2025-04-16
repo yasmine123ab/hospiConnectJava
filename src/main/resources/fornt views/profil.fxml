@@ -9,7 +9,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.geometry.Insets?>
 <ScrollPane xmlns:fx="http://javafx.com/fxml"
-            fx:controller="controller.ProfilController"
+            fx:controller="org.hospiconnect.controller.ProfilController"
             stylesheets="@/styles/profil.css"
             fitToWidth="true"
             style="-fx-background-color: transparent;">

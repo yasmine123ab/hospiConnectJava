@@ -13,7 +13,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
-import model.User;
+import org.hospiconnect.model.User;
 
 import java.io.IOException;
 

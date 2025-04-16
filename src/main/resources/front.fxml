@@ -5,7 +5,7 @@
 <?import javafx.geometry.Insets?>
 
 <BorderPane xmlns:fx="http://javafx.com/fxml"
-            fx:controller="controller.FrontClientController"
+            fx:controller="org.hospiconnect.controller.FrontClientController"
             stylesheets="@/styles/front_client.css"
             style="-fx-background-color: #D9A58C;">
 

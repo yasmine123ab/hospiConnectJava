@@ -17,7 +17,7 @@ import javafx.util.StringConverter;
 import org.hospiconnect.model.AttributionsDons;
 import org.hospiconnect.model.DemandesDons;
 import org.hospiconnect.model.Dons;
-import org.hospiconnect.model.user;
+import org.hospiconnect.model.User;
 import org.hospiconnect.service.AttributionDonService;
 import org.hospiconnect.utils.DatabaseUtils;
 
@@ -31,7 +31,7 @@ public class AddAttribution {
 
     @FXML private ComboBox<Dons> donComboBox;
     @FXML private ComboBox<DemandesDons> demandeComboBox;
-    @FXML private ComboBox<user> beneficiaireComboBox;
+    @FXML private ComboBox<User> beneficiaireComboBox;
     @FXML private ComboBox<String> statutComboBox;
     @FXML private Button revenirButton;
 
@@ -111,7 +111,7 @@ public class AddAttribution {
         try {
             ObservableList<Dons> dons = FXCollections.observableArrayList(loadDonsFromDB());
             ObservableList<DemandesDons> demandes = FXCollections.observableArrayList(loadDemandesFromDB());
-            ObservableList<user> beneficiaires = FXCollections.observableArrayList(loadBeneficiairesFromDB());
+            ObservableList<User> beneficiaires = FXCollections.observableArrayList(loadBeneficiairesFromDB());
 
             donComboBox.setItems(dons);
             demandeComboBox.setItems(demandes);
@@ -184,8 +184,8 @@ public class AddAttribution {
         return demandes;
     }
 
-    private List<user> loadBeneficiairesFromDB() throws SQLException {
-        List<user> beneficiaires = new ArrayList<>();
+    private List<User> loadBeneficiairesFromDB() throws SQLException {
+        List<User> beneficiaires = new ArrayList<>();
         String sql = "SELECT * FROM user";
 
         try (Connection conn = DatabaseUtils.getConnection();
@@ -193,7 +193,7 @@ public class AddAttribution {
              ResultSet rs = stmt.executeQuery()) {
 
             while (rs.next()) {
-                user u = new user();
+                User u = new User();
                 u.setId(rs.getInt("id"));
                 u.setNom(rs.getString("nom"));
                 u.setPrenom(rs.getString("prenom"));
@@ -213,7 +213,7 @@ public class AddAttribution {
             String statut = statutComboBox.getValue();
             Dons selectedDon = donComboBox.getValue();
             DemandesDons selectedDemande = demandeComboBox.getValue();
-            user selectedBeneficiaire = beneficiaireComboBox.getValue();
+            User selectedBeneficiaire = beneficiaireComboBox.getValue();
 
             // Contrôle du champ statut
             if (statut == null || statut.trim().isEmpty()) {

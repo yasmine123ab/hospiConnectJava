@@ -8,7 +8,7 @@ import javafx.stage.Stage;
 import org.hospiconnect.model.AttributionsDons;
 import org.hospiconnect.model.DemandesDons;
 import org.hospiconnect.model.Dons;
-import org.hospiconnect.model.user;
+import org.hospiconnect.model.User;
 import org.hospiconnect.service.AttributionDonService;
 import org.hospiconnect.utils.DatabaseUtils;
 
@@ -23,7 +23,7 @@ public class ModifyAttribution {
     @FXML
     private ComboBox<DemandesDons> demandeComboBox;
     @FXML
-    private ComboBox<user> beneficiaireComboBox;
+    private ComboBox<User> beneficiaireComboBox;
     @FXML
     private DatePicker dateAttributionDP;
     @FXML
@@ -42,7 +42,7 @@ public class ModifyAttribution {
         try {
             ObservableList<Dons> dons = FXCollections.observableArrayList(loadDonsFromDB());
             ObservableList<DemandesDons> demandes = FXCollections.observableArrayList(loadDemandesFromDB());
-            ObservableList<user> beneficiaires = FXCollections.observableArrayList(loadBeneficiairesFromDB());
+            ObservableList<User> beneficiaires = FXCollections.observableArrayList(loadBeneficiairesFromDB());
 
             // ComboBox Dons
             donComboBox.setPromptText("Choisir un don");
@@ -80,7 +80,7 @@ public class ModifyAttribution {
                     if (empty || demande == null) {
                         setText(demandeComboBox.getPromptText());
                     } else {
-                        user patient = demande.getPatient();
+                        User patient = demande.getPatient();
                         String nom = (patient != null) ? patient.getNom() + " " + patient.getPrenom() : "Inconnu";
                         setText(demande.getTypeBesoin() + " - " + nom);
                     }
@@ -93,7 +93,7 @@ public class ModifyAttribution {
                     if (empty || demande == null) {
                         setText(demandeComboBox.getPromptText());
                     } else {
-                        user patient = demande.getPatient();
+                        User patient = demande.getPatient();
                         String nom = (patient != null) ? patient.getNom() + " " + patient.getPrenom() : "Inconnu";
                         setText(demande.getTypeBesoin() + " - " + nom);
                     }
@@ -103,9 +103,9 @@ public class ModifyAttribution {
             // ComboBox Bénéficiaires
             beneficiaireComboBox.setPromptText("Choisir un bénéficiaire");
             beneficiaireComboBox.setItems(beneficiaires);
-            beneficiaireComboBox.setCellFactory(param -> new ListCell<user>() {
+            beneficiaireComboBox.setCellFactory(param -> new ListCell<User>() {
                 @Override
-                protected void updateItem(user u, boolean empty) {
+                protected void updateItem(User u, boolean empty) {
                     super.updateItem(u, empty);
                     if (empty || u == null) {
                         setText(null);
@@ -114,9 +114,9 @@ public class ModifyAttribution {
                     }
                 }
             });
-            beneficiaireComboBox.setButtonCell(new ListCell<user>() {
+            beneficiaireComboBox.setButtonCell(new ListCell<User>() {
                 @Override
-                protected void updateItem(user u, boolean empty) {
+                protected void updateItem(User u, boolean empty) {
                     super.updateItem(u, empty);
                     if (empty || u == null) {
                         setText(null);
@@ -183,7 +183,7 @@ public class ModifyAttribution {
                 demande.setTypeBesoin(rs.getString("type_besoin"));
 
                 // Création du bénéficiaire
-                user patient = new user();
+                User patient = new User();
                 patient.setId(rs.getInt("user_id"));
                 patient.setNom(rs.getString("nom"));
                 patient.setPrenom(rs.getString("prenom"));
@@ -197,8 +197,8 @@ public class ModifyAttribution {
         return demandes;
     }
 
-    private List<user> loadBeneficiairesFromDB() throws SQLException {
-        List<user> beneficiaires = new ArrayList<>();
+    private List<User> loadBeneficiairesFromDB() throws SQLException {
+        List<User> beneficiaires = new ArrayList<>();
         String sql = "SELECT * FROM user";
 
         try (Connection conn = DatabaseUtils.getConnection();
@@ -206,7 +206,7 @@ public class ModifyAttribution {
              ResultSet rs = stmt.executeQuery()) {
 
             while (rs.next()) {
-                user u = new user();
+                User u = new User();
                 u.setId(rs.getInt("id"));
                 u.setNom(rs.getString("nom"));
                 u.setPrenom(rs.getString("prenom"));

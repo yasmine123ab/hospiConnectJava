@@ -6,7 +6,7 @@
 <?import javafx.scene.text.TextFlow?>
 <?import javafx.scene.web.WebView?>
 
-<ScrollPane xmlns:fx="http://javafx.com/fxml" fx:controller="controller.AccueilController" stylesheets="@/styles/acceuil.css" fitToWidth="true" style="-fx-background-color: transparent;">
+<ScrollPane xmlns:fx="http://javafx.com/fxml" fx:controller="org.hospiconnect.controller.AccueilController" stylesheets="@/styles/acceuil.css" fitToWidth="true" style="-fx-background-color: transparent;">
     <VBox spacing="40" alignment="CENTER">
 
         <!-- Bloc 1 : Titre + image flottante -->

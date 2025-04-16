@@ -2,7 +2,7 @@ package org.hospiconnect.service;
 
 
 import org.hospiconnect.model.Dons;
-import org.hospiconnect.model.user;
+import org.hospiconnect.model.User;
 import org.hospiconnect.utils.DatabaseUtils;
 
 import java.sql.Connection;
@@ -77,7 +77,7 @@ public class DonService implements ICrud<Dons> {
             don.setDonateurId(rs.getInt("donateur_id"));
 
             // Créer l'objet donateur
-            user donateur = new user();
+            User donateur = new User();
             donateur.setId(rs.getInt("donateur_id"));
             donateur.setNom(rs.getString("nom"));
             donateur.setPrenom(rs.getString("prenom"));

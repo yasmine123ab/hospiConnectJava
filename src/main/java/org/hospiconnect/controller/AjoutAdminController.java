@@ -6,8 +6,8 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.stage.FileChooser;
-import model.User;
-import service.UserService;
+import org.hospiconnect.model.User;
+import org.hospiconnect.model.UserService;
 
 import java.io.File;
 import java.io.IOException;

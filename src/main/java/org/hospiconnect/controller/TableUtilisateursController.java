@@ -15,8 +15,8 @@ import javafx.scene.layout.VBox;
 import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import model.User;
-import service.UserService;
+import org.hospiconnect.model.User;
+import org.hospiconnect.model.UserService;
 
 import java.io.IOException;
 import java.util.List;

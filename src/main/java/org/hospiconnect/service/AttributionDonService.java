@@ -3,7 +3,7 @@ package org.hospiconnect.service;
 import org.hospiconnect.model.AttributionsDons;
 import org.hospiconnect.model.DemandesDons;
 import org.hospiconnect.model.Dons;
-import org.hospiconnect.model.user;
+import org.hospiconnect.model.User;
 import org.hospiconnect.utils.DatabaseUtils;
 
 import java.sql.Connection;
@@ -90,7 +90,7 @@ public class AttributionDonService implements ICrud<AttributionsDons> {
             attribution.setStatut(rs.getString("statut"));
 
             // Récupération du donateur
-            user donateur = new user();
+            User donateur = new User();
             donateur.setId(rs.getInt("donateur_id"));
             donateur.setNom(rs.getString("donateur_nom"));
             donateur.setPrenom(rs.getString("donateur_prenom"));
@@ -103,7 +103,7 @@ public class AttributionDonService implements ICrud<AttributionsDons> {
             attribution.setDon(don);
 
             // Récupération du bénéficiaire
-            user beneficiaire = new user();
+            User beneficiaire = new User();
             beneficiaire.setId(rs.getInt("beneficiaire_id"));
             beneficiaire.setNom(rs.getString("beneficiaire_nom"));
             beneficiaire.setPrenom(rs.getString("beneficiaire_prenom"));

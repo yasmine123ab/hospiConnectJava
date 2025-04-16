@@ -11,7 +11,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 import org.hospiconnect.model.DemandesDons;
-import org.hospiconnect.model.user;
+import org.hospiconnect.model.User;
 import org.hospiconnect.service.DemandeDonService;
 import org.hospiconnect.utils.DatabaseUtils;
 
@@ -34,7 +34,7 @@ public class AddDemande {
     private DatePicker dateDemandeDP;
 
     @FXML
-    private ComboBox<user> patientComboBox;
+    private ComboBox<User> patientComboBox;
 
     @FXML
     private ComboBox<String> statutComboBox;
@@ -120,13 +120,13 @@ public class AddDemande {
     @FXML
     public void initialize() {
         try {
-            List<user> patients = loadPatientsFromDB();
-            ObservableList<user> observablePatients = FXCollections.observableArrayList(patients);
+            List<User> patients = loadPatientsFromDB();
+            ObservableList<User> observablePatients = FXCollections.observableArrayList(patients);
             patientComboBox.setItems(observablePatients);
 
             patientComboBox.setCellFactory(param -> new ListCell<>() {
                 @Override
-                protected void updateItem(user user, boolean empty) {
+                protected void updateItem(User user, boolean empty) {
                     super.updateItem(user, empty);
                     if (empty || user == null) {
                         setText(null);
@@ -138,7 +138,7 @@ public class AddDemande {
 
             patientComboBox.setButtonCell(new ListCell<>() {
                 @Override
-                protected void updateItem(user user, boolean empty) {
+                protected void updateItem(User user, boolean empty) {
                     super.updateItem(user, empty);
                     if (empty || user == null) {
                         setText(null);
@@ -154,13 +154,13 @@ public class AddDemande {
         }
     }
 
-    private List<user> loadPatientsFromDB() throws SQLException {
-        List<user> users = new ArrayList<>();
+    private List<User> loadPatientsFromDB() throws SQLException {
+        List<User> users = new ArrayList<>();
         var conn = DatabaseUtils.getConnection();
         var stmt = conn.prepareStatement("SELECT id, nom, prenom FROM user");
         var rs = stmt.executeQuery();
         while (rs.next()) {
-            user u = new user();
+            User u = new User();
             u.setId(rs.getInt("id"));
             u.setNom(rs.getString("nom"));
             u.setPrenom(rs.getString("prenom"));
@@ -176,7 +176,7 @@ public class AddDemande {
             String details = detailsTA.getText().trim();
             LocalDate date = dateDemandeDP.getValue();
             String statut = statutComboBox.getValue();
-            user selectedPatient = patientComboBox.getValue();
+            User selectedPatient = patientComboBox.getValue();
 
             // Validation
             if (type.isEmpty()) {

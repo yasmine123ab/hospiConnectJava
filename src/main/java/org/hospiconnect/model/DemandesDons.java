@@ -12,7 +12,7 @@ public class DemandesDons {
     private int patientId;
 
     // 🔸 Option 2 : objet User complet si besoin
-    private user patient;
+    private User patient;
 
     public DemandesDons() {}
 
@@ -76,11 +76,11 @@ public class DemandesDons {
         this.patientId = patientId;
     }
 
-    public user getPatient() {
+    public User getPatient() {
         return patient;
     }
 
-    public void setPatient(user patient) {
+    public void setPatient(User patient) {
         this.patient = patient;
     }
 

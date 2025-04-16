@@ -7,7 +7,7 @@
 <?import javafx.geometry.Pos?>
 
 <BorderPane xmlns:fx="http://javafx.com/fxml"
-            fx:controller="controller.TableUtilisateursController"
+            fx:controller="org.hospiconnect.controller.TableUtilisateursController"
             stylesheets="@/styles/table_utilisateur.css">
 
     <!-- EN-TÊTE -->

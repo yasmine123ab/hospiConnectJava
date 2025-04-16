@@ -3,7 +3,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.ImageView?>
 
-<VBox spacing="20" alignment="CENTER" styleClass="footer" fx:controller="controller.FooterController"
+<VBox spacing="20" alignment="CENTER" styleClass="footer" fx:controller="org.hospiconnect.controller.FooterController"
        xmlns:fx="http://javafx.com/fxml">
     <HBox spacing="80" alignment="CENTER" styleClass="footer-content">
 

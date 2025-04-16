@@ -1,7 +1,7 @@
 package org.hospiconnect.service;
 
 import org.hospiconnect.model.DemandesDons;
-import org.hospiconnect.model.user;
+import org.hospiconnect.model.User;
 import org.hospiconnect.utils.DatabaseUtils;
 
 import java.sql.Connection;
@@ -74,7 +74,7 @@ public class DemandeDonService implements ICrud<DemandesDons> {
 
             // Création d'un objet user pour le patient
 
-            user patient = new user();
+            User patient = new User();
             patient.setId(rs.getInt("patient_id"));
             patient.setNom(rs.getString("nom"));
             patient.setPrenom(rs.getString("prenom"));

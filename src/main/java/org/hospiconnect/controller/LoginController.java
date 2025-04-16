@@ -10,9 +10,9 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
-import model.User;
-import service.HistoriqueConnexionService;
-import service.UserService;
+import org.hospiconnect.model.User;
+import org.hospiconnect.model.HistoriqueConnexionService;
+import org.hospiconnect.model.UserService;
 
 import java.io.IOException;
 

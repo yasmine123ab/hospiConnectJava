@@ -14,7 +14,7 @@ public class Dons {
     private int donateurId;
 
     // Option 2 : objet complet (si tu veux plus d’infos sur le donateur)
-    private user donateur;
+    private User donateur;
 
     public Dons() {}
 
@@ -86,11 +86,11 @@ public class Dons {
         this.donateurId = donateurId;
     }
 
-    public user getDonateur() {
+    public User getDonateur() {
         return donateur;
     }
 
-    public void setDonateur(user donateur) {
+    public void setDonateur(User donateur) {
         this.donateur = donateur;
     }
 

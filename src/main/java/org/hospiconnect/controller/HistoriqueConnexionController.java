@@ -5,9 +5,9 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import model.HistoriqueConnexion;
-import model.User;
-import service.HistoriqueConnexionService;
+import org.hospiconnect.model.HistoriqueConnexion;
+import org.hospiconnect.model.HistoriqueConnexionService;
+import org.hospiconnect.model.User;
 
 import java.net.URL;
 import java.util.List;

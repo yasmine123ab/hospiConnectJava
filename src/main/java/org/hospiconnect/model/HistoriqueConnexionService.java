@@ -1,8 +1,8 @@
 package org.hospiconnect.model;
 
-import model.HistoriqueConnexion;
-import model.User;
-import utils.DBConnection;
+import org.hospiconnect.model.HistoriqueConnexion;
+import org.hospiconnect.model.User;
+import org.hospiconnect.utils.DatabaseUtils;
 
 import java.net.InetAddress;
 import java.sql.*;
@@ -22,7 +22,7 @@ public class HistoriqueConnexionService {
                         "ORDER BY h.date_connexion DESC";
 
 
-        try (Connection conn = DBConnection.getConnection();
+        try (Connection conn = DatabaseUtils.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, email);
             ResultSet rs = stmt.executeQuery();
@@ -40,7 +40,7 @@ public class HistoriqueConnexionService {
         return list;
     }
     public void enregistrerConnexion(User user) {
-        try (Connection conn = DBConnection.getConnection()) {
+        try (Connection conn = DatabaseUtils.getConnection()) {
             String sql = "INSERT INTO login_history (date_connexion, adresse_ip, user_id) VALUES (?, ?, ?)";
             PreparedStatement stmt = conn.prepareStatement(sql);
 

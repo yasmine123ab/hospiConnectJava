@@ -6,7 +6,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 import org.hospiconnect.model.Dons;
-import org.hospiconnect.model.user;
+import org.hospiconnect.model.User;
 import org.hospiconnect.service.DonService;
 import org.hospiconnect.utils.DatabaseUtils;
 
@@ -27,7 +27,7 @@ public class ModifyDon {
     @FXML
     private DatePicker dateDonDP;
     @FXML
-    private ComboBox<user> donateurComboBox;
+    private ComboBox<User> donateurComboBox;
     @FXML
     private Button saveButton;
     @FXML
@@ -52,7 +52,7 @@ public class ModifyDon {
         }
 
         try {
-            ObservableList<user> donateurs = FXCollections.observableArrayList(loadUsersFromDB());
+            ObservableList<User> donateurs = FXCollections.observableArrayList(loadUsersFromDB());
 
             // Si la liste est vide, affichons un message dans la console
             if (donateurs.isEmpty()) {
@@ -62,9 +62,9 @@ public class ModifyDon {
             donateurComboBox.setItems(donateurs);
 
             // Affichage des noms et prénoms dans le ComboBox
-            donateurComboBox.setCellFactory(param -> new ListCell<user>() {
+            donateurComboBox.setCellFactory(param -> new ListCell<User>() {
                 @Override
-                protected void updateItem(user user, boolean empty) {
+                protected void updateItem(User user, boolean empty) {
                     super.updateItem(user, empty);
                     if (empty || user == null) {
                         setText(null);
@@ -74,9 +74,9 @@ public class ModifyDon {
                 }
             });
 
-            donateurComboBox.setButtonCell(new ListCell<user>() {
+            donateurComboBox.setButtonCell(new ListCell<User>() {
                 @Override
-                protected void updateItem(user user, boolean empty) {
+                protected void updateItem(User user, boolean empty) {
                     super.updateItem(user, empty);
                     if (empty || user == null) {
                         setText(null);
@@ -90,15 +90,15 @@ public class ModifyDon {
             System.out.println("Erreur lors du chargement des donateurs : " + e.getMessage());
         }
     }
-    private List<user> loadUsersFromDB() throws SQLException {
-        List<user> users = new ArrayList<>();
+    private List<User> loadUsersFromDB() throws SQLException {
+        List<User> users = new ArrayList<>();
         String sql = "SELECT id, nom, prenom FROM user";
         Connection conn = DatabaseUtils.getConnection();
         PreparedStatement stmt = conn.prepareStatement(sql);
         ResultSet rs = stmt.executeQuery();
 
         while (rs.next()) {
-            user u = new user();
+            User u = new User();
             u.setId(rs.getInt("id")); // <-- ESSENTIEL !
             u.setNom(rs.getString("nom"));
             u.setPrenom(rs.getString("prenom"));

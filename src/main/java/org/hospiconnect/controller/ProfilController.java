@@ -10,9 +10,9 @@ import javafx.scene.image.ImageView;
 import javafx.scene.shape.Circle;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import model.User;
-import service.UserService;
-import utils.PasswordUtils;
+import org.hospiconnect.model.User;
+import org.hospiconnect.model.UserService;
+import org.hospiconnect.utils.PasswordUtils;
 
 import java.io.File;
 import java.io.IOException;
