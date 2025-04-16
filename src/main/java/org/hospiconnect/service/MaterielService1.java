@@ -9,7 +9,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-public class MaterielService1 implements Icrud<Materiel>  {
+public class MaterielService1 implements ICrud<Materiel> {
     private Connection con;
 
     public MaterielService1() {

@@ -10,7 +10,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MaterielService implements Icrud<Materiel>{
+public class MaterielService implements ICrud<Materiel> {
     private Connection con;
 
     public MaterielService() {

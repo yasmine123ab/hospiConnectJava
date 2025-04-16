@@ -8,7 +8,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class mouvementService implements Icrud<mouvement_stock> {
+public class mouvementService implements ICrud<mouvement_stock> {
     private Connection con;
 
     public mouvementService() {
