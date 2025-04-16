@@ -1,0 +1,140 @@
+/* Style général de l'application */
+.root {
+    -fx-font-family: 'Segoe UI', Arial, sans-serif;
+    -fx-base: #f0f0f0;
+    -fx-background: #f5f5f5;
+}
+
+/* Style de la ListView */
+.list-view {
+    -fx-background-color: white;
+    -fx-border-color: #e0e0e0;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+    -fx-padding: 10px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 5, 0, 0, 0);
+}
+
+/* Style des cellules de la ListView */
+.list-cell {
+    -fx-background-color: transparent;
+    -fx-padding: 0;
+    -fx-border-width: 0 0 1 0;
+    -fx-border-color: #e0e0e0;
+}
+
+.list-cell:empty {
+    -fx-border-width: 0;
+    -fx-padding: 0;
+}
+
+/* Style du contenu HBox dans chaque cellule */
+.list-cell .hbox {
+    -fx-background-color: white;
+    -fx-background-radius: 5px;
+    -fx-border-radius: 5px;
+    -fx-padding: 15px;
+    -fx-spacing: 15px;
+    -fx-alignment: center-left;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.05), 3, 0, 0, 0);
+}
+
+.list-cell .hbox:hover {
+    -fx-background-color: #f8f8f8;
+}
+
+/* Style du label d'information */
+.list-cell .label {
+    -fx-font-size: 14px;
+    -fx-text-fill: #333333;
+    -fx-font-weight: normal;
+    -fx-padding: 0 15px 0 0;
+    -fx-wrap-text: true;
+}
+
+/* Style des boutons */
+.list-cell .button {
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-padding: 5px 15px;
+    -fx-background-radius: 4px;
+    -fx-border-radius: 4px;
+    -fx-cursor: hand;
+    -fx-min-width: 80px;
+}
+
+/* Bouton Modifier */
+.list-cell .button.modifier {
+    -fx-background-color: #4CAF50;
+    -fx-text-fill: white;
+}
+
+.list-cell .button.modifier:hover {
+    -fx-background-color: #45a049;
+}
+
+/* Bouton Supprimer */
+.list-cell .button.supprimer {
+    -fx-background-color: #f44336;
+    -fx-text-fill: white;
+}
+
+.list-cell .button.supprimer:hover {
+    -fx-background-color: #d32f2f;
+}
+
+/* Style pour le header */
+.header {
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #333333;
+    -fx-padding: 0 0 20px 0;
+}
+
+/* Style pour les boutons d'action principaux */
+.action-buttons {
+    -fx-spacing: 15px;
+    -fx-padding: 0 0 20px 0;
+}
+
+.action-buttons .button {
+    -fx-font-size: 14px;
+    -fx-padding: 8px 20px;
+    -fx-background-radius: 4px;
+}
+
+/* Bouton Ajouter */
+.button.ajouter {
+    -fx-background-color: #2196F3;
+    -fx-text-fill: white;
+}
+
+.button.ajouter:hover {
+    -fx-background-color: #0b7dda;
+}
+
+/* Zone de recherche */
+.search-container {
+    -fx-spacing: 15px;
+    -fx-padding: 0 0 20px 0;
+}
+
+.search-field {
+    -fx-font-size: 14px;
+    -fx-prompt-text-fill: #999999;
+    -fx-background-radius: 4px;
+    -fx-border-radius: 4px;
+    -fx-border-color: #e0e0e0;
+    -fx-padding: 8px 15px;
+}
+
+/* Style pour les messages d'information */
+.info-message {
+    -fx-font-size: 14px;
+    -fx-text-fill: #666666;
+    -fx-padding: 10px;
+    -fx-background-color: #e8f5e9;
+    -fx-background-radius: 4px;
+    -fx-border-radius: 4px;
+    -fx-border-color: #c8e6c9;
+}

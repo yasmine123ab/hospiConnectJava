@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox spacing="10" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.hospiconnect.controller.afficherMouvement" style="-fx-padding: 20;">
+
+   <!-- Titre des colonnes -->
+   <HBox spacing="10" alignment="CENTER_LEFT" style="-fx-padding: 10; -fx-background-color: #E0E0E0;">
+
+      <Label text="Nom Matériel" prefWidth="120"/>
+      <Label text="Type Mouvement" prefWidth="120"/>
+      <Label text="Quantité" prefWidth="80"/>
+      <Label text="Date" prefWidth="120"/>
+      <Label text="Actions" prefWidth="100"/>
+   </HBox>
+
+   <!-- ListView des mouvements -->
+   <ListView fx:id="mouvementTable" prefHeight="335"/>
+
+   <!-- Boutons -->
+   <HBox spacing="10" alignment="CENTER_RIGHT">
+      <Button onAction="#affichem" text="afficher" />
+      <Button onAction="#ajouterM" text="ajouter" />
+   </HBox>
+</VBox>
