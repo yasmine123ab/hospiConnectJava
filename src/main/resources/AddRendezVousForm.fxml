@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Text?>
+
+<?import javafx.collections.FXCollections?>
+<?import java.lang.String?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0"
+            stylesheets="@css/style.css"
+            xmlns="http://javafx.com/javafx/23.0.1"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="org.hospiconnect.controller.AddRendezVousController">
+
+<children>
+
+    <Text layoutX="100.0" layoutY="80.0" text="Nom" />
+    <TextField fx:id="nomTF" layoutX="250.0" layoutY="65.0" editable="true" promptText="Nom du patient" />
+
+    <Text layoutX="100.0" layoutY="120.0" text="Prénom" />
+    <TextField fx:id="prenomTF" layoutX="250.0" layoutY="105.0" editable="true" promptText="Prénom du patient" />
+
+    <Text layoutX="100.0" layoutY="160.0" text="Téléphone" />
+    <TextField fx:id="telTF" layoutX="250.0" layoutY="145.0" editable="true" promptText="Numéro de téléphone" />
+
+    <Text layoutX="100.0" layoutY="200.0" text="Email" />
+    <TextField fx:id="emailTF" layoutX="250.0" layoutY="185.0" editable="true" promptText="Adresse email" />
+
+    <Label layoutX="100.0" layoutY="225.0" text="Type de rendez-vous :" />
+    <ComboBox fx:id="typeCB" layoutX="250.0" layoutY="225.0" prefWidth="200.0">
+        <items>
+            <FXCollections fx:factory="observableArrayList">
+                <String fx:value="Opération" />
+                <String fx:value="Intervention Urgence" />
+            </FXCollections>
+        </items>
+    </ComboBox>
+
+    <Label layoutX="100.0" layoutY="265.0" text="Gravité :" />
+    <ComboBox fx:id="graviteCB" layoutX="250.0" layoutY="265.0" prefWidth="200.0">
+        <items>
+            <FXCollections fx:factory="observableArrayList">
+                <String fx:value="Faible" />
+                <String fx:value="Moyenne" />
+                <String fx:value="Elevée" />
+            </FXCollections>
+        </items>
+    </ComboBox>
+
+    <Text layoutX="100.0" layoutY="320.0" text="Commentaire" />
+    <TextField fx:id="commentaireTF" layoutX="250.0" layoutY="305.0" prefWidth="300.0" promptText="Commentaire (optionnel)" />
+
+    <Text layoutX="100.0" layoutY="360.0" text="Date" />
+    <DatePicker fx:id="datePicker" layoutX="250.0" layoutY="345.0" />
+
+    <Text layoutX="100.0" layoutY="400.0" text="Heure" />
+    <TextField fx:id="heureTF" layoutX="250.0" layoutY="385.0" promptText="HH:MM (24h)" />
+
+    <!-- BOUTONS -->
+    <Button layoutX="480.0" layoutY="440.0" onAction="#AjouterRendezVous" text="Enregistrer" />
+    <Button layoutX="100.0" layoutY="440.0" onAction="#AfficherListe" text="Liste des rendez-vous" />
+
+</children>
+</AnchorPane>
