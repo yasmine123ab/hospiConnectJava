@@ -15,7 +15,10 @@
    <children>
       <VBox prefHeight="650.0" prefWidth="224.0" style="-fx-background-color: #ADD8E6;">
          <children>
-            <ImageView fitHeight="177.0" fitWidth="223.0" pickOnBounds="true" preserveRatio="true" />
+            <ImageView fitHeight="177.0" fitWidth="223.0" pickOnBounds="true">
+               <image>
+                  <Image url="@../../imagesLabo/logo.png" />
+               </image></ImageView>
             <Button fx:id="menuAnalyseButton" graphicTextGap="15.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="227.0" style="-fx-background-color: #ADD8E5;" text="Analyses" textFill="#0e046e">
                <graphic>
                   <ImageView fitHeight="28.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
