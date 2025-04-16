@@ -31,5 +31,6 @@
         </TableView>
 
         <Button layoutX="400.0" layoutY="460.0" mnemonicParsing="false" onAction="#retourAjout" text="Retour" />
+        <Button fx:id="menuHomeButton" layoutX="300.0" layoutY="460.0" mnemonicParsing="false" text="Home" />
     </children>
 </AnchorPane>

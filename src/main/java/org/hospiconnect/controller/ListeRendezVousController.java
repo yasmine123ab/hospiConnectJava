@@ -7,10 +7,12 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
+import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.beans.property.SimpleStringProperty;
+import org.hospiconnect.controller.laboratoire.SceneUtils;
 import org.hospiconnect.model.RendezVous;
 
 import java.io.IOException;
@@ -35,11 +37,15 @@ public class ListeRendezVousController implements Initializable {
     @FXML private TableColumn<RendezVous, String> colGravite;
     @FXML private TableColumn<RendezVous, String> colStatut;
     @FXML private TableColumn<RendezVous, String> colCommentaire;
+    @FXML
+    private Button menuHomeButton;
 
     private final ObservableList<RendezVous> data = FXCollections.observableArrayList();
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        menuHomeButton.setOnAction(e -> SceneUtils.openNewScene(
+                "/HomePages/frontList.fxml", menuHomeButton.getScene(), null));
         colNom.setCellValueFactory(new PropertyValueFactory<>("nom"));
         colPrenom.setCellValueFactory(new PropertyValueFactory<>("prenom"));
         colTel.setCellValueFactory(new PropertyValueFactory<>("telephone"));

@@ -20,6 +20,7 @@
             <HBox spacing="10">
                 <Button onAction="#openConsultations" prefWidth="150" text="Consultations" />
                 <Button onAction="#openReservations" prefWidth="200" text="Medication Reservations" />
+                <Button fx:id="menuHomeButton" prefWidth="200" text="Home" />
             </HBox>
         </VBox>
     </top>

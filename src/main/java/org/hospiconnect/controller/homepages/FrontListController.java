@@ -20,6 +20,8 @@ public class FrontListController {
     private Button menuOpButton;
     @FXML
     private Button menuConsulButton;
+    @FXML
+    private Button menuBFHomeButton;
 
     @FXML
     public void initialize() {
@@ -36,6 +38,8 @@ public class FrontListController {
                 "/ListeRendezVous.fxml", menuOpButton.getScene(), null));
         menuConsulButton.setOnAction(e -> SceneUtils.openNewScene(
                 "/main_view.fxml", menuConsulButton.getScene(), null));
+        menuBFHomeButton.setOnAction(e -> SceneUtils.openNewScene(
+                "/HomePages/frontBack.fxml", menuBFHomeButton.getScene(), null));
 
     }
 }

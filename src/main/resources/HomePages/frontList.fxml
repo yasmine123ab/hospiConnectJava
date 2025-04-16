@@ -35,6 +35,11 @@
                   <Font name="System Bold" size="15.0" />
                </font>
             </Button>
+            <Button fx:id="menuBFHomeButton" graphicTextGap="15.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="237.0" style="-fx-background-color: #ADD8E6;" text="Home" textFill="#0e046e">
+               <font>
+                  <Font name="System Bold" size="15.0" />
+               </font>
+            </Button>
          </children>
       </VBox>
       <Button fx:id="FermerFenetreButton" layoutX="734.0" layoutY="14.0" mnemonicParsing="false" style="-fx-background-color: #ffff;" text="x" textFill="#f40505">
