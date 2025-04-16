@@ -22,7 +22,7 @@ public class MainFX implements Initializable {
 
     @FXML
     private void openConsultations() {
-        loadView("AddRendezVous.fxml");
+        loadView("AddRendezVousForm.fxml");
     }
 
     @FXML

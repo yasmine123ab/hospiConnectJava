@@ -89,6 +89,7 @@ public class RendezVousService implements ICrud<RendezVous> {
                 rdv.setId(id);
                 rendezVousList.add(rdv);
             }
+            System.out.println("RendezVous récupérés de la base de données : " + rendezVousList.size());
         }
         return rendezVousList;
     }

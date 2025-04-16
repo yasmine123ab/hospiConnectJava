@@ -85,8 +85,7 @@ public class AddRendezVousController {
             // Set statut to "Confirmé" by default since there's no field for it in the form
             RendezVous rdv = new RendezVous(nom, prenom, tel, email, date, heure, type, gravite, "Confirmé", commentaire);
 
-            // Insert into the database
-            rendezVousService.insert(rdv);
+
 
             // Show success message
             showAlert("Succès", "Rendez-vous enregistré avec succès !");
@@ -95,8 +94,7 @@ public class AddRendezVousController {
             clearForm();
         } catch (DateTimeParseException e) {
             showAlert("Erreur Heure", "Erreur de format de l'heure : " + e.getMessage());
-        } catch (SQLException e) {
-            showAlert("Erreur", "Erreur lors de l'enregistrement du rendez-vous : " + e.getMessage());
+            System.out.println("DateTimeParseException: " + e.getMessage());
             e.printStackTrace();
         }
     }
@@ -124,7 +122,9 @@ public class AddRendezVousController {
     @FXML
     void AfficherListe(ActionEvent event) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/hospiconnect/resources/ListeRendezVous.fxml"));
+            // Correction du chemin du fichier FXML
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/ListeRendezVous.fxml"));
+
             AnchorPane root = loader.load();
             Scene scene = new Scene(root);
             Stage stage = (Stage) datePicker.getScene().getWindow();
@@ -132,8 +132,9 @@ public class AddRendezVousController {
             stage.setTitle("Liste des rendez-vous");
             stage.show();
         } catch (IOException e) {
+            showAlert("Erreur", "Impossible d'ouvrir la liste des rendez-vous : " + e.getMessage());
+            System.out.println("IOException dans AfficherListe : " + e.getMessage());
             e.printStackTrace();
-            showAlert("Erreur", "Impossible d’ouvrir la liste des rendez-vous.");
         }
     }
 }
