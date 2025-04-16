@@ -25,6 +25,17 @@ public class HospiChatLaboController {
     private Button ReduireFenetreButton;
 
     @FXML
+    private Button menuAnalyseButton;
+    @FXML
+    private Button menuTypeAnalyseButton;
+    @FXML
+    private Button menuDispoAnalyseButton;
+    @FXML
+    private Button menuDashboardButton;
+    @FXML
+    private Button menuHospiChatButton;
+
+    @FXML
     private Button hospiChatLaboButton;
     @FXML
     private TextField hospiChatLaboQuestionTextField;
@@ -38,6 +49,17 @@ public class HospiChatLaboController {
 
         FermerFenetreButton.setOnAction(e -> ((Stage) FermerFenetreButton.getScene().getWindow()).close());
         ReduireFenetreButton.setOnAction(e -> ((Stage) ReduireFenetreButton.getScene().getWindow()).setIconified(true));
+        menuAnalyseButton.setOnAction(e -> SceneUtils.openNewScene(
+                "/laboratoireBack/analyse/listAnalyse.fxml", menuAnalyseButton.getScene(), null));
+        menuTypeAnalyseButton.setOnAction(e -> SceneUtils.openNewScene(
+                "/laboratoireBack/typeAnalyse/listTypeAnalyse.fxml", menuTypeAnalyseButton.getScene(), null));
+        menuDispoAnalyseButton.setOnAction(e -> SceneUtils.openNewScene(
+                "/laboratoireBack/disponibiliteAnalyse/listDispoAnalyse.fxml", menuDispoAnalyseButton.getScene(), null));
+        menuDashboardButton.setOnAction(e -> SceneUtils.openNewScene(
+                "/laboratoireBack/dashboardLabo.fxml", menuDashboardButton.getScene(), null));
+        menuHospiChatButton.setOnAction(e -> SceneUtils.openNewScene(
+                "/laboratoireBack/hospiChatLabo.fxml", menuHospiChatButton.getScene(), null));
+
         hospiChatLaboButton.setOnAction(event -> {
             String question = hospiChatLaboQuestionTextField.getText().trim();
 
