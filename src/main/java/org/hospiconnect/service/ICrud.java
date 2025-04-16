@@ -3,7 +3,7 @@ package org.hospiconnect.service;
 import java.sql.SQLException;
 import java.util.List;
 
-public interface Icrud <T> {
+public interface ICrud<T> {
     public void insert(T obj) throws SQLException;
 
     public void update(T obj) throws SQLException;
