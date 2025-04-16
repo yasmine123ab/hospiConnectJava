@@ -15,22 +15,12 @@
                <image>
                   <Image url="@../imagesLabo/logo.png" />
                </image></ImageView>
-            <Button fx:id="menuUserButton" graphicTextGap="15.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="231.0" style="-fx-background-color: #ADD8E5;" text="Utilisateur" textFill="#0e046e">
-               <font>
-                  <Font name="System Bold" size="15.0" />
-               </font>
-            </Button>
             <Button fx:id="menuLaboButton" graphicTextGap="15.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="237.0" style="-fx-background-color: #ADD8E6;" text="Laboratoire" textFill="#0e046e">
                <font>
                   <Font name="System Bold" size="15.0" />
                </font>
             </Button>
             <Button fx:id="menuDonButton" graphicTextGap="15.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="237.0" style="-fx-background-color: #ADD8E6;" text="Dons" textFill="#0e046e">
-               <font>
-                  <Font name="System Bold" size="15.0" />
-               </font>
-            </Button>
-            <Button fx:id="menuStockButton" graphicTextGap="15.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="237.0" style="-fx-background-color: #ADD8E6;" text="Stock Materiel" textFill="#0e046e">
                <font>
                   <Font name="System Bold" size="15.0" />
                </font>

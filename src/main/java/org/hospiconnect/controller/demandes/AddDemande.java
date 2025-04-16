@@ -10,6 +10,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
+import org.hospiconnect.controller.laboratoire.SceneUtils;
 import org.hospiconnect.model.DemandesDons;
 import org.hospiconnect.model.User;
 import org.hospiconnect.service.DemandeDonService;
@@ -41,10 +42,17 @@ public class AddDemande {
     @FXML
     private Button revenirButton;
 
+    @FXML
+    private Button menuHomeButton;
+
     private DemandeDonService demandeService;
 
     @FXML
     public void handleFaireUnDonClick(ActionEvent event) {
+
+        menuHomeButton.setOnAction(e -> SceneUtils.openNewScene(
+                "/HomePages/frontList.fxml", menuHomeButton.getScene(), null));
+
         try {
             // Charger la page ShowDon.fxml
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/Dons/ShowDon.fxml"));

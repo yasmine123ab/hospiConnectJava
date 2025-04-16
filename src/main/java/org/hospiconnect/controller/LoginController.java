@@ -13,6 +13,7 @@ import javafx.stage.Stage;
 import org.hospiconnect.model.User;
 import org.hospiconnect.model.HistoriqueConnexionService;
 import org.hospiconnect.model.UserService;
+import org.hospiconnect.utils.SecurityUtils;
 
 import java.io.IOException;
 
@@ -70,13 +71,13 @@ public class LoginController {
 
         // Vérification du rôle
         String roles = user.getRoles();
-        if (roles.contains("ROLE_ADMIN")) {
+        var checkRole = true; //roles.contains("ROLE_ADMIN")
+        if (checkRole) {
             // Rediriger vers dashboard.fxml
             try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/dashboard.fxml"));
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/HomePages/frontBack.fxml"));
                 Parent root = loader.load();
-                DashboardController controller = loader.getController();
-                controller.initialize(user); // si tu veux passer les infos du user
+                SecurityUtils.setConnectedUser(user);
                 Stage stage = (Stage) txtEmail.getScene().getWindow();
                 stage.setScene(new Scene(root));
                 stage.setTitle("Tableau de bord admin");
@@ -87,7 +88,7 @@ public class LoginController {
 
         } else if (roles.contains("ROLE_CLIENT")) {
             try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/front.fxml"));
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/HomePages/frontBack.fxml"));
                 Parent root = loader.load();
 
 // Récupérer le contrôleur

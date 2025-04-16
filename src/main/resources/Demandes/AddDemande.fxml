@@ -92,6 +92,12 @@
                         <Font name="System Bold Italic" size="14.0" />
                     </font></Button>
             </HBox>
+            <HBox alignment="CENTER_LEFT" spacing="10">
+                <Button fx:id="menuHomeButton" prefHeight="26.0" prefWidth="134.0" text="Home">
+                    <font>
+                        <Font name="System Bold Italic" size="14.0" />
+                    </font></Button>
+            </HBox>
         </VBox>
     </left>
         <!-- ===== CONTENU PRINCIPAL : FORMULAIRE ===== -->

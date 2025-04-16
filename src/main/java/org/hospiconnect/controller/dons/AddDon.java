@@ -11,6 +11,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 import javafx.util.StringConverter;
+import org.hospiconnect.controller.laboratoire.SceneUtils;
 import org.hospiconnect.model.Dons;
 import org.hospiconnect.model.User;
 import org.hospiconnect.service.DonService;
@@ -42,6 +43,8 @@ public class AddDon {
     private ComboBox<User> donateurComboBox;
     @FXML
     private Button revenirButton;
+    @FXML
+    private Button menuHomeButton;
 
     private DonService donService;
 
@@ -103,6 +106,10 @@ public class AddDon {
 
     @FXML
     public void initialize() {
+
+        menuHomeButton.setOnAction(e -> SceneUtils.openNewScene(
+                "/HomePages/frontList.fxml", menuHomeButton.getScene(), null));
+
         try {
             ObservableList<User> donateurs = FXCollections.observableArrayList(loadUsersFromDB());
 

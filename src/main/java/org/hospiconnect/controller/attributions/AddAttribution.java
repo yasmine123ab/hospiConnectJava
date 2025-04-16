@@ -14,6 +14,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.ListCell;
 import javafx.stage.Stage;
 import javafx.util.StringConverter;
+import org.hospiconnect.controller.laboratoire.SceneUtils;
 import org.hospiconnect.model.AttributionsDons;
 import org.hospiconnect.model.DemandesDons;
 import org.hospiconnect.model.Dons;
@@ -34,6 +35,9 @@ public class AddAttribution {
     @FXML private ComboBox<User> beneficiaireComboBox;
     @FXML private ComboBox<String> statutComboBox;
     @FXML private Button revenirButton;
+
+    @FXML
+    private Button menuHomeButton;
 
     private final AttributionDonService attributionService = new AttributionDonService();
     @FXML
@@ -108,6 +112,8 @@ public class AddAttribution {
 
     @FXML
     public void initialize() {
+        menuHomeButton.setOnAction(e -> SceneUtils.openNewScene(
+                "/HomePages/frontList.fxml", menuHomeButton.getScene(), null));
         try {
             ObservableList<Dons> dons = FXCollections.observableArrayList(loadDonsFromDB());
             ObservableList<DemandesDons> demandes = FXCollections.observableArrayList(loadDemandesFromDB());

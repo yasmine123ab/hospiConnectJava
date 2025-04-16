@@ -5,6 +5,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
+import org.hospiconnect.controller.laboratoire.SceneUtils;
 import org.hospiconnect.model.AttributionsDons;
 import org.hospiconnect.model.DemandesDons;
 import org.hospiconnect.model.Dons;
@@ -31,12 +32,17 @@ public class ModifyAttribution {
     @FXML
     private Button annulerButton;
 
+    @FXML
+    private Button menuHomeButton;
+
 
 
     private final AttributionDonService attributionService = new AttributionDonService();
     private AttributionsDons attributionToModify;
 
     public void initialize(AttributionsDons attribution) {
+        menuHomeButton.setOnAction(e -> SceneUtils.openNewScene(
+                "/HomePages/frontList.fxml", menuHomeButton.getScene(), null));
         attributionToModify = attribution;
 
         try {

@@ -13,6 +13,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import org.hospiconnect.controller.laboratoire.SceneUtils;
 import org.hospiconnect.model.AttributionsDons;
 import org.hospiconnect.service.AttributionDonService;
 
@@ -27,6 +28,8 @@ public class ShowAttribution {
     private VBox attributionListContainer;
     @FXML
     private Button addAttributionButton;
+    @FXML
+    private Button menuHomeButton;
 
     private final AttributionDonService attributionService = new AttributionDonService();
     @FXML
@@ -84,6 +87,8 @@ public class ShowAttribution {
 
     @FXML
     public void initialize() {
+        menuHomeButton.setOnAction(e -> SceneUtils.openNewScene(
+                "/HomePages/frontList.fxml", menuHomeButton.getScene(), null));
         try {
             List<AttributionsDons> attributionList = attributionService.findAll();
 

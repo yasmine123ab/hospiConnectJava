@@ -20,6 +20,8 @@ public class FormRdvAnalyseController {
     private Button menuRdvAnalyseButton;
     @FXML
     private Button menuHospiChatButton;
+    @FXML
+    private Button menuHomeButton;
 
     @FXML
     private ComboBox<ComboBoxItemWithId> rdvAnalyseFormPatientComboBox;
@@ -58,6 +60,8 @@ public class FormRdvAnalyseController {
                 "/laboratoireFront/rdvAnalyse/listRdvAnalyse.fxml", menuRdvAnalyseButton.getScene(), null));
         menuHospiChatButton.setOnAction(e -> SceneUtils.openNewScene(
                 "/laboratoireBack/hospiChatLabo.fxml", menuHospiChatButton.getScene(), null));
+        menuHomeButton.setOnAction(e -> SceneUtils.openNewScene(
+                "/HomePages/frontList.fxml", menuHomeButton.getScene(), null));
     }
 
     private void initComponents() {

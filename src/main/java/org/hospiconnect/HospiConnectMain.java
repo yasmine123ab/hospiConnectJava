@@ -16,7 +16,7 @@ public class HospiConnectMain extends Application {
         Parent root = FXMLLoader.load(file);
         primaryStage.setScene(new Scene(root));
         //set stage borderless
-        primaryStage.initStyle(StageStyle.UNDECORATED);
+        //primaryStage.initStyle(StageStyle.UNDECORATED);
 
         HospiConnectMain.primaryStage = primaryStage;
         primaryStage.show();

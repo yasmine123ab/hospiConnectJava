@@ -14,6 +14,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
 import org.hospiconnect.model.User;
+import org.hospiconnect.utils.SecurityUtils;
 
 import java.io.IOException;
 
@@ -33,8 +34,9 @@ public class DashboardController {
     private final ContextMenu contextMenu = new ContextMenu();
     private User connectedUser;
 
-    public void initialize(User user) {
-        this.connectedUser = user;
+    @FXML
+    public void initialize() {
+        this.connectedUser = SecurityUtils.getConnectedUser();
 
         // Actions sur les boutons
         btnDashboard.setOnAction(e -> loadDashboardHome());

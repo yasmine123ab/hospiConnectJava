@@ -5,6 +5,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
+import org.hospiconnect.controller.laboratoire.SceneUtils;
 import org.hospiconnect.model.Dons;
 import org.hospiconnect.model.User;
 import org.hospiconnect.service.DonService;
@@ -33,6 +34,9 @@ public class ModifyDon {
     @FXML
     private Button annulerButton;
 
+    @FXML
+    private Button menuHomeButton;
+
     private final DonService donService = new DonService();
     private Dons donToModify;
 
@@ -40,6 +44,10 @@ public class ModifyDon {
 
     // Cette méthode sera appelée depuis la fenêtre principale (ShowDon) pour initialiser la page de modification
     public void initialize(Dons don) {
+
+        menuHomeButton.setOnAction(e -> SceneUtils.openNewScene(
+                "/HomePages/frontList.fxml", menuHomeButton.getScene(), null));
+
         donToModify = don;
 
         // Remplissage des champs avec les valeurs du don existant

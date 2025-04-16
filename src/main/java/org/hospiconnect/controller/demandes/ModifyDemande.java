@@ -5,6 +5,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
+import org.hospiconnect.controller.laboratoire.SceneUtils;
 import org.hospiconnect.model.DemandesDons;
 import org.hospiconnect.model.User;
 import org.hospiconnect.service.DemandeDonService;
@@ -33,6 +34,8 @@ public class ModifyDemande {
 
     @FXML
     private Button saveButton;
+    @FXML
+    private Button menuHomeButton;
 
     @FXML
     private Button annulerButton;
@@ -43,6 +46,10 @@ public class ModifyDemande {
 
 
     public void initialize(DemandesDons demande) {
+
+        menuHomeButton.setOnAction(e -> SceneUtils.openNewScene(
+                "/HomePages/frontList.fxml", menuHomeButton.getScene(), null));
+
         demandeToModify = demande;
 
         typeBesoinTF.setText(demande.getTypeBesoin());

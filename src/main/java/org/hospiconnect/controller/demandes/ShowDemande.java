@@ -13,6 +13,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import org.hospiconnect.controller.laboratoire.SceneUtils;
 import org.hospiconnect.model.DemandesDons;
 import org.hospiconnect.service.DemandeDonService;
 
@@ -27,6 +28,8 @@ public class ShowDemande {
     private VBox demandeListContainer;
     @FXML
     private Button addDonButton;
+    @FXML
+    private Button menuHomeButton;
 
     private final DemandeDonService demandeService = new DemandeDonService();
     @FXML
@@ -84,6 +87,10 @@ public class ShowDemande {
 
     @FXML
     public void initialize() {
+
+        menuHomeButton.setOnAction(e -> SceneUtils.openNewScene(
+                "/HomePages/frontList.fxml", menuHomeButton.getScene(), null));
+
         try {
             List<DemandesDons> demandeList = demandeService.findAll();
 

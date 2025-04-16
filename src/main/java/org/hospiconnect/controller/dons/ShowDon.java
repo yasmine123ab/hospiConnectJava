@@ -13,6 +13,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import org.hospiconnect.controller.laboratoire.SceneUtils;
 import org.hospiconnect.model.Dons;
 import org.hospiconnect.service.DonService;
 
@@ -25,6 +26,8 @@ public class ShowDon {
 
     @FXML
     private VBox donListContainer;
+    @FXML
+    private Button menuHomeButton;
 
     private final DonService donService = new DonService();
 
@@ -62,6 +65,9 @@ public class ShowDon {
                 e.printStackTrace();
             }
         });
+
+        menuHomeButton.setOnAction(e -> SceneUtils.openNewScene(
+                "/HomePages/frontList.fxml", menuHomeButton.getScene(), null));
     }
     @FXML
     public void handleFaireUnDonClick(ActionEvent event) {
