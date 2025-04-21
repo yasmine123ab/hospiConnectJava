@@ -24,7 +24,7 @@ public class HospiConnectMain extends Application {
 
 
     public static void main(String[] args) {
-        System.setProperty("prism.maxvram", "2G");
+        System.setProperty("prism.maxvram", "3G");
         launch(args);
     }
 }
