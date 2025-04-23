@@ -6,9 +6,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
+import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -20,139 +18,122 @@ import org.hospiconnect.service.DonService;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class ShowDon {
 
-    @FXML
-    private VBox donListContainer;
-    @FXML
-    private Button menuHomeButton;
+    @FXML private VBox donListContainer;
+    @FXML private Button menuHomeButton;
+    @FXML private Button addDonButton;
+    @FXML private TextField searchField;
+    @FXML private Button sortButton;
 
     private final DonService donService = new DonService();
-
-    @FXML
-    private Button addDonButton;
+    private boolean isAscending = true;
+    private List<Dons> donList = new ArrayList<>(); // Stocker les dons chargés
 
     @FXML
     public void initialize() {
         try {
-            // Charger et afficher les dons
-            List<Dons> donList = donService.findAll();
+            donList = donService.findAll();
+            displayFilteredDons(donList, "");
 
-            for (Dons don : donList) {
-                VBox card = createDonCard(don);
-                donListContainer.getChildren().add(card);
-            }
+            sortButton.setOnAction(e -> sortDonsByType());
+
+            searchField.textProperty().addListener((obs, oldValue, newValue) ->
+                    displayFilteredDons(donList, newValue)
+            );
+
+            addDonButton.setOnAction(event -> openScene("/Dons/AddDon.fxml", addDonButton));
+            menuHomeButton.setOnAction(event ->
+                    SceneUtils.openNewScene("/HomePages/frontList.fxml", menuHomeButton.getScene(), null)
+            );
 
         } catch (SQLException e) {
             showErrorAlert("Erreur de récupération", "Erreur lors de la récupération des dons : " + e.getMessage());
         }
-
-        // Ajouter l'écouteur d'événement pour le bouton "Ajouter Don"
-        addDonButton.setOnAction(event -> {
-            try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/Dons/AddDon.fxml"));
-                Parent root = loader.load();
-
-                // Obtenir la scène actuelle à partir du bouton
-                Stage stage = (Stage) addDonButton.getScene().getWindow();
-
-                // Remplacer le contenu de la scène avec la nouvelle page
-                stage.setScene(new Scene(root));
-                stage.show();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        });
-
-        menuHomeButton.setOnAction(e -> SceneUtils.openNewScene(
-                "/HomePages/frontList.fxml", menuHomeButton.getScene(), null));
     }
+
+    private void sortDonsByType() {
+        List<Dons> sortedList = donList.stream()
+                .sorted((d1, d2) -> {
+                    String type1 = d1.getTypeDon() != null ? d1.getTypeDon() : "";
+                    String type2 = d2.getTypeDon() != null ? d2.getTypeDon() : "";
+                    int result = type1.compareToIgnoreCase(type2);
+                    return isAscending ? result : -result;
+                })
+                .collect(Collectors.toList());
+
+        isAscending = !isAscending;
+        sortButton.setText(isAscending ? "Trier ↑" : "Trier ↓");
+        displayFilteredDons(sortedList, searchField.getText());
+    }
+
+    private void displayFilteredDons(List<Dons> dons, String filter) {
+        donListContainer.getChildren().clear();
+        String lowerFilter = filter.toLowerCase();
+
+        for (Dons don : dons) {
+            String type = don.getTypeDon() != null ? don.getTypeDon().toLowerCase() : "";
+            String nom = (don.getDonateur() != null && don.getDonateur().getNom() != null)
+                    ? don.getDonateur().getNom().toLowerCase() : "";
+            String prenom = (don.getDonateur() != null && don.getDonateur().getPrenom() != null)
+                    ? don.getDonateur().getPrenom().toLowerCase() : "";
+
+            if (type.contains(lowerFilter) || nom.contains(lowerFilter) || prenom.contains(lowerFilter)) {
+                VBox card = createDonCard(don);
+                donListContainer.getChildren().add(card);
+            }
+        }
+    }
+
     @FXML
     public void handleFaireUnDonClick(ActionEvent event) {
-        try {
-            // Charger la page ShowDon.fxml
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Dons/ShowDon.fxml"));
-            Parent root = loader.load();
-
-            // Obtenir la scène actuelle à partir de l'événement
-            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-
-            // Remplacer le contenu de la scène avec la page ShowDon
-            stage.setScene(new Scene(root));
-            stage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        openScene("/Dons/ShowDon.fxml", event.getSource());
     }
+
     @FXML
     public void handleFaireUneDemandeClick(ActionEvent event) {
-        try {
-            // Charger la page ShowDon.fxml
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Demandes/ShowDemande.fxml"));
-            Parent root = loader.load();
-
-            // Obtenir la scène actuelle à partir de l'événement
-            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-
-            // Remplacer le contenu de la scène avec la page ShowDon
-            stage.setScene(new Scene(root));
-            stage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        openScene("/Demandes/ShowDemande.fxml", event.getSource());
     }
+
     @FXML
     public void handleFaireUneAttributionClick(ActionEvent event) {
+        openScene("/Attributions/ShowAttribution.fxml", event.getSource());
+    }
+
+    private void openScene(String fxmlPath, Object source) {
         try {
-            // Charger la page ShowDon.fxml
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Attributions/ShowAttribution.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
             Parent root = loader.load();
-
-            // Obtenir la scène actuelle à partir de l'événement
-            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-
-            // Remplacer le contenu de la scène avec la page ShowDon
+            Stage stage = (Stage) ((Node) source).getScene().getWindow();
             stage.setScene(new Scene(root));
             stage.show();
         } catch (IOException e) {
+            showErrorAlert("Erreur", "Impossible de charger la page : " + fxmlPath);
             e.printStackTrace();
         }
     }
 
-
-
-    // Méthode pour gérer la suppression d'un don
     @FXML
     public void handleDelete(ActionEvent event) {
-        // Récupérer l'objet Dons associé au bouton "Supprimer"
         Button sourceButton = (Button) event.getSource();
-        Dons don = (Dons) sourceButton.getUserData(); // Récupère l'objet Dons depuis le bouton
+        Dons don = (Dons) sourceButton.getUserData();
 
         try {
-            // Appeler la méthode delete du service avec l'objet 'don'
-            donService.delete(don); // Supprimer le don via le service
-
-            // Mettre à jour l'interface graphique en supprimant la carte de don
-            donListContainer.getChildren().removeIf(node -> {
-                if (node instanceof VBox) {
-                    VBox vbox = (VBox) node;
-                    return vbox.getId().equals("don-card-" + don.getId()); // Identifier la carte par l'ID
-                }
-                return false;
-            });
-
+            donService.delete(don);
+            donList.removeIf(d -> d.getId() == don.getId());
+            displayFilteredDons(donList, searchField.getText());
             showSuccessAlert("Succès", "Le don a été supprimé.");
-
         } catch (SQLException e) {
             showErrorAlert("Erreur de suppression", "Erreur lors de la suppression du don : " + e.getMessage());
         }
     }
 
-
     private VBox createDonCard(Dons don) {
-        VBox card = new VBox(8); // Espacement vertical entre les labels
+        VBox card = new VBox(8);
         card.setStyle("""
             -fx-padding: 10;
             -fx-border-color: #cccccc;
@@ -161,24 +142,20 @@ public class ShowDon {
             -fx-background-color: #f4f4f4;
             -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 5, 0, 0, 2);
         """);
-
-        // Ajouter un identifiant unique à chaque carte (utilisation de l'ID du don)
-        card.setId("don-card-" + don.getId()); // Assurez-vous que 'don.getId()' existe et est unique
+        card.setId("don-card-" + don.getId());
 
         Label typeLabel = new Label("Type : " + don.getTypeDon());
         Label montantLabel = new Label("Montant : " + don.getMontant() + " DNT");
         Label descLabel = new Label("Description : " + don.getDescription());
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMM yyyy");
-        String formattedDate = dateFormat.format(don.getDateDon());
-        Label dateLabel = new Label("Date : " + formattedDate);
+        Label dateLabel = new Label("Date : " + dateFormat.format(don.getDateDon()));
 
         String donateurName = (don.getDonateur() != null)
                 ? don.getDonateur().getNom() + " " + don.getDonateur().getPrenom()
                 : "Inconnu";
         Label donateurLabel = new Label("Donateur : " + donateurName);
-        String disponibilite = don.getDisponibilite() ? "Disponible" : "Non disponible"; // si c'est un booléen
-        Label disponibiliteLabel = new Label("Disponibilité : " + disponibilite);
+        Label disponibiliteLabel = new Label("Disponibilité : " + (don.getDisponibilite() ? "Disponible" : "Non disponible"));
 
         typeLabel.setStyle("-fx-font-weight: bold; -fx-font-size: 14;");
         montantLabel.setStyle("-fx-font-size: 13;");
@@ -186,51 +163,34 @@ public class ShowDon {
         dateLabel.setStyle("-fx-font-size: 13;");
         donateurLabel.setStyle("-fx-font-size: 13;");
 
-        // Créer les boutons "Modifier" et "Supprimer"
-        HBox buttonContainer = new HBox(10); // Espacement entre les boutons
+        HBox buttonContainer = new HBox(10);
         Button modifyButton = new Button("Modifier");
         Button deleteButton = new Button("Supprimer");
-// Appliquer un style CSS pour le bouton "Modifier" (vert)
-        modifyButton.setStyle("-fx-background-color: green; -fx-text-fill: white;");
 
-// Appliquer un style CSS pour le bouton "Supprimer" (rouge)
+        modifyButton.setStyle("-fx-background-color: green; -fx-text-fill: white;");
         deleteButton.setStyle("-fx-background-color: red; -fx-text-fill: white;");
-        // Lorsque le bouton "Modifier" est cliqué, ouvrir la page de modification
+        deleteButton.setUserData(don);
+        deleteButton.setOnAction(this::handleDelete);
+
         modifyButton.setOnAction(event -> {
             try {
-                // Charger la vue FXML de la page de modification
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/Dons/ModifyDon.fxml"));
                 BorderPane modifyPage = loader.load();
-
-
-                // Passer le don à modifier au contrôleur
-                ModifyDon modifyController = loader.getController();
-                modifyController.initialize(don);
-
-                // Créer une nouvelle scène et une nouvelle fenêtre pour afficher la page de modification
-                Stage modifyStage = new Stage();
-                modifyStage.setTitle("Modifier le Don");
-                modifyStage.setScene(new Scene(modifyPage));
-                modifyStage.show();
+                ModifyDon controller = loader.getController();
+                controller.initialize(don);
+                Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                stage.setScene(new Scene(modifyPage));
+                stage.setTitle("Modifier le Don");
             } catch (IOException e) {
                 showErrorAlert("Erreur de chargement", "Erreur lors du chargement de la page de modification : " + e.getMessage());
             }
         });
 
-        // Associer l'objet Dons au bouton "Supprimer"
-        deleteButton.setUserData(don); // Associer l'objet 'don' au bouton
-
-        // Ajouter l'action pour le bouton "Supprimer"
-        deleteButton.setOnAction(this::handleDelete);
-
         buttonContainer.getChildren().addAll(modifyButton, deleteButton);
-
-        card.getChildren().addAll(typeLabel, montantLabel, descLabel, dateLabel, donateurLabel,disponibiliteLabel, buttonContainer);
+        card.getChildren().addAll(typeLabel, montantLabel, descLabel, dateLabel, donateurLabel, disponibiliteLabel, buttonContainer);
         return card;
-
     }
 
-    // Méthode pour afficher un message d'alerte de succès
     private void showSuccessAlert(String title, String message) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle(title);
@@ -239,7 +199,6 @@ public class ShowDon {
         alert.showAndWait();
     }
 
-    // Méthode pour afficher un message d'alerte d'erreur
     private void showErrorAlert(String title, String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle(title);

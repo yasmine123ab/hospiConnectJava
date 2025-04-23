@@ -58,9 +58,9 @@ public class ModifyAttribution {
                 protected void updateItem(Dons don, boolean empty) {
                     super.updateItem(don, empty);
                     if (empty || don == null) {
-                        setText("");
+                        setText(null);
                     } else {
-                        setText(don.getTypeDon() + " - " + don.getMontant() + " DA");
+                        setText(don.getTypeDon());
                     }
                 }
             });
@@ -69,9 +69,9 @@ public class ModifyAttribution {
                 protected void updateItem(Dons don, boolean empty) {
                     super.updateItem(don, empty);
                     if (empty || don == null) {
-                        setText(donComboBox.getPromptText());
+                        setText("Choisir un don");
                     } else {
-                        setText(don.getTypeDon() + " - " + don.getMontant() + " DA");
+                        setText(don.getTypeDon());
                     }
                 }
             });
@@ -84,11 +84,11 @@ public class ModifyAttribution {
                 protected void updateItem(DemandesDons demande, boolean empty) {
                     super.updateItem(demande, empty);
                     if (empty || demande == null) {
-                        setText(demandeComboBox.getPromptText());
+                        setText(null);
                     } else {
                         User patient = demande.getPatient();
                         String nom = (patient != null) ? patient.getNom() + " " + patient.getPrenom() : "Inconnu";
-                        setText(demande.getTypeBesoin() + " - " + nom);
+                        setText(demande.getTypeBesoin());
                     }
                 }
             });
@@ -97,11 +97,11 @@ public class ModifyAttribution {
                 protected void updateItem(DemandesDons demande, boolean empty) {
                     super.updateItem(demande, empty);
                     if (empty || demande == null) {
-                        setText(demandeComboBox.getPromptText());
+                        setText("Choisir une demande");
                     } else {
                         User patient = demande.getPatient();
                         String nom = (patient != null) ? patient.getNom() + " " + patient.getPrenom() : "Inconnu";
-                        setText(demande.getTypeBesoin() + " - " + nom);
+                        setText(demande.getTypeBesoin());
                     }
                 }
             });
@@ -125,7 +125,7 @@ public class ModifyAttribution {
                 protected void updateItem(User u, boolean empty) {
                     super.updateItem(u, empty);
                     if (empty || u == null) {
-                        setText(null);
+                        setText("Choisir un bénéficiaire");
                     } else {
                         setText(u.getNom() + " " + u.getPrenom());
                     }
@@ -150,9 +150,10 @@ public class ModifyAttribution {
         }
     }
 
+
     private List<Dons> loadDonsFromDB() throws SQLException {
         List<Dons> dons = new ArrayList<>();
-        String sql = "SELECT id, type_don, montant, description, date_don FROM dons";
+        String sql = "SELECT * FROM dons";
 
         try (Connection conn = DatabaseUtils.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql);
@@ -162,22 +163,16 @@ public class ModifyAttribution {
                 Dons don = new Dons();
                 don.setId(rs.getInt("id"));
                 don.setTypeDon(rs.getString("type_don"));
-                don.setMontant(rs.getDouble("montant"));
-                don.setDescription(rs.getString("description"));
                 dons.add(don);
             }
         }
-
         return dons;
     }
 
 
     private List<DemandesDons> loadDemandesFromDB() throws SQLException {
         List<DemandesDons> demandes = new ArrayList<>();
-
-        String sql = "SELECT dd.*, u.id AS user_id, u.nom, u.prenom " +
-                "FROM demandes_dons dd " +
-                "JOIN user u ON dd.patient_id = u.id";
+        String sql = "SELECT * FROM demandes_dons";
 
         try (Connection conn = DatabaseUtils.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql);
@@ -187,19 +182,9 @@ public class ModifyAttribution {
                 DemandesDons demande = new DemandesDons();
                 demande.setId(rs.getInt("id"));
                 demande.setTypeBesoin(rs.getString("type_besoin"));
-
-                // Création du bénéficiaire
-                User patient = new User();
-                patient.setId(rs.getInt("id"));
-                patient.setNom(rs.getString("nom"));
-                patient.setPrenom(rs.getString("prenom"));
-
-                demande.setPatient(patient);
-
                 demandes.add(demande);
             }
         }
-
         return demandes;
     }
 
@@ -245,8 +230,9 @@ public class ModifyAttribution {
 
             attributionService.update(attributionToModify);
 
-            showSuccessAlert("Succès", "Attribution modifiée avec succès.");
-            ((Stage) saveButton.getScene().getWindow()).close();
+            // 👉 Redirection vers la page ShowDon.fxml
+            SceneUtils.openNewScene("/Attributions/ShowAttribution.fxml", saveButton.getScene(), null);
+
 
         } catch (SQLException e) {
             showErrorAlert("Erreur", "Échec de modification : " + e.getMessage());

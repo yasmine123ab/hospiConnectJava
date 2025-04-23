@@ -165,8 +165,9 @@ public class ModifyDemande {
 
             demandeService.update(demandeToModify);
 
-            showSuccessAlert("Succès", "La demande a été modifiée avec succès.");
-            ((Stage) saveButton.getScene().getWindow()).close();
+            // 👉 Redirection vers la page ShowDon.fxml
+            SceneUtils.openNewScene("/Demandes/ShowDemande.fxml", saveButton.getScene(), null);
+
 
         } catch (Exception e) {
             showErrorAlert("Erreur", "Erreur lors de la mise à jour : " + e.getMessage());

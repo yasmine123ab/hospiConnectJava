@@ -107,7 +107,7 @@ public class ModifyDon {
 
         while (rs.next()) {
             User u = new User();
-            u.setId(rs.getInt("id")); // <-- ESSENTIEL !
+            u.setId(rs.getInt("id"));
             u.setNom(rs.getString("nom"));
             u.setPrenom(rs.getString("prenom"));
             users.add(u);
@@ -128,7 +128,7 @@ public class ModifyDon {
             double montant;
             try {
                 montant = Double.parseDouble(montantText);
-                if (montant <= 0) {
+                if (montant < 0) {
                     showErrorAlert("Erreur", "Le montant doit être positif.");
                     return; // Arrêter l'exécution si le montant est invalide
                 }
@@ -172,8 +172,8 @@ public class ModifyDon {
 
             showSuccessAlert("Succès", "Le don a été modifié avec succès.");
 
-            // Fermer la fenêtre
-            ((Stage) saveButton.getScene().getWindow()).close();
+            // 👉 Redirection vers la page ShowDon.fxml
+            SceneUtils.openNewScene("/Dons/ShowDon.fxml", saveButton.getScene(), null);
 
         } catch (NumberFormatException e) {
             showErrorAlert("Erreur de saisie", "Le montant doit être un nombre valide.");

@@ -227,7 +227,7 @@ public class AddDon {
             double montant;
             try {
                 montant = Double.parseDouble(montantStr);
-                if (montant <= 0) {
+                if (montant < 0) {
                     showAlert(Alert.AlertType.WARNING, "Montant invalide", "Le montant doit être un nombre positif.");
                     return;
                 }

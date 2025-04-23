@@ -115,6 +115,7 @@
                     <!-- BARRE DE RECHERCHE + BOUTON -->
                     <HBox alignment="CENTER_LEFT" spacing="10.0">
                         <TextField fx:id="searchField" prefHeight="26.0" prefWidth="435.0" promptText="Rechercher une demande..." />
+                        <Button fx:id="sortButton" text="Trier ↑" prefWidth="80.0" style="-fx-background-color: #2196F3; -fx-text-fill: white;" />
                         <Button fx:id="addDonButton" style="-fx-background-color: #4CAF50; -fx-text-fill: white;" text="Ajouter Demande" />
                     </HBox>
                     <VBox fx:id="demandeListContainer" spacing="10.0">

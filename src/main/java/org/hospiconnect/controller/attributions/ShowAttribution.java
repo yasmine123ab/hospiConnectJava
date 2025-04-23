@@ -139,6 +139,29 @@ public class ShowAttribution {
             showErrorAlert("Erreur de suppression", "Erreur lors de la suppression de l'attribution : " + e.getMessage());
         }
     }
+    private void displayFilteredAttributions(List<AttributionsDons> attributions, String filter) {
+        attributionListContainer.getChildren().clear();
+        String lowerFilter = filter.toLowerCase();
+
+        for (AttributionsDons attribution : attributions) {
+            // Exemple complet corrigé :
+            String donateur = (attribution.getDon() != null && attribution.getDon().getDonateur() != null)
+                    ? attribution.getDon().getDonateur().getNom().toLowerCase() : "";
+
+            String patientNom = (attribution.getDemande() != null && attribution.getDemande().getPatient() != null)
+                    ? attribution.getDemande().getPatient().getNom().toLowerCase() : "";
+
+            String patientPrenom = (attribution.getDemande() != null && attribution.getDemande().getPatient() != null)
+                    ? attribution.getDemande().getPatient().getPrenom().toLowerCase() : "";
+
+
+            if (donateur.contains(lowerFilter) || patientNom.contains(lowerFilter) || patientPrenom.contains(lowerFilter)) {
+                VBox card = createAttributionCard(attribution);
+                attributionListContainer.getChildren().add(card);
+            }
+        }
+    }
+
 
     private VBox createAttributionCard(AttributionsDons attribution) {
         VBox card = new VBox(8);
@@ -200,10 +223,14 @@ public class ShowAttribution {
                 ModifyAttribution modifyController = loader.getController();
                 modifyController.initialize(attribution);
 
-                Stage modifyStage = new Stage();
-                modifyStage.setTitle("Modifier l'attribution");
-                modifyStage.setScene(new Scene(modifyPage));
-                modifyStage.show();
+                // Récupérer la fenêtre actuelle à partir du bouton cliqué
+                Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+
+                // Remplacer la scène actuelle avec la nouvelle page de modification
+                Scene newScene = new Scene(modifyPage);
+                currentStage.setScene(newScene);
+                currentStage.setTitle("Modifier l'attribution");
+
             } catch (IOException e) {
                 showErrorAlert("Erreur de chargement", "Erreur lors du chargement de la page de modification : " + e.getMessage());
             }
