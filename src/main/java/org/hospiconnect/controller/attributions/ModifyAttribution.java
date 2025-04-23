@@ -190,7 +190,7 @@ public class ModifyAttribution {
 
                 // Création du bénéficiaire
                 User patient = new User();
-                patient.setId(rs.getInt("user_id"));
+                patient.setId(rs.getInt("id"));
                 patient.setNom(rs.getString("nom"));
                 patient.setPrenom(rs.getString("prenom"));
 
