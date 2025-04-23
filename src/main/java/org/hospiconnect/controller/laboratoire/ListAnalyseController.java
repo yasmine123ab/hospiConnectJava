@@ -18,6 +18,8 @@ import java.util.Comparator;
 
 public class ListAnalyseController {
 
+    private boolean trierCroissant = true;
+
     private final AnalyseCrudService analyseCrudService = AnalyseCrudService.getInstance();
     private final UserServiceLight userServiceLight = UserServiceLight.getInstance();
     private final AnalyseRdvCrudService analyseRdvCrudService = AnalyseRdvCrudService.getInstance();
@@ -109,15 +111,36 @@ public class ListAnalyseController {
         });
 
         analyseTrierButton.setOnAction(e -> {
-            analyseListView.setItems(analyseListView.getItems().sorted(Comparator.comparing(Analyse::getDatePrelevement)));
+            Comparator<Analyse> comparateur = Comparator.comparing(Analyse::getDatePrelevement);
+            if (!trierCroissant) {
+                comparateur = comparateur.reversed();
+            }
+
+            var triListe = analyseListView.getItems().stream()
+                    .sorted(comparateur)
+                    .toList();
+            analyseListView.setItems(FXCollections.observableList(triListe));
+
+            trierCroissant = !trierCroissant; // alterner le sens du tri
         });
 
         analyseRechercherTextField.setOnKeyReleased(e -> {
-            String recherche = analyseRechercherTextField.getText().strip();
+            String recherche = analyseRechercherTextField.getText().strip().toLowerCase();
+
             analyseListView.setItems(FXCollections.observableList(
                     analyseCrudService.findAll().stream()
-                            .filter(a -> recherche.isBlank()
-                                    || userServiceLight.findUserNameById(a.getIdPatient()).toLowerCase().contains(recherche.toLowerCase()))
+                            .filter(a -> {
+                                String patientName = userServiceLight.findUserNameById(a.getIdPatient()).toLowerCase();
+                                String datePrelevementStr = a.getDatePrelevement() != null
+                                        ? a.getDatePrelevement().toString().toLowerCase()
+                                        : "";
+                                String etatStr = a.getEtat() != null ? a.getEtat().toLowerCase() : "";
+
+                                return recherche.isBlank()
+                                        || patientName.contains(recherche)
+                                        || datePrelevementStr.contains(recherche)
+                                        || etatStr.contains(recherche);
+                            })
                             .toList()
             ));
         });

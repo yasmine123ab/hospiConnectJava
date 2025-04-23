@@ -108,7 +108,7 @@
             <Font name="System Bold" size="14.0" />
          </font>
       </Label>
-      <TextField fx:id="dispoAnalyseRechercherTextField" layoutX="326.0" layoutY="103.0" prefHeight="26.0" prefWidth="448.0" promptText="Nbr places..." />
+      <TextField fx:id="dispoAnalyseRechercherTextField" layoutX="326.0" layoutY="103.0" prefHeight="26.0" prefWidth="448.0" promptText="DateDispo/HeureDebut/Nbr places..." />
       <Button fx:id="dispoAnalyseTrierButton" layoutX="945.0" layoutY="142.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="80.0" text="Trier" textFill="#3351c9">
          <font>
             <Font name="System Bold" size="14.0" />

@@ -13,6 +13,8 @@ import java.util.Comparator;
 
 public class ListRdvAnalyseController {
 
+    private boolean trierRdvCroissant = true;
+
     private final AnalyseRdvCrudService analyseRdvCrudService = AnalyseRdvCrudService.getInstance();
     private final UserServiceLight userServiceLight = UserServiceLight.getInstance();
     private final DisponibiliteAnalyseCrudService disponibiliteAnalyseCrudService = DisponibiliteAnalyseCrudService.getInstance();
@@ -85,15 +87,33 @@ public class ListRdvAnalyseController {
         });
 
         rdvAnalyseTrierButton.setOnAction(e -> {
-            rdvAnalyseListView.setItems(rdvAnalyseListView.getItems().sorted(Comparator.comparing(RdvAnalyse::getDateRdv)));
+            Comparator<RdvAnalyse> comparateur = Comparator.comparing(RdvAnalyse::getDateRdv);
+            if (!trierRdvCroissant) {
+                comparateur = comparateur.reversed();
+            }
+
+            var triListe = rdvAnalyseListView.getItems().stream()
+                    .sorted(comparateur)
+                    .toList();
+            rdvAnalyseListView.setItems(FXCollections.observableList(triListe));
+
+            trierRdvCroissant = !trierRdvCroissant;
         });
 
         rdvAnalyseRechercherTextField.setOnKeyReleased(e -> {
-            String recherche = rdvAnalyseRechercherTextField.getText().strip();
-            rdvAnalyseListView.setItems(FXCollections.observableList(analyseRdvCrudService.findAll()
-                    .stream()
-                    .filter(a -> recherche.isBlank() || analyseRdvCrudService.findRdvDateById(a.getId()).contains(recherche))
-                    .toList()
+            String recherche = rdvAnalyseRechercherTextField.getText().strip().toLowerCase();
+
+            rdvAnalyseListView.setItems(FXCollections.observableList(
+                    analyseRdvCrudService.findAll().stream()
+                            .filter(a -> {
+                                String nomPatient = userServiceLight.findUserNameById(a.getIdPatient()).toLowerCase();
+                                String dateRdvStr = a.getDateRdv() != null ? a.getDateRdv().toString().toLowerCase() : "";
+
+                                return recherche.isBlank()
+                                        || nomPatient.contains(recherche)
+                                        || dateRdvStr.contains(recherche);
+                            })
+                            .toList()
             ));
         });
 

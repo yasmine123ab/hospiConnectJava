@@ -60,7 +60,7 @@
             <Font name="System Bold" size="14.0" />
          </font>
       </Label>
-      <TextField fx:id="rdvAnalyseRechercherTextField" layoutX="326.0" layoutY="103.0" prefHeight="26.0" prefWidth="448.0" promptText="Date rdv..." />
+      <TextField fx:id="rdvAnalyseRechercherTextField" layoutX="326.0" layoutY="103.0" prefHeight="26.0" prefWidth="448.0" promptText="Patient/Date rdv..." />
       <Button fx:id="rdvAnalyseTrierButton" layoutX="1100.0" layoutY="148.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="80.0" text="Trier" textFill="#3351c9">
          <font>
             <Font name="System Bold" size="14.0" />

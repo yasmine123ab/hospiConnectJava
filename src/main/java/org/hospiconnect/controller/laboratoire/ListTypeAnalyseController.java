@@ -14,6 +14,8 @@ import java.util.Comparator;
 
 public class ListTypeAnalyseController {
 
+    private boolean trierTypeNomCroissant = true;
+
     private final TypeAnalyseCrudService typeAnalyseCrudService = TypeAnalyseCrudService.getInstance();
 
 
@@ -91,15 +93,34 @@ public class ListTypeAnalyseController {
         });
 
         typeAnalyseTrierButton.setOnAction(e -> {
-            typeAnalyseListView.setItems(typeAnalyseListView.getItems().sorted(Comparator.comparing(TypeAnalyse::getNom)));
+            Comparator<TypeAnalyse> comparateur = Comparator.comparing(TypeAnalyse::getPrix);
+            if (!trierTypeNomCroissant) {
+                comparateur = comparateur.reversed();
+            }
+
+            var triListe = typeAnalyseListView.getItems().stream()
+                    .sorted(comparateur)
+                    .toList();
+            typeAnalyseListView.setItems(FXCollections.observableList(triListe));
+
+            trierTypeNomCroissant = !trierTypeNomCroissant;
         });
 
+
         typeAnalyseRechercherTextField.setOnKeyReleased(e -> {
-            String recherche = typeAnalyseRechercherTextField.getText().strip();
-            typeAnalyseListView.setItems(FXCollections.observableList(typeAnalyseCrudService.findAll()
-                    .stream()
-                    .filter(a -> recherche.isBlank() || typeAnalyseCrudService.findTypeNameById(a.getId()).contains(recherche))
-                    .toList()
+            String recherche = typeAnalyseRechercherTextField.getText().strip().toLowerCase();
+
+            typeAnalyseListView.setItems(FXCollections.observableList(
+                    typeAnalyseCrudService.findAll().stream()
+                            .filter(a -> {
+                                String nom = a.getNom() != null ? a.getNom().toLowerCase() : "";
+                                String libelle = a.getLibelle() != null ? a.getLibelle().toLowerCase() : "";
+
+                                return recherche.isBlank()
+                                        || nom.contains(recherche)
+                                        || libelle.contains(recherche);
+                            })
+                            .toList()
             ));
         });
 

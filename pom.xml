@@ -81,6 +81,9 @@
                 <version>0.0.8</version>
                 <configuration>
                     <mainClass>org.hospiconnect.HospiConnectMain</mainClass>
+                    <options>
+                        <option>-Dprism.maxvram=2G</option>
+                    </options>
                 </configuration>
             </plugin>
         </plugins>

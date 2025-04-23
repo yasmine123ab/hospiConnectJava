@@ -16,6 +16,8 @@ import java.util.Comparator;
 
 public class ListDisponibiliteAnalyseController {
 
+    private boolean trierDispoCroissant = true;
+
     private final DisponibiliteAnalyseCrudService disponibiliteAnalyseCrudService = DisponibiliteAnalyseCrudService.getInstance();
 
 
@@ -95,15 +97,35 @@ public class ListDisponibiliteAnalyseController {
         });
 
         dispoAnalyseTrierButton.setOnAction(e -> {
-            dispoAnalyseListView.setItems(dispoAnalyseListView.getItems().sorted(Comparator.comparing(DisponibiliteAnalyse::getNbrPlaces)));
+            Comparator<DisponibiliteAnalyse> comparateur = Comparator.comparing(DisponibiliteAnalyse::getDebut);
+            if (!trierDispoCroissant) {
+                comparateur = comparateur.reversed();
+            }
+
+            var triListe = dispoAnalyseListView.getItems().stream()
+                    .sorted(comparateur)
+                    .toList();
+            dispoAnalyseListView.setItems(FXCollections.observableList(triListe));
+
+            trierDispoCroissant = !trierDispoCroissant;
         });
 
         dispoAnalyseRechercherTextField.setOnKeyReleased(e -> {
-            String recherche = dispoAnalyseRechercherTextField.getText().strip();
-            dispoAnalyseListView.setItems(FXCollections.observableList(disponibiliteAnalyseCrudService.findAll()
-                    .stream()
-                    .filter(a -> recherche.isBlank() || disponibiliteAnalyseCrudService.findDispoPlaceById(a.getId()).contains(recherche))
-                    .toList()
+            String recherche = dispoAnalyseRechercherTextField.getText().strip().toLowerCase();
+
+            dispoAnalyseListView.setItems(FXCollections.observableList(
+                    disponibiliteAnalyseCrudService.findAll().stream()
+                            .filter(a -> {
+                                String dateDispoStr = a.getDispo() != null ? a.getDispo().toString().toLowerCase() : "";
+                                String heureDebutStr = a.getDebut() != null ? a.getDebut().toString().toLowerCase() : "";
+                                String nbrPlacesStr = a.getNbrPlaces() != null ? a.getNbrPlaces().toString() : "";
+
+                                return recherche.isBlank()
+                                        || dateDispoStr.contains(recherche)
+                                        || heureDebutStr.contains(recherche)
+                                        || nbrPlacesStr.contains(recherche);
+                            })
+                            .toList()
             ));
         });
 

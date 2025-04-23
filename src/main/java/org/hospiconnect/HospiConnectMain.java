@@ -12,7 +12,7 @@ public class HospiConnectMain extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        var file= getClass().getResource("/login.fxml");
+        var file= getClass().getResource("/HomePages/frontBack.fxml");
         Parent root = FXMLLoader.load(file);
         primaryStage.setScene(new Scene(root));
         //set stage borderless
@@ -24,7 +24,8 @@ public class HospiConnectMain extends Application {
 
 
     public static void main(String[] args) {
-        System.setProperty("prism.maxvram", "3G");
+        //System.setProperty("prism.maxvram", "5G");
+        //System.setProperty("prism.order", "sw");
         launch(args);
     }
 }
