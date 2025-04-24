@@ -1,5 +1,8 @@
 package org.hospiconnect.controller.dons;
 
+import com.stripe.model.checkout.Session;
+import com.stripe.Stripe;
+import com.stripe.param.checkout.SessionCreateParams;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -9,12 +12,15 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.web.WebEngine;
+import javafx.scene.web.WebView;
 import javafx.stage.Stage;
 import javafx.util.StringConverter;
 import org.hospiconnect.controller.laboratoire.SceneUtils;
 import org.hospiconnect.model.Dons;
 import org.hospiconnect.model.User;
 import org.hospiconnect.service.DonService;
+
 import org.hospiconnect.utils.DatabaseUtils;
 
 import java.io.IOException;
@@ -223,12 +229,11 @@ public class AddDon {
                 return;
             }
 
-
             double montant;
             try {
                 montant = Double.parseDouble(montantStr);
-                if (montant < 0) {
-                    showAlert(Alert.AlertType.WARNING, "Montant invalide", "Le montant doit être un nombre positif.");
+                if (montant <= 0) {
+                    showAlert(Alert.AlertType.WARNING, "Montant invalide", "Le montant doit être supérieur à 0.");
                     return;
                 }
             } catch (NumberFormatException e) {
@@ -261,8 +266,20 @@ public class AddDon {
             don.setDonateurId(selectedDonateur.getId());
             don.setDisponibilite(true); // Par défaut
 
-            donService.insert(don);
-            showAlert(Alert.AlertType.INFORMATION, "Succès", "Don ajouté avec succès !");
+            // Si le montant est supérieur à 0, on initie le paiement via Stripe
+            if (montant > 0) {
+                try {
+                    String stripeUrl = createStripeSession(montant);
+                    openStripeCheckout(stripeUrl, don);
+                } catch (Exception e) {
+                    showAlert(Alert.AlertType.ERROR, "Erreur Stripe", e.getMessage());
+                }
+            } else {
+                donService.insert(don);
+                showAlert(Alert.AlertType.INFORMATION, "Succès", "Don ajouté avec succès !");
+                clearFields();
+            }
+
             clearFields();
 
         } catch (SQLException e) {
@@ -271,6 +288,64 @@ public class AddDon {
             showAlert(Alert.AlertType.ERROR, "Erreur", e.getMessage());
         }
     }
+    public String createStripeSession(double montant) throws Exception {
+        Stripe.apiKey = "sk_test_51Qw6Jj2HJALCS9kukoEah12re5Nl72TRcfcl6zfjAk0TfPysHnjGqaIh2SBSIAwFx983OujqQlAc3jiexsfo2nUV00DAooSw34"; // Remplace par ta clé secrète Stripe
+
+        SessionCreateParams params = SessionCreateParams.builder()
+                .setMode(SessionCreateParams.Mode.PAYMENT)
+                .setSuccessUrl("https://yourapp.local/success")
+                .setCancelUrl("https://yourapp.local/cancel")
+                .addLineItem(
+                        SessionCreateParams.LineItem.builder()
+                                .setQuantity(1L)
+                                .setPriceData(
+                                        SessionCreateParams.LineItem.PriceData.builder()
+                                                .setCurrency("eur")
+                                                .setUnitAmount((long)(montant * 100)) // Montant en centimes
+                                                .setProductData(
+                                                        SessionCreateParams.LineItem.PriceData.ProductData.builder()
+                                                                .setName("Don à l'hôpital")
+                                                                .build()
+                                                )
+                                                .build()
+                                )
+                                .build()
+                )
+                .build();
+
+        Session session = Session.create(params);
+        return session.getUrl();
+    }
+
+    private void openStripeCheckout(String url, Dons don) {
+        WebView webView = new WebView();
+        WebEngine webEngine = webView.getEngine();
+
+        Stage paymentStage = new Stage();
+        paymentStage.setTitle("Paiement sécurisé Stripe");
+        paymentStage.setScene(new Scene(webView, 800, 600));
+        paymentStage.show();
+
+        webEngine.locationProperty().addListener((obs, oldUrl, newUrl) -> {
+            if (newUrl.contains("success")) {
+                try {
+                    donService.insert(don);
+                    showAlert(Alert.AlertType.INFORMATION, "Succès", "Paiement réussi. Don enregistré !");
+                    clearFields();
+                } catch (SQLException e) {
+                    showAlert(Alert.AlertType.ERROR, "Erreur SQL", e.getMessage());
+                }
+                paymentStage.close();
+            } else if (newUrl.contains("cancel")) {
+                showAlert(Alert.AlertType.WARNING, "Annulation", "Paiement annulé.");
+                paymentStage.close();
+            }
+        });
+
+        webEngine.load(url);
+    }
+
+
 
 
     private void showAlert(Alert.AlertType type, String title, String message) {

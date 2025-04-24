@@ -13,14 +13,19 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+
 import org.hospiconnect.controller.laboratoire.SceneUtils;
 import org.hospiconnect.model.AttributionsDons;
 import org.hospiconnect.service.AttributionDonService;
 
+
+
 import java.io.IOException;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class ShowAttribution {
 
@@ -30,6 +35,14 @@ public class ShowAttribution {
     private Button addAttributionButton;
     @FXML
     private Button menuHomeButton;
+    @FXML
+    private javafx.scene.control.TextField searchField;
+
+    @FXML private Button sortButton;
+
+    private final AttributionDonService attributionDonService = new AttributionDonService();
+    private List<AttributionsDons> attributionsDons = new ArrayList<>();
+    private boolean isAscending = true;
 
     private final AttributionDonService attributionService = new AttributionDonService();
     @FXML
@@ -89,33 +102,52 @@ public class ShowAttribution {
     public void initialize() {
         menuHomeButton.setOnAction(e -> SceneUtils.openNewScene(
                 "/HomePages/frontList.fxml", menuHomeButton.getScene(), null));
+
         try {
-            List<AttributionsDons> attributionList = attributionService.findAll();
-
-            for (AttributionsDons attribution : attributionList) {
-                VBox card = createAttributionCard(attribution);
-                attributionListContainer.getChildren().add(card);
-            }
-
+            attributionsDons = attributionService.findAll(); // On garde la liste originale pour tri/filtrage
+            displayFilteredAttributions(attributionsDons, "");
         } catch (SQLException e) {
             showErrorAlert("Erreur de récupération", "Erreur lors de la récupération des attributions : " + e.getMessage());
         }
+
+        // Bouton ajout
         addAttributionButton.setOnAction(event -> {
             try {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/Attributions/AddAttribution.fxml"));
                 Parent root = loader.load();
-
-                // Obtenir la scène actuelle à partir du bouton
                 Stage stage = (Stage) addAttributionButton.getScene().getWindow();
-
-                // Remplacer le contenu de la scène avec la nouvelle page
                 stage.setScene(new Scene(root));
                 stage.show();
             } catch (IOException e) {
                 e.printStackTrace();
             }
         });
+
+        // 🔍 Événement sur le champ de recherche
+        searchField.textProperty().addListener((observable, oldValue, newValue) -> {
+            displayFilteredAttributions(attributionsDons, newValue);
+        });
+
+        // Bouton de tri
+        sortButton.setOnAction(e -> sortAttributionsByType());
     }
+
+    private void sortAttributionsByType() {
+        List<AttributionsDons> sortedList = attributionsDons.stream()
+                .sorted((d1, d2) -> {
+                    String statut1 = d1.getStatut() != null ? d1.getStatut() : "";
+                    String statut2 = d2.getStatut() != null ? d2.getStatut() : "";
+                    return isAscending ? statut1.compareToIgnoreCase(statut2)
+                            : statut2.compareToIgnoreCase(statut1);
+                })
+                .collect(Collectors.toList());
+
+        isAscending = !isAscending;
+        sortButton.setText(isAscending ? "Trier ↑" : "Trier ↓");
+
+        displayFilteredAttributions(sortedList, searchField.getText());
+    }
+
 
     @FXML
     public void handleDelete(ActionEvent event) {
