@@ -4,15 +4,13 @@ import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import org.hospiconnect.model.laboratoire.Analyse;
 import org.hospiconnect.model.laboratoire.RdvAnalyse;
-import org.hospiconnect.service.laboratoire.AnalyseCrudService;
-import org.hospiconnect.service.laboratoire.AnalyseRdvCrudService;
-import org.hospiconnect.service.laboratoire.AnalyseService;
-import org.hospiconnect.service.laboratoire.UserServiceLight;
+import org.hospiconnect.service.laboratoire.*;
 
 import java.util.Comparator;
 
@@ -23,6 +21,7 @@ public class ListAnalyseController {
     private final AnalyseCrudService analyseCrudService = AnalyseCrudService.getInstance();
     private final UserServiceLight userServiceLight = UserServiceLight.getInstance();
     private final AnalyseRdvCrudService analyseRdvCrudService = AnalyseRdvCrudService.getInstance();
+    private final TypeAnalyseCrudService typeAnalyseCrudService = TypeAnalyseCrudService.getInstance();
 
 
     @FXML
@@ -77,22 +76,49 @@ public class ListAnalyseController {
                             analyse.getDatePrelevement() != null ? analyse.getDatePrelevement().toString() : ""
                     );
                     Label etat = new Label(analyse.getEtat());
-                    Label resultat = new Label(analyse.getResultat());
+                    String nomTypeAnalyse = typeAnalyseCrudService.findTypeNameById(analyse.getIdTypeAnalyse());
+                    Label typeAnalyse = new Label(nomTypeAnalyse != null ? nomTypeAnalyse : "");
                     Label dateResultat = new Label(
                             analyse.getDateResultat() != null ? analyse.getDateResultat().toString() : ""
                     );
-                    EditRemoveButtonsBox<Analyse> actionsFactory = new EditRemoveButtonsBox<>();
-                    HBox actionBox = actionsFactory.create(analyse,
-                            a -> SceneUtils.openNewScene(
-                                    "/laboratoireBack/analyse/formAnalyse.fxml",
-                                    analyseAjouterButton.getScene(),
-                                    a
-                            ),
-                            a -> {
-                                analyseCrudService.deleteById(a.getId());
-                                resetListItems();
-                            }
-                    );
+
+                    HBox actionBox = new HBox(5);
+                    actionBox.setAlignment(Pos.CENTER);
+
+// Bouton Modifier
+                    Button editButton = new Button();
+                    editButton.setStyle("-fx-background-color: transparent;");
+                    ImageView editIcon = new ImageView("/imagesLabo/edit.png");
+                    editIcon.setFitWidth(16); editIcon.setFitHeight(16);
+                    editButton.setGraphic(editIcon);
+                    editButton.setOnAction(e -> SceneUtils.openNewScene(
+                            "/laboratoireBack/analyse/formAnalyse.fxml",
+                            analyseListView.getScene(), analyse));
+
+// Bouton Supprimer
+                    Button deleteButton = new Button();
+                    deleteButton.setStyle("-fx-background-color: transparent;");
+                    ImageView deleteIcon = new ImageView("/imagesLabo/delete.png");
+                    deleteIcon.setFitWidth(16); deleteIcon.setFitHeight(16);
+                    deleteButton.setGraphic(deleteIcon);
+                    deleteButton.setOnAction(e -> {
+                        analyseCrudService.deleteById(analyse.getId());
+                        resetListItems();
+                    });
+
+// Bouton Résultat
+                    Button resultButton = new Button();
+                    resultButton.setStyle("-fx-background-color: transparent;");
+                    ImageView resultIcon = new ImageView("/imagesLabo/result.png");
+                    resultIcon.setFitWidth(16); resultIcon.setFitHeight(16);
+                    resultButton.setGraphic(resultIcon);
+                    resultButton.setOnAction(e -> SceneUtils.openNewScene(
+                            "/laboratoireBack/analyse/ajouterResultatAnalyse.fxml",
+                            analyseListView.getScene(), analyse));
+
+                    actionBox.getChildren().addAll(editButton, deleteButton, resultButton);
+
+
 
                     // Set width for consistent alignment
                     patient.setPrefWidth(140);
@@ -100,11 +126,11 @@ public class ListAnalyseController {
                     dateRdv.setPrefWidth(100);
                     datePrelevement.setPrefWidth(140);
                     etat.setPrefWidth(80);
-                    resultat.setPrefWidth(100);
+                    typeAnalyse.setPrefWidth(140);
                     dateResultat.setPrefWidth(120);
                     actionBox.setPrefWidth(100);
 
-                    row.getChildren().addAll(patient, personnel, dateRdv, datePrelevement, etat, resultat, dateResultat, actionBox);
+                    row.getChildren().addAll(patient, personnel, dateRdv, datePrelevement, etat, typeAnalyse, dateResultat, actionBox);
                     setGraphic(row);
                 }
             }

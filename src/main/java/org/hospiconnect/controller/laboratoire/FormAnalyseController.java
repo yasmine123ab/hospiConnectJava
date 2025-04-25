@@ -13,6 +13,8 @@ public class FormAnalyseController {
     private static final String EN_COURS = "en cours";
     private static final String TERMINE = "termine";
 
+    private final TypeAnalyseCrudService typeAnalyseCrudService = TypeAnalyseCrudService.getInstance();
+
     @FXML
     private Button FermerFenetreButton;
     @FXML
@@ -196,12 +198,50 @@ public class FormAnalyseController {
     }
 
     private boolean saveForm(Analyse toEdit) {
-        Analyse toSave = (toEdit == null) ? new Analyse() : toEdit;
+        boolean isNew = toEdit == null;
+        Analyse toSave = isNew ? new Analyse() : toEdit;
         //System.out.println(toSave);
         toSave.setIdPatient(analyseFormPatientComboBox.getValue() != null ? analyseFormPatientComboBox.getValue().getId() : null);
         toSave.setIdPersonnel(analyseFormPersonnelComboBox.getValue() != null ? analyseFormPersonnelComboBox.getValue().getId() : null);
         toSave.setIdRdv(analyseFormRdvComboBox.getValue() != null ? analyseFormRdvComboBox.getValue().getId() : null);
-        toSave.setIdTypeAnalyse(analyseFormTypeAnalyseComboBox.getValue() != null ? analyseFormTypeAnalyseComboBox.getValue().getId() : null);
+
+        Long newTypeAnalyse = analyseFormTypeAnalyseComboBox.getValue() != null ? analyseFormTypeAnalyseComboBox.getValue().getId() : null;
+        if (isNew || toSave.getIdTypeAnalyse()!= newTypeAnalyse) {
+            String typeNom = typeAnalyseCrudService.findTypeNameById(newTypeAnalyse).toLowerCase();
+            String nouveauTemplate = switch (typeNom) {
+                case "bilan sanguin" -> """
+        Numération globulaire
+        Hématies: 
+        Hémoglobine: 
+        Hématocrite: 
+        VGM: 
+        TCMH:
+        Leucocytes:  
+        """;
+                case "analyse cholesterol" -> """
+        Cholestérol total: 
+        Triglycérides: 
+        HDL cholestérol: 
+        LDL cholestérol: 
+        """;
+                case "bilan urinaire" -> """
+        Leucocytes: 
+        Hématies: 
+        Cellules rénales: 
+        Glucose: 
+        Protéines: 
+        """;
+                case "bilan inflammatoire" -> """
+        Protéine C réactive (CRP): 
+        Vitesse de sédimentation (VS): 
+        Fibrinogène: 
+        """;
+                default -> "Résultat d’analyse: ";
+            };
+
+            toSave.setResultat(nouveauTemplate);
+        }
+        toSave.setIdTypeAnalyse(newTypeAnalyse);
 
         if (analyseFormEnAttenteRadioButton.selectedProperty().get()) {
             toSave.setEtat(EN_ATTENTE);
@@ -212,7 +252,6 @@ public class FormAnalyseController {
         }
         toSave.setDatePrelevement(analyseFormDatePrelevDatePicker.getValue());
         toSave.setDateResultat(analyseFormDateResultatDatePicker.getValue());
-        toSave.setResultat(analyseFormResultatTextField.getText());
         //System.out.println(toSave);
         //System.out.println(AnalyseCrudService.getInstance().findAll());
 
