@@ -21,6 +21,7 @@ import org.hospiconnect.model.Dons;
 import org.hospiconnect.model.User;
 import org.hospiconnect.service.DonService;
 
+import org.hospiconnect.service.TwilioService;
 import org.hospiconnect.utils.DatabaseUtils;
 
 import java.io.IOException;
@@ -53,6 +54,7 @@ public class AddDon {
     private Button menuHomeButton;
 
     private DonService donService;
+    private final TwilioService twilioService = new TwilioService();  // ① on instancie Twilio
 
     public AddDon() {
         donService = new DonService();
@@ -232,7 +234,7 @@ public class AddDon {
             double montant;
             try {
                 montant = Double.parseDouble(montantStr);
-                if (montant <= 0) {
+                if (montant < 0) {
                     showAlert(Alert.AlertType.WARNING, "Montant invalide", "Le montant doit être supérieur à 0.");
                     return;
                 }
@@ -264,23 +266,26 @@ public class AddDon {
             don.setMontant(montant);
             don.setDateDon(Date.valueOf(selectedDate));
             don.setDonateurId(selectedDonateur.getId());
+            don.setDonateur(selectedDonateur); // 🔥 Important !
             don.setDisponibilite(true); // Par défaut
 
-            // Si le montant est supérieur à 0, on initie le paiement via Stripe
+            // Paiement Stripe si montant > 0
             if (montant > 0) {
                 try {
                     String stripeUrl = createStripeSession(montant);
-                    openStripeCheckout(stripeUrl, don);
+                    openStripeCheckout(stripeUrl, don); // don contient bien un donateur
                 } catch (Exception e) {
                     showAlert(Alert.AlertType.ERROR, "Erreur Stripe", e.getMessage());
                 }
             } else {
                 donService.insert(don);
+                twilioService.sendThankYouSms(
+                        "+21626039309",
+                        selectedDonateur.getNom() + " " + selectedDonateur.getPrenom()
+                );
                 showAlert(Alert.AlertType.INFORMATION, "Succès", "Don ajouté avec succès !");
                 clearFields();
             }
-
-            clearFields();
 
         } catch (SQLException e) {
             showAlert(Alert.AlertType.ERROR, "Erreur SQL", e.getMessage());
@@ -288,6 +293,7 @@ public class AddDon {
             showAlert(Alert.AlertType.ERROR, "Erreur", e.getMessage());
         }
     }
+
     public String createStripeSession(double montant) throws Exception {
         Stripe.apiKey = "sk_test_51Qw6Jj2HJALCS9kukoEah12re5Nl72TRcfcl6zfjAk0TfPysHnjGqaIh2SBSIAwFx983OujqQlAc3jiexsfo2nUV00DAooSw34"; // Remplace par ta clé secrète Stripe
 
@@ -330,6 +336,16 @@ public class AddDon {
             if (newUrl.contains("success")) {
                 try {
                     donService.insert(don);
+
+                    if (don.getDonateur() != null) {
+                        twilioService.sendThankYouSms(
+                                "+21626039309",
+                                don.getDonateur().getNom() + " " + don.getDonateur().getPrenom()
+                        );
+                    } else {
+                        System.out.println("⚠ Donateur non défini, SMS non envoyé.");
+                    }
+
                     showAlert(Alert.AlertType.INFORMATION, "Succès", "Paiement réussi. Don enregistré !");
                     clearFields();
                 } catch (SQLException e) {
@@ -344,9 +360,6 @@ public class AddDon {
 
         webEngine.load(url);
     }
-
-
-
 
     private void showAlert(Alert.AlertType type, String title, String message) {
         Alert alert = new Alert(type);
