@@ -3,6 +3,7 @@ package org.hospiconnect.controller;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 import org.hospiconnect.model.MouvementMaterielJoint;
@@ -18,10 +19,10 @@ public class AddMouvement {
     private DatePicker date_mouvement;
 
     @FXML
-    private TextField id_materiel;
+    private ComboBox<String> id_matriel;
 
     @FXML
-    private TextField id_personnel;
+    private ComboBox<String> id_personnelll;
 
     @FXML
     private TextField motif;
@@ -42,8 +43,8 @@ public class AddMouvement {
         try {
             // Créer un objet mouvement_stock à partir des champs
             mouvement_stock m = new mouvement_stock();
-            m.setId_materiel_id(Integer.parseInt(id_materiel.getText()));
-            m.setId_personnel_id(Integer.parseInt(id_personnel.getText()));
+            m.setId_materiel_id(Integer.parseInt(id_matriel.getValue()));
+            m.setId_personnel_id(Integer.parseInt(id_personnelll.getValue()));
             m.setQunatite(Integer.parseInt(qunatite.getText()));
             m.setDate_mouvement(Date.valueOf(date_mouvement.getValue()));
             m.setMotif(motif.getText());
@@ -61,8 +62,8 @@ public class AddMouvement {
             alert.showAndWait();
 
             // Réinitialiser les champs
-            id_materiel.clear();
-            id_personnel.clear();
+            id_matriel.getSelectionModel().selectFirst();
+            id_personnelll.getSelectionModel().selectFirst();
             qunatite.clear();
             motif.clear();
             type_mouvement.clear();
@@ -81,13 +82,13 @@ public class AddMouvement {
     // Validation des champs
     private boolean validateForm() {
         // Vérification de l'ID matériel
-        if (id_materiel.getText().isEmpty()) {
+        if (id_matriel.getValue().isEmpty()) {
             showErrorAlert("L'ID du matériel est obligatoire.");
             return false;
         }
 
         // Vérification de l'ID personnel
-        if (id_personnel.getText().isEmpty()) {
+        if (id_personnelll.getValue().isEmpty()) {
             showErrorAlert("L'ID du personnel est obligatoire.");
             return false;
         }
@@ -134,8 +135,8 @@ public class AddMouvement {
         this.mouvementExistant = m;
 
         // Remplir les champs avec les données du mouvement à modifier
-        id_materiel.setText(String.valueOf(m.getNomMateriel()));
-        id_personnel.setText(String.valueOf(m.getNomPersonnel()));
+        id_matriel.setValue(String.valueOf(m.getNomMateriel()));
+        id_personnelll.setValue(String.valueOf(m.getNomPersonnel()));
         qunatite.setText(String.valueOf(m.getQuantite()));
         motif.setText(m.getMotif());
         type_mouvement.setText(m.getTypeMouvement());

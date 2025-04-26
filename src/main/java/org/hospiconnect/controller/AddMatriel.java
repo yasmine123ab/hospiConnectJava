@@ -1,14 +1,16 @@
 package org.hospiconnect.controller;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.scene.control.*;
+import kotlin.text.UStringsKt;
+import org.hospiconnect.controller.laboratoire.SceneUtils;
 import org.hospiconnect.model.Materiel;
 import org.hospiconnect.service.MaterielService1;
 import javafx.event.ActionEvent;
 import javafx.fxml.*;
 import javafx.scene.Parent;
-import javafx.scene.control.Alert;
-import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import javafx.scene.control.DatePicker;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -22,7 +24,7 @@ public class AddMatriel {
     private TextField categorie;
 
     @FXML
-    private TextField etat;
+    private ComboBox<String> etat;
 
     @FXML
     private TextField quantite;
@@ -30,8 +32,23 @@ public class AddMatriel {
     @FXML
     private TextField emplacement;
 
+
     @FXML
     private DatePicker date;
+
+    @FXML
+    private Button retourner;
+    private final ObservableList<String> etats = FXCollections.observableArrayList(
+            "Neuf", "Usagé", "En réparation"
+    );
+
+
+    public void initialize() {
+
+        retourner.setOnAction(e -> SceneUtils.openNewScene(
+                "/ListMateriel.fxml", retourner.getScene(), null));
+    }
+
     @FXML
     void ajouter(ActionEvent event) {
         // Vérification que tous les champs sont remplis
@@ -43,10 +60,12 @@ public class AddMatriel {
             showErrorAlert("Le champ 'Catégorie' est obligatoire.");
             return;
         }
-        if (etat.getText().isEmpty()) {
-            showErrorAlert("Le champ 'État' est obligatoire.");
-            return;
+        if (etat.getValue() == null) {
+            showErrorAlert("Le champ 'etat' est obligatoire.");
+            return ;
         }
+
+
         if (quantite.getText().isEmpty()) {
             showErrorAlert("Le champ 'Quantité' est obligatoire.");
             return;
@@ -85,7 +104,7 @@ public class AddMatriel {
                 qte,
                 nom.getText(),
                 categorie.getText(),
-                etat.getText(),
+                etat.getValue(),
                 emplacement.getText(),
                 java.sql.Date.valueOf(date.getValue()));
 
@@ -103,7 +122,7 @@ public class AddMatriel {
             quantite.clear();
             nom.clear();
             categorie.clear();
-            etat.clear();
+            etat.getSelectionModel().selectFirst();
             emplacement.clear();
             date.setValue(null);
 
@@ -134,7 +153,7 @@ public class AddMatriel {
         nom.setText(m.getNom());
         quantite.setText(String.valueOf(m.getQuantite()));
         categorie.setText(m.getCategorie());
-        etat.setText(m.getEtat());
+        etat.setValue(m.getEtat());
         emplacement.setText(m.getEmplacement());
         date.setValue(LocalDate.now());
 

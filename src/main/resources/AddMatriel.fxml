@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.String?>
+<?import javafx.collections.FXCollections?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
@@ -16,12 +19,25 @@
       <TextField fx:id="nom" layoutX="305.0" layoutY="131.0" promptText="ajouter nom" />
       <Label layoutX="215.0" layoutY="316.0" text="date d'ajout" />
       <TextField fx:id="categorie" layoutX="305.0" layoutY="169.0" promptText="ajouter categorie" />
-      <TextField fx:id="etat" layoutX="305.0" layoutY="206.0" promptText="ajouter etat" />
+
+
       <TextField fx:id="quantite" layoutX="305.0" layoutY="244.0" promptText="ajouter quantite" />
       <TextField fx:id="emplacement" layoutX="305.0" layoutY="276.0" promptText="ajouter emplacement" />
       <Button layoutX="502.0" layoutY="360.0" mnemonicParsing="false" onAction="#ajouter" text="ajouter" />
 
       <DatePicker fx:id="date" layoutX="305.0" layoutY="312.0" promptText="ajouter date" />
       <Label layoutX="256.0" layoutY="48.0" prefHeight="18.0" prefWidth="290.0" text="                ajouter materiel " textFill="#a3242b" />
+      <Button fx:id="retourner" layoutX="185.0" layoutY="360.0" mnemonicParsing="false" text="retourner" />
+      <ComboBox fx:id="etat" layoutX="304.0" layoutY="206.0" prefWidth="150.0"
+                promptText="Sélectionnez un état">
+         <items>
+            <FXCollections fx:factory="observableArrayList">
+               <String fx:value="Neuf"/>
+               <String fx:value="Usagé"/>
+               <String fx:value="En réparation"/>
+            </FXCollections>
+         </items>
+      </ComboBox>
+
    </children>
 </AnchorPane>

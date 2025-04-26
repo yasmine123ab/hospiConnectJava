@@ -1,25 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 
-<VBox spacing="10" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.hospiconnect.controller.afficherMouvement" style="-fx-padding: 20;">
+<VBox spacing="10" style="-fx-padding: 20;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.hospiconnect.controller.afficherMouvement">
 
    <!-- Titre des colonnes -->
-   <HBox spacing="10" alignment="CENTER_LEFT" style="-fx-padding: 10; -fx-background-color: #E0E0E0;">
+   <HBox alignment="CENTER_LEFT" spacing="10" style="-fx-padding: 10; -fx-background-color: #E0E0E0;">
 
-      <Label text="Nom Matériel" prefWidth="120"/>
-      <Label text="Type Mouvement" prefWidth="120"/>
-      <Label text="Quantité" prefWidth="80"/>
-      <Label text="Date" prefWidth="120"/>
-      <Label text="Actions" prefWidth="100"/>
+      <Label prefWidth="120" text="Nom Matériel" />
+      <Label prefWidth="120" text="quantite" />
+      <Label prefWidth="120" text="motif" />
+      <Label prefWidth="120" text="type mouvement" />
+      <Label prefWidth="120" text="date mouvement" />
+      <Label prefWidth="100" text="Actions" />
    </HBox>
 
    <!-- ListView des mouvements -->
-   <ListView fx:id="mouvementTable" prefHeight="335"/>
+   <ListView fx:id="mouvementTable" prefHeight="335" />
 
    <!-- Boutons -->
-   <HBox spacing="10" alignment="CENTER_RIGHT">
+   <HBox alignment="CENTER_RIGHT" spacing="10">
+      <TextField fx:id="rechercheMouvement" />
       <Button onAction="#affichem" text="afficher" />
       <Button onAction="#ajouterM" text="ajouter" />
    </HBox>

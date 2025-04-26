@@ -1,26 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 
-<VBox spacing="10.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.hospiconnect.controller.afficherMateriel" style="-fx-padding: 20;">
+<VBox spacing="10.0" style="-fx-padding: 20;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.hospiconnect.controller.afficherMateriel">
 
    <!-- Titre des colonnes -->
-   <HBox spacing="10" alignment="CENTER_LEFT" style="-fx-padding: 10; -fx-background-color: #E0E0E0;">
-      <Label text="Nom" prefWidth="100"/>
-      <Label text="Quantité" prefWidth="60"/>
-      <Label text="Catégorie" prefWidth="100"/>
-      <Label text="État" prefWidth="80"/>
-      <Label text="Emplacement" prefWidth="100"/>
-      <Label text="Date d'ajout" prefWidth="120"/>
-      <Label text="Actions" prefWidth="160"/>
+   <HBox alignment="CENTER_LEFT" spacing="10" style="-fx-padding: 10; -fx-background-color: #E0E0E0;">
+      <Label prefWidth="120" text="Nom" />
+      <Label prefWidth="120" text="Quantité" />
+      <Label prefWidth="120" text="Catégorie" />
+      <Label prefWidth="120" text="État" />
+      <Label prefWidth="120" text="Emplacement" />
+      <Label prefWidth="120" text="Date d'ajout" />
+      <Label prefWidth="160" text="Actions" />
    </HBox>
 
    <!-- ListView des matériels -->
-   <ListView fx:id="matrielTable" prefHeight="400"/>
+   <ListView fx:id="matrielTable" prefHeight="400" />
 
    <!-- Boutons -->
-   <HBox spacing="10" alignment="CENTER_RIGHT">
+   <HBox alignment="CENTER_RIGHT" spacing="10">
+      <TextField fx:id="recherche" />
       <Button fx:id="menuHomeButton" text="Home" />
       <Button onAction="#afficherMateriels" text="afficher" />
       <Button onAction="#ajouter" text="ajouter" />
