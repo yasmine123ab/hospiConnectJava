@@ -25,12 +25,10 @@ public class AnalyseService {
                 <table>
                     <thead>
                         <tr>
-                            <th class="table-header"># Analyse</th>
                             <th class="table-header">Patient</th>
                             <th class="table-header">Personnel</th>
                             <th class="table-header">Date Rdv</th>
                             <th class="table-header">Etat</th>
-                            <th class="table-header">Resultat</th>
                             <th class="table-header">Date Resultat</th>
                         </tr>
                     </thead>
@@ -42,12 +40,10 @@ public class AnalyseService {
         } else {
             for (Analyse analyse : listAnalyses) {
                 htmlGenerator.append("<tr>");
-                htmlGenerator.append("<th class=\"row-number\">").append(analyse.getId()).append("</th>");
                 htmlGenerator.append("<td>").append(userServiceLight.findUserNameById(analyse.getIdPatient())).append("</td>");
                 htmlGenerator.append("<td>").append(userServiceLight.findUserNameById(analyse.getIdPersonnel())).append("</td>");
                 htmlGenerator.append("<td>").append(toStringOrNull(analyse.getDatePrelevement())).append("</td>");
                 htmlGenerator.append("<td>").append(analyse.getEtat()).append("</td>");
-                htmlGenerator.append("<td>").append(toStringOrNull(analyse.getResultat())).append("</td>");
                 htmlGenerator.append("<td>").append(toStringOrNull(analyse.getDateResultat())).append("</td>");
                 htmlGenerator.append("</tr>");
             }

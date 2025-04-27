@@ -210,6 +210,7 @@ public class FormAnalyseController {
             String typeNom = typeAnalyseCrudService.findTypeNameById(newTypeAnalyse).toLowerCase();
             String nouveauTemplate = switch (typeNom) {
                 case "bilan sanguin" -> """
+        Bilan sanguin:
         Numération globulaire
         Hématies: 
         Hémoglobine: 
@@ -219,20 +220,23 @@ public class FormAnalyseController {
         Leucocytes:  
         """;
                 case "analyse cholesterol" -> """
-        Cholestérol total: 
+        Analyse cholesterol:
+        Cholestérol total:
         Triglycérides: 
         HDL cholestérol: 
         LDL cholestérol: 
         """;
                 case "bilan urinaire" -> """
-        Leucocytes: 
+        Bilan urinaire:
+        Leucocytes:
         Hématies: 
         Cellules rénales: 
         Glucose: 
         Protéines: 
         """;
                 case "bilan inflammatoire" -> """
-        Protéine C réactive (CRP): 
+        Bilan inflammatoire:
+        Protéine C réactive (CRP):
         Vitesse de sédimentation (VS): 
         Fibrinogène: 
         """;

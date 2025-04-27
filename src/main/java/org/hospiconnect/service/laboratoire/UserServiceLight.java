@@ -52,4 +52,22 @@ public class UserServiceLight {
             throw new RuntimeException("Failed due to an SQL Error", e);
         }
     }
+
+    public String findUserEmailById(Long id) {
+        try (
+                Connection c = DatabaseUtils.getConnection();
+                PreparedStatement ps = c.prepareStatement("SELECT email FROM user WHERE id = ?")
+        ) {
+            ps.setLong(1, id);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getString("email");
+                }
+                throw new RuntimeException("Email non trouvé pour l'utilisateur avec l'id " + id);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Erreur SQL lors de la récupération de l'email", e);
+        }
+    }
+
 }

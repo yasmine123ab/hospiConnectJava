@@ -12,6 +12,7 @@ import org.hospiconnect.model.laboratoire.Analyse;
 import org.hospiconnect.model.laboratoire.RdvAnalyse;
 import org.hospiconnect.service.laboratoire.*;
 
+import java.io.File;
 import java.util.Comparator;
 
 public class ListAnalyseController {
@@ -171,7 +172,15 @@ public class ListAnalyseController {
             ));
         });
 
-        analysePdfButton.setOnAction(e -> AnalyseService.getInstance().exportAnalyses("analyses.pdf"));
+        analysePdfButton.setOnAction(e -> {
+            javafx.stage.FileChooser fileChooser = new javafx.stage.FileChooser();
+            fileChooser.setTitle("Enregistrer le PDF des analyses");
+            fileChooser.getExtensionFilters().add(new javafx.stage.FileChooser.ExtensionFilter("PDF Files", "*.pdf"));
+            File file = fileChooser.showSaveDialog(analysePdfButton.getScene().getWindow());
+            if (file != null) {
+                AnalyseService.getInstance().exportAnalyses(file.getAbsolutePath());
+            }
+        });
         analyseAjouterButton.setOnAction(e -> SceneUtils.openNewScene(
                 "/laboratoireBack/analyse/formAnalyse.fxml",
                 analyseAjouterButton.getScene(),

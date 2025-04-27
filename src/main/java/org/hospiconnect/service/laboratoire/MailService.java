@@ -3,8 +3,11 @@ package org.hospiconnect.service.laboratoire;
 import io.github.cdimascio.dotenv.Dotenv;
 import jakarta.mail.*;
 import jakarta.mail.internet.InternetAddress;
+import jakarta.mail.internet.MimeBodyPart;
 import jakarta.mail.internet.MimeMessage;
+import jakarta.mail.internet.MimeMultipart;
 
+import java.io.File;
 import java.util.Properties;
 
 public class MailService {
@@ -56,5 +59,43 @@ public class MailService {
             throw new RuntimeException("Failed to send email: " + e.getMessage(), e);
         }
     }
+
+    public void sendEmailWithAttachment(String to, String subject, String body, String attachmentPath) {
+        Session session = Session.getInstance(smtpProperties, new Authenticator() {
+            @Override
+            protected PasswordAuthentication getPasswordAuthentication() {
+                return new PasswordAuthentication(username, password);
+            }
+        });
+
+        try {
+            Message message = new MimeMessage(session);
+            message.setFrom(new InternetAddress(username));
+            message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(to));
+            message.setSubject(subject);
+
+            // Create multipart email
+            Multipart multipart = new MimeMultipart();
+
+            // Body part
+            BodyPart messageBodyPart = new MimeBodyPart();
+            messageBodyPart.setText(body);
+            multipart.addBodyPart(messageBodyPart);
+
+            // Attachment part
+            MimeBodyPart attachmentPart = new MimeBodyPart();
+            attachmentPart.attachFile(new File(attachmentPath));
+            multipart.addBodyPart(attachmentPart);
+
+            message.setContent(multipart);
+
+            Transport.send(message);
+            System.out.println("Email avec pièce jointe envoyé avec succès!");
+
+        } catch (Exception e) {
+            throw new RuntimeException("Erreur d'envoi email avec pièce jointe : " + e.getMessage(), e);
+        }
+    }
+
 
 }
