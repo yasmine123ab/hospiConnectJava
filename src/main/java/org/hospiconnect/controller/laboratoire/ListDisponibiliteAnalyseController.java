@@ -20,6 +20,10 @@ public class ListDisponibiliteAnalyseController {
 
     private final DisponibiliteAnalyseCrudService disponibiliteAnalyseCrudService = DisponibiliteAnalyseCrudService.getInstance();
 
+    @FXML
+    private ComboBox<String> dispoAnalyseTrierComboBox;
+    @FXML
+    private ComboBox<String> dispoAnalyseRechercherComboBox;
 
     @FXML
     private ListView<DisponibiliteAnalyse> dispoAnalyseListView;
@@ -30,8 +34,6 @@ public class ListDisponibiliteAnalyseController {
     private Button dispoAnalyseTrierButton;
     @FXML
     private Button dispoAnalyseAjouterButton;
-    @FXML
-    private Button dispoAnalysePdfButton;
     @FXML
     private Button FermerFenetreButton;
     @FXML
@@ -53,6 +55,18 @@ public class ListDisponibiliteAnalyseController {
     @FXML
     public void initialize() {
         resetListItems();
+
+        // Remplir les choix du ComboBox de recherche et tri
+        dispoAnalyseRechercherComboBox.setItems(FXCollections.observableArrayList(
+                "Date Disponibilité", "Heure Début", "Nombre de places"
+        ));
+        dispoAnalyseRechercherComboBox.getSelectionModel().selectFirst(); // sélection par défaut
+
+        dispoAnalyseTrierComboBox.setItems(FXCollections.observableArrayList(
+                "Date Disponibilité", "Heure Début", "Nombre de places"
+        ));
+        dispoAnalyseTrierComboBox.getSelectionModel().selectFirst(); // sélection par défaut
+
 
         dispoAnalyseListView.setCellFactory(list -> new ListCell<>() {
             @Override
@@ -97,37 +111,54 @@ public class ListDisponibiliteAnalyseController {
         });
 
         dispoAnalyseTrierButton.setOnAction(e -> {
-            Comparator<DisponibiliteAnalyse> comparateur = Comparator.comparing(DisponibiliteAnalyse::getDebut);
-            if (!trierDispoCroissant) {
-                comparateur = comparateur.reversed();
+            String champ = dispoAnalyseTrierComboBox.getSelectionModel().getSelectedItem();
+            Comparator<DisponibiliteAnalyse> comparateur = null;
+
+            if ("Date Disponibilité".equals(champ)) {
+                comparateur = Comparator.comparing(DisponibiliteAnalyse::getDispo, Comparator.nullsLast(Comparator.naturalOrder()));
+            } else if ("Heure Début".equals(champ)) {
+                comparateur = Comparator.comparing(DisponibiliteAnalyse::getDebut, Comparator.nullsLast(Comparator.naturalOrder()));
+            } else if ("Nombre de places".equals(champ)) {
+                comparateur = Comparator.comparing(DisponibiliteAnalyse::getNbrPlaces, Comparator.nullsLast(Comparator.naturalOrder()));
             }
 
-            var triListe = dispoAnalyseListView.getItems().stream()
-                    .sorted(comparateur)
-                    .toList();
-            dispoAnalyseListView.setItems(FXCollections.observableList(triListe));
-
-            trierDispoCroissant = !trierDispoCroissant;
+            if (comparateur != null) {
+                if (!trierDispoCroissant) {
+                    comparateur = comparateur.reversed();
+                }
+                var triListe = dispoAnalyseListView.getItems().stream()
+                        .sorted(comparateur)
+                        .toList();
+                dispoAnalyseListView.setItems(FXCollections.observableList(triListe));
+                trierDispoCroissant = !trierDispoCroissant;
+            }
         });
+
 
         dispoAnalyseRechercherTextField.setOnKeyReleased(e -> {
             String recherche = dispoAnalyseRechercherTextField.getText().strip().toLowerCase();
+            String champChoisi = dispoAnalyseRechercherComboBox.getSelectionModel().getSelectedItem();
 
             dispoAnalyseListView.setItems(FXCollections.observableList(
                     disponibiliteAnalyseCrudService.findAll().stream()
                             .filter(a -> {
-                                String dateDispoStr = a.getDispo() != null ? a.getDispo().toString().toLowerCase() : "";
-                                String heureDebutStr = a.getDebut() != null ? a.getDebut().toString().toLowerCase() : "";
-                                String nbrPlacesStr = a.getNbrPlaces() != null ? a.getNbrPlaces().toString() : "";
+                                String valeurChamp = "";
 
-                                return recherche.isBlank()
-                                        || dateDispoStr.contains(recherche)
-                                        || heureDebutStr.contains(recherche)
-                                        || nbrPlacesStr.contains(recherche);
+                                if ("Date Disponibilité".equals(champChoisi)) {
+                                    valeurChamp = a.getDispo() != null ? a.getDispo().toString() : "";
+                                } else if ("Heure Début".equals(champChoisi)) {
+                                    valeurChamp = a.getDebut() != null ? a.getDebut().toString() : "";
+                                } else if ("Nombre de places".equals(champChoisi)) {
+                                    valeurChamp = a.getNbrPlaces() != null ? a.getNbrPlaces().toString() : "";
+                                }
+
+                                return valeurChamp.toLowerCase().contains(recherche);
                             })
                             .toList()
             ));
         });
+
+
 
         dispoAnalyseAjouterButton.setOnAction(e -> SceneUtils.openNewScene(
                 "/laboratoireBack/disponibiliteAnalyse/formDispoAnalyse.fxml",

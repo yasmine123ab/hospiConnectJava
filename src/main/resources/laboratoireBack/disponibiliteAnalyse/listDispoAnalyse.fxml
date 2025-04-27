@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.TextField?>
@@ -108,18 +109,13 @@
             <Font name="System Bold" size="14.0" />
          </font>
       </Label>
-      <TextField fx:id="dispoAnalyseRechercherTextField" layoutX="326.0" layoutY="103.0" prefHeight="26.0" prefWidth="448.0" promptText="DateDispo/HeureDebut/Nbr places..." />
-      <Button fx:id="dispoAnalyseTrierButton" layoutX="945.0" layoutY="142.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="80.0" text="Trier" textFill="#3351c9">
+      <TextField fx:id="dispoAnalyseRechercherTextField" layoutX="326.0" layoutY="103.0" prefHeight="26.0" prefWidth="237.0" />
+      <Button fx:id="dispoAnalyseTrierButton" layoutX="1018.0" layoutY="115.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="80.0" text="Trier" textFill="#3351c9">
          <font>
             <Font name="System Bold" size="14.0" />
          </font>
       </Button>
-      <Button fx:id="dispoAnalyseAjouterButton" layoutX="903.0" layoutY="564.0" mnemonicParsing="false" text="Ajouter une Disponibilite" textFill="#3351c9">
-         <font>
-            <Font name="System Bold" size="14.0" />
-         </font>
-      </Button>
-      <Button fx:id="dispoAnalysePdfButton" layoutX="961.0" layoutY="606.0" mnemonicParsing="false" text="Télécharger PDF" textFill="#3351c9">
+      <Button fx:id="dispoAnalyseAjouterButton" layoutX="906.0" layoutY="586.0" mnemonicParsing="false" text="Ajouter une Disponibilite" textFill="#3351c9">
          <font>
             <Font name="System Bold" size="14.0" />
          </font>
@@ -164,5 +160,7 @@
          </children>
       </HBox>
       <ListView fx:id="dispoAnalyseListView" layoutX="264.0" layoutY="245.0" prefHeight="312.0" prefWidth="678.0" />
+      <ComboBox fx:id="dispoAnalyseRechercherComboBox" layoutX="580.0" layoutY="104.0" prefWidth="150.0" />
+      <ComboBox fx:id="dispoAnalyseTrierComboBox" layoutX="844.0" layoutY="117.0" prefHeight="26.0" prefWidth="161.0" />
    </children>
 </AnchorPane>

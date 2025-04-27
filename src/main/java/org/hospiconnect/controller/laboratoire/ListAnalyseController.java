@@ -28,6 +28,12 @@ public class ListAnalyseController {
     @FXML
     private ListView<Analyse> analyseListView;
 
+
+    @FXML
+    private ComboBox<String> analyseTrierComboBox;
+    @FXML
+    private ComboBox<String> analyseRechercherComboBox;
+
     @FXML
     private TextField analyseRechercherTextField;
     @FXML
@@ -57,6 +63,18 @@ public class ListAnalyseController {
     @FXML
     public void initialize() {
         resetListItems();
+
+        // Remplir les choix de tri
+        analyseTrierComboBox.setItems(FXCollections.observableArrayList(
+                "Patient", "Date Prélèvement", "Type Analyse", "Date Résultat"
+        ));
+        analyseTrierComboBox.getSelectionModel().selectFirst(); // sélection par défaut
+
+        // Remplir les choix de recherche
+        analyseRechercherComboBox.setItems(FXCollections.observableArrayList(
+                "Patient", "Date Prélèvement", "État"
+        ));
+        analyseRechercherComboBox.getSelectionModel().selectFirst(); // sélection par défaut
 
         analyseListView.setCellFactory(list -> new ListCell<>() {
             @Override
@@ -138,39 +156,62 @@ public class ListAnalyseController {
         });
 
         analyseTrierButton.setOnAction(e -> {
-            Comparator<Analyse> comparateur = Comparator.comparing(Analyse::getDatePrelevement);
-            if (!trierCroissant) {
-                comparateur = comparateur.reversed();
+            String champ = analyseTrierComboBox.getSelectionModel().getSelectedItem();
+            Comparator<Analyse> comparateur = null;
+
+            if (champ.equals("Patient")) {
+                comparateur = Comparator.comparing(a -> userServiceLight.findUserNameById(a.getIdPatient()), String.CASE_INSENSITIVE_ORDER);
+            } else if (champ.equals("Date Prélèvement")) {
+                comparateur = Comparator.comparing(Analyse::getDatePrelevement, Comparator.nullsLast(Comparator.naturalOrder()));
+            } else if (champ.equals("Type Analyse")) {
+                comparateur = Comparator.comparing(a -> typeAnalyseCrudService.findTypeNameById(a.getIdTypeAnalyse()), String.CASE_INSENSITIVE_ORDER);
+            } else if (champ.equals("Date Résultat")) {
+                comparateur = Comparator.comparing(Analyse::getDateResultat, Comparator.nullsLast(Comparator.naturalOrder()));
             }
 
-            var triListe = analyseListView.getItems().stream()
-                    .sorted(comparateur)
-                    .toList();
-            analyseListView.setItems(FXCollections.observableList(triListe));
-
-            trierCroissant = !trierCroissant; // alterner le sens du tri
+            if (comparateur != null) {
+                if (!trierCroissant) {
+                    comparateur = comparateur.reversed();
+                }
+                var triListe = analyseListView.getItems().stream()
+                        .sorted(comparateur)
+                        .toList();
+                analyseListView.setItems(FXCollections.observableList(triListe));
+                trierCroissant = !trierCroissant;
+            }
         });
+
 
         analyseRechercherTextField.setOnKeyReleased(e -> {
             String recherche = analyseRechercherTextField.getText().strip().toLowerCase();
+            String champChoisi = analyseRechercherComboBox.getSelectionModel().getSelectedItem();
 
             analyseListView.setItems(FXCollections.observableList(
                     analyseCrudService.findAll().stream()
-                            .filter(a -> {
-                                String patientName = userServiceLight.findUserNameById(a.getIdPatient()).toLowerCase();
-                                String datePrelevementStr = a.getDatePrelevement() != null
-                                        ? a.getDatePrelevement().toString().toLowerCase()
-                                        : "";
-                                String etatStr = a.getEtat() != null ? a.getEtat().toLowerCase() : "";
+                            .filter(analyse -> {
+                                String valeurChamp = "";
 
-                                return recherche.isBlank()
-                                        || patientName.contains(recherche)
-                                        || datePrelevementStr.contains(recherche)
-                                        || etatStr.contains(recherche);
+                                if ("Patient".equals(champChoisi)) {
+                                    valeurChamp = userServiceLight.findUserNameById(analyse.getIdPatient());
+                                } else if ("Date Prélèvement".equals(champChoisi)) {
+                                    valeurChamp = (analyse.getDatePrelevement() != null)
+                                            ? analyse.getDatePrelevement().toString()
+                                            : "";
+                                } else if ("État".equals(champChoisi)) {
+                                    valeurChamp = (analyse.getEtat() != null)
+                                            ? analyse.getEtat()
+                                            : "";
+                                }
+
+                                return valeurChamp.toLowerCase().contains(recherche);
                             })
                             .toList()
             ));
         });
+
+
+
+
 
         analysePdfButton.setOnAction(e -> {
             javafx.stage.FileChooser fileChooser = new javafx.stage.FileChooser();

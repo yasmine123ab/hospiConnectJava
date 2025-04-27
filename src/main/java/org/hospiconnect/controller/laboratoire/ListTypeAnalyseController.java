@@ -18,6 +18,10 @@ public class ListTypeAnalyseController {
 
     private final TypeAnalyseCrudService typeAnalyseCrudService = TypeAnalyseCrudService.getInstance();
 
+    @FXML
+    private ComboBox<String> typeAnalyseTrierComboBox;
+    @FXML
+    private ComboBox<String> typeAnalyseRechercherComboBox;
 
     @FXML
     private ListView<TypeAnalyse> typeAnalyseListView;
@@ -27,8 +31,6 @@ public class ListTypeAnalyseController {
     @FXML
     private TextField typeAnalyseRechercherTextField;
 
-    @FXML
-    private Button typeAnalysePdfButton;
     @FXML
     private Button typeAnalyseAjouterButton;
     @FXML
@@ -52,6 +54,18 @@ public class ListTypeAnalyseController {
     @FXML
     public void initialize() {
         resetListItems();
+
+        // Remplir les choix de tri
+        typeAnalyseTrierComboBox.setItems(FXCollections.observableArrayList(
+                "Nom", "Libelle", "Prix"
+        ));
+        typeAnalyseTrierComboBox.getSelectionModel().selectFirst(); // sélection par défaut
+
+// Remplir les choix de recherche
+        typeAnalyseRechercherComboBox.setItems(FXCollections.observableArrayList(
+                "Nom", "Libelle"
+        ));
+        typeAnalyseRechercherComboBox.getSelectionModel().selectFirst(); // sélection par défaut
 
         typeAnalyseListView.setCellFactory(list -> new ListCell<>() {
             @Override
@@ -93,32 +107,44 @@ public class ListTypeAnalyseController {
         });
 
         typeAnalyseTrierButton.setOnAction(e -> {
-            Comparator<TypeAnalyse> comparateur = Comparator.comparing(TypeAnalyse::getPrix);
-            if (!trierTypeNomCroissant) {
-                comparateur = comparateur.reversed();
+            String champTri = typeAnalyseTrierComboBox.getSelectionModel().getSelectedItem();
+            Comparator<TypeAnalyse> comparateur = null;
+
+            if ("Nom".equals(champTri)) {
+                comparateur = Comparator.comparing(TypeAnalyse::getNom, String.CASE_INSENSITIVE_ORDER);
+            } else if ("Libelle".equals(champTri)) {
+                comparateur = Comparator.comparing(TypeAnalyse::getLibelle, String.CASE_INSENSITIVE_ORDER);
+            } else if ("Prix".equals(champTri)) {
+                comparateur = Comparator.comparing(TypeAnalyse::getPrix, Comparator.nullsLast(Comparator.naturalOrder()));
             }
 
-            var triListe = typeAnalyseListView.getItems().stream()
-                    .sorted(comparateur)
-                    .toList();
-            typeAnalyseListView.setItems(FXCollections.observableList(triListe));
-
-            trierTypeNomCroissant = !trierTypeNomCroissant;
+            if (comparateur != null) {
+                if (!trierTypeNomCroissant) {
+                    comparateur = comparateur.reversed();
+                }
+                var triListe = typeAnalyseListView.getItems().stream()
+                        .sorted(comparateur)
+                        .toList();
+                typeAnalyseListView.setItems(FXCollections.observableList(triListe));
+                trierTypeNomCroissant = !trierTypeNomCroissant;
+            }
         });
 
 
         typeAnalyseRechercherTextField.setOnKeyReleased(e -> {
             String recherche = typeAnalyseRechercherTextField.getText().strip().toLowerCase();
+            String champChoisi = typeAnalyseRechercherComboBox.getSelectionModel().getSelectedItem();
 
             typeAnalyseListView.setItems(FXCollections.observableList(
                     typeAnalyseCrudService.findAll().stream()
                             .filter(a -> {
-                                String nom = a.getNom() != null ? a.getNom().toLowerCase() : "";
-                                String libelle = a.getLibelle() != null ? a.getLibelle().toLowerCase() : "";
-
-                                return recherche.isBlank()
-                                        || nom.contains(recherche)
-                                        || libelle.contains(recherche);
+                                String valeurChamp = "";
+                                if ("Nom".equals(champChoisi)) {
+                                    valeurChamp = (a.getNom() != null) ? a.getNom() : "";
+                                } else if ("Libelle".equals(champChoisi)) {
+                                    valeurChamp = (a.getLibelle() != null) ? a.getLibelle() : "";
+                                }
+                                return valeurChamp.toLowerCase().contains(recherche);
                             })
                             .toList()
             ));
