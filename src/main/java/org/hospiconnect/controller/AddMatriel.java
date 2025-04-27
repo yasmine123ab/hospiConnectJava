@@ -3,17 +3,16 @@ package org.hospiconnect.controller;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.*;
-import kotlin.text.UStringsKt;
 import org.hospiconnect.controller.laboratoire.SceneUtils;
 import org.hospiconnect.model.Materiel;
 import org.hospiconnect.service.MaterielService1;
 import javafx.event.ActionEvent;
 import javafx.fxml.*;
-import javafx.scene.Parent;
-import javafx.stage.Stage;
-
 import java.time.LocalDate;
-import java.time.ZoneId;
+import java.util.Properties;
+import jakarta.mail.*;
+import jakarta.mail.internet.InternetAddress;
+import jakarta.mail.internet.MimeMessage;
 
 
 public class AddMatriel {
@@ -32,19 +31,19 @@ public class AddMatriel {
     @FXML
     private TextField emplacement;
 
-
     @FXML
     private DatePicker date;
 
     @FXML
     private Button retourner;
+
     private final ObservableList<String> etats = FXCollections.observableArrayList(
             "Neuf", "Usagé", "En réparation"
     );
 
+    private Materiel materielEnCours;
 
     public void initialize() {
-
         retourner.setOnAction(e -> SceneUtils.openNewScene(
                 "/ListMateriel.fxml", retourner.getScene(), null));
     }
@@ -61,11 +60,9 @@ public class AddMatriel {
             return;
         }
         if (etat.getValue() == null) {
-            showErrorAlert("Le champ 'etat' est obligatoire.");
-            return ;
+            showErrorAlert("Le champ 'Etat' est obligatoire.");
+            return;
         }
-
-
         if (quantite.getText().isEmpty()) {
             showErrorAlert("Le champ 'Quantité' est obligatoire.");
             return;
@@ -90,11 +87,12 @@ public class AddMatriel {
             showErrorAlert("La quantité doit être un entier positif.");
             return;
         }
+
         // Vérification de la date
         LocalDate selectedDate = date.getValue();
         LocalDate today = LocalDate.now();
         if (selectedDate.isAfter(today)) {
-            showErrorAlert("La date doit être inférieure ou égale à la date d'aujourd'hui.");
+            showErrorAlert("La date doit être inférieure ou égale à aujourd'hui.");
             return;
         }
 
@@ -106,10 +104,17 @@ public class AddMatriel {
                 categorie.getText(),
                 etat.getValue(),
                 emplacement.getText(),
-                java.sql.Date.valueOf(date.getValue()));
+                java.sql.Date.valueOf(date.getValue())
+        );
 
         try {
             us.insert(m);
+
+            // Vérification seuil après insertion
+            int seuil = 5;
+            if (m.getQuantite() <= seuil) {
+                envoyerAlerteMail(m);
+            }
 
             // Message de succès
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -136,7 +141,6 @@ public class AddMatriel {
         }
     }
 
-    // Méthode pour afficher une alerte d'erreur avec un message personnalisé
     private void showErrorAlert(String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Erreur de saisie");
@@ -145,10 +149,7 @@ public class AddMatriel {
         alert.showAndWait();
     }
 
-    private Materiel materielEnCours;
-
     public void setMateriel(Materiel m) {
-        // Pré-remplir les champs ici
         this.materielEnCours = m;
         nom.setText(m.getNom());
         quantite.setText(String.valueOf(m.getQuantite()));
@@ -157,51 +158,86 @@ public class AddMatriel {
         emplacement.setText(m.getEmplacement());
         date.setValue(LocalDate.now());
 
-        // Validation des champs
-
-        // Vérification du nom
         if (m.getNom() == null || m.getNom().isEmpty()) {
             showErrorAlert("Le nom du matériel est obligatoire.");
             return;
         }
-
-        // Vérification de la catégorie
         if (m.getCategorie() == null || m.getCategorie().isEmpty()) {
             showErrorAlert("La catégorie du matériel est obligatoire.");
             return;
         }
-
-        // Vérification de l'état
         if (m.getEtat() == null || m.getEtat().isEmpty()) {
             showErrorAlert("L'état du matériel est obligatoire.");
             return;
         }
-
-        // Vérification de la quantité
         if (m.getQuantite() < 0) {
             showErrorAlert("La quantité du matériel ne peut pas être négative.");
             return;
         }
-
-        // Vérification de l'emplacement
         if (m.getEmplacement() == null || m.getEmplacement().isEmpty()) {
             showErrorAlert("L'emplacement du matériel est obligatoire.");
             return;
         }
 
-        // Vérification de la date
         LocalDate today = LocalDate.now();
         LocalDate selectedDate = date.getValue();
         if (selectedDate.isAfter(today)) {
-            showErrorAlert("La date doit être inférieure ou égale à la date d'aujourd'hui.");
+            showErrorAlert("La date doit être inférieure ou égale à aujourd'hui.");
             return;
         }
-
-        // Si tous les champs sont valides, procéder avec l'édition du matériel
-        // ... (votre logique pour mettre à jour le matériel)
     }
 
+    // 📩 Méthode pour envoyer un mail d'alerte
+    public void envoyerAlerteMail(Materiel materiel) {
+        String to = "saoudihamadi2003@gmail.com"; // <-- ici tu mets l'email du destinataire final (ex: ton chef, toi-même, un collègue...)
 
+        String from = "mahdisaoufi@gmail.com";       // <-- ici tu mets TON adresse Gmail d'envoi
 
+        String host = "smtp.gmail.com";           // <-- laisse comme ça pour Gmail
+
+        final String username = "mahdisaoufi@gmail.com";    // <-- TON adresse Gmail (pareil que "from")
+        final String password = "dbjq npas xbiv ecfz";     // <-- TON mot de passe d'application (voir ci-dessous 👇)
+
+        Properties props = new Properties();
+        props.put("mail.smtp.auth", "true");
+        props.put("mail.smtp.starttls.enable", "true");
+        props.put("mail.smtp.host", host);
+        props.put("mail.smtp.port", "587");
+
+        Session session = Session.getInstance(props,
+                new jakarta.mail.Authenticator() {
+                    protected PasswordAuthentication getPasswordAuthentication() {
+                        return new PasswordAuthentication(username, password);
+                    }
+                });
+
+        try {
+            Message message = new MimeMessage(session);
+            message.setFrom(new InternetAddress(from));
+            message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(to));
+            message.setSubject("Alerte - Stock Faible");
+
+            String emailContent = "<html>"
+                    + "<body>"
+                    + "<h2>Attention !</h2>"
+                    + "<p><strong>Le matériel</strong> : '" + materiel.getNom() + "'</p>"
+                    + "<p><strong>Quantité restante</strong> : " + materiel.getQuantite() + "</p>"
+                    + "<p><strong>Date de dernière mise à jour</strong> : " + materiel.getDate_ajout() + "</p>"
+                    + "<p><strong>Action requise</strong> : Merci de renouveler le stock dès que possible.</p>"
+                    + "<hr>"
+                    + "<p>Merci de votre attention.</p>"
+                    + "</body>"
+                    + "</html>";
+
+            message.setContent(emailContent, "text/html");
+
+            Transport.send(message);
+
+            System.out.println("Alerte email envoyée avec succès.");
+
+        } catch (MessagingException e) {
+            System.out.println("Erreur lors de l'envoi du mail : " + e.getMessage());
+        }
+    }
 
 }
