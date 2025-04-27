@@ -32,6 +32,9 @@ public class AjoutResultatAnalyseController {
     private Button menuHomeButton;
 
     @FXML
+    private CheckBox envoyerMailCheckBox;
+
+    @FXML
     private TextArea ResultatTextArea;
     @FXML
     private Button resultatAnalyseEnregistrerButton;
@@ -42,40 +45,48 @@ public class AjoutResultatAnalyseController {
         FermerFenetreButton.setOnAction(e -> ((Stage) FermerFenetreButton.getScene().getWindow()).close());
         ReduireFenetreButton.setOnAction(e -> ((Stage) ReduireFenetreButton.getScene().getWindow()).setIconified(true));
         resultatAnalyseEnregistrerButton.setOnAction(e -> {
-            analyse.setResultat(ResultatTextArea.getText());
+            String resultat = ResultatTextArea.getText();
+            if (resultat.isBlank()) {
+                String typeNom = typeAnalyseCrudService.findTypeNameById(analyse.getIdTypeAnalyse()).toLowerCase();
+                resultat = TypeAnalyseService.getInstance().getTemplate(typeNom);
+            }
+            analyse.setResultat(resultat);
             AnalyseCrudService.getInstance().update(analyse);
             // Génération du PDF avec Résultat + Commentaire IA
-            String pdfFilePath = "ResultatAnalyse.pdf";
-            ResultatAnalyseAiPdfService.getInstance().generateAnalysePdf(
-                    ResultatTextArea.getText(),
-                    pdfFilePath
-            );
+            if (envoyerMailCheckBox.isSelected()) {
+                String pdfFilePath = "ResultatAnalyse.pdf";
+                ResultatAnalyseAiPdfService.getInstance().generateAnalysePdf(
+                        resultat,
+                        pdfFilePath
+                );
 
-            // Envoyer l'email
-            try {
-                String patientEmail = UserServiceLight.getInstance().findUserEmailById(analyse.getIdPatient());
-                if (patientEmail != null && !patientEmail.isBlank()) {
-                    MailService.getInstance().sendEmailWithAttachment(
-                            patientEmail,
-                            "Résultat d'analyse médicale disponible",
-                            """
-                            Bonjour,
-                
-                            Vos résultats d'analyses sont désormais disponibles en pièce jointe (format PDF).
-                
-                            Merci de votre confiance,
-                            HospiConnect – votre partenaire santé.
-                            """,
-                            pdfFilePath
-                    );
+                // Envoyer l'email
+
+                try {
+                    String patientEmail = UserServiceLight.getInstance().findUserEmailById(analyse.getIdPatient());
+                    if (patientEmail != null && !patientEmail.isBlank()) {
+                        MailService.getInstance().sendEmailWithAttachment(
+                                patientEmail,
+                                "Résultat d'analyse médicale disponible",
+                                """
+                                        Bonjour,
+                                        
+                                        Vos résultats d'analyses sont désormais disponibles en pièce jointe (format PDF).
+                                        
+                                        Merci de votre confiance,
+                                        HospiConnect – votre partenaire santé.
+                                        """,
+                                pdfFilePath
+                        );
+                    }
+
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Erreur Email");
+                    alert.setContentText("L'envoi de l'email au patient a échoué.");
+                    alert.show();
                 }
-
-            } catch (Exception ex) {
-                ex.printStackTrace();
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Erreur Email");
-                alert.setContentText("L'envoi de l'email au patient a échoué.");
-                alert.show();
             }
 
             SceneUtils.openNewScene(

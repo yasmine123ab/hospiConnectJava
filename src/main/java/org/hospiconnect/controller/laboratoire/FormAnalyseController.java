@@ -6,6 +6,7 @@ import javafx.stage.Stage;
 import org.hospiconnect.model.laboratoire.Analyse;
 import org.hospiconnect.service.laboratoire.*;
 
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class FormAnalyseController {
@@ -206,42 +207,9 @@ public class FormAnalyseController {
         toSave.setIdRdv(analyseFormRdvComboBox.getValue() != null ? analyseFormRdvComboBox.getValue().getId() : null);
 
         Long newTypeAnalyse = analyseFormTypeAnalyseComboBox.getValue() != null ? analyseFormTypeAnalyseComboBox.getValue().getId() : null;
-        if (isNew || toSave.getIdTypeAnalyse()!= newTypeAnalyse) {
+        if (isNew || !Objects.equals(toSave.getIdTypeAnalyse(), newTypeAnalyse)) {
             String typeNom = typeAnalyseCrudService.findTypeNameById(newTypeAnalyse).toLowerCase();
-            String nouveauTemplate = switch (typeNom) {
-                case "bilan sanguin" -> """
-        Bilan sanguin:
-        Numération globulaire
-        Hématies: 
-        Hémoglobine: 
-        Hématocrite: 
-        VGM: 
-        TCMH:
-        Leucocytes:  
-        """;
-                case "analyse cholesterol" -> """
-        Analyse cholesterol:
-        Cholestérol total:
-        Triglycérides: 
-        HDL cholestérol: 
-        LDL cholestérol: 
-        """;
-                case "bilan urinaire" -> """
-        Bilan urinaire:
-        Leucocytes:
-        Hématies: 
-        Cellules rénales: 
-        Glucose: 
-        Protéines: 
-        """;
-                case "bilan inflammatoire" -> """
-        Bilan inflammatoire:
-        Protéine C réactive (CRP):
-        Vitesse de sédimentation (VS): 
-        Fibrinogène: 
-        """;
-                default -> "Résultat d’analyse: ";
-            };
+            String nouveauTemplate = TypeAnalyseService.getInstance().getTemplate(typeNom);
 
             toSave.setResultat(nouveauTemplate);
         }

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.TextField?>
@@ -60,18 +61,13 @@
             <Font name="System Bold" size="14.0" />
          </font>
       </Label>
-      <TextField fx:id="rdvAnalyseRechercherTextField" layoutX="326.0" layoutY="103.0" prefHeight="26.0" prefWidth="448.0" promptText="Patient/Date rdv..." />
+      <TextField fx:id="rdvAnalyseRechercherTextField" layoutX="326.0" layoutY="103.0" prefHeight="26.0" prefWidth="239.0" />
       <Button fx:id="rdvAnalyseTrierButton" layoutX="1100.0" layoutY="148.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="80.0" text="Trier" textFill="#3351c9">
          <font>
             <Font name="System Bold" size="14.0" />
          </font>
       </Button>
-      <Button fx:id="rdvAnalyseAjouterButton" layoutX="1123.0" layoutY="559.0" mnemonicParsing="false" text="Ajouter un Rdv" textFill="#3351c9">
-         <font>
-            <Font name="System Bold" size="14.0" />
-         </font>
-      </Button>
-      <Button fx:id="rdvAnalysePdfButton" layoutX="1116.0" layoutY="600.0" mnemonicParsing="false" text="Télécharger PDF" textFill="#3351c9">
+      <Button fx:id="rdvAnalyseAjouterButton" layoutX="1100.0" layoutY="571.0" mnemonicParsing="false" text="Ajouter un Rdv" textFill="#3351c9">
          <font>
             <Font name="System Bold" size="14.0" />
          </font>
@@ -111,5 +107,7 @@
          </children>
       </HBox>
       <ListView fx:id="rdvAnalyseListView" layoutX="244.0" layoutY="225.0" prefHeight="312.0" prefWidth="569.0" />
+      <ComboBox fx:id="rdvAnalyseRechercherComboBox" layoutX="589.0" layoutY="104.0" prefHeight="26.0" prefWidth="162.0" />
+      <ComboBox fx:id="rdvAnalyseTrierComboBox" layoutX="931.0" layoutY="150.0" prefWidth="150.0" />
    </children>
 </AnchorPane>

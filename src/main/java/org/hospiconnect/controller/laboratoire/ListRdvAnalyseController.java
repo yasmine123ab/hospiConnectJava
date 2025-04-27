@@ -23,6 +23,10 @@ public class ListRdvAnalyseController {
     private ListView<RdvAnalyse> rdvAnalyseListView;
 
     @FXML
+    private ComboBox<String> rdvAnalyseTrierComboBox;
+    @FXML
+    private ComboBox<String> rdvAnalyseRechercherComboBox;
+    @FXML
     private TextField rdvAnalyseRechercherTextField;
     @FXML
     private Button rdvAnalyseTrierButton;
@@ -46,6 +50,17 @@ public class ListRdvAnalyseController {
     @FXML
     public void initialize() {
         resetListItems();
+
+        // Remplir choix tri et recherche
+        rdvAnalyseTrierComboBox.setItems(FXCollections.observableArrayList(
+                "Patient", "Date Rdv", "Disponibilité"
+        ));
+        rdvAnalyseTrierComboBox.getSelectionModel().selectFirst();
+
+        rdvAnalyseRechercherComboBox.setItems(FXCollections.observableArrayList(
+                "Patient", "Date Rdv", "Disponibilité"
+        ));
+        rdvAnalyseRechercherComboBox.getSelectionModel().selectFirst();
 
         rdvAnalyseListView.setCellFactory(list -> new ListCell<>() {
             @Override
@@ -87,31 +102,48 @@ public class ListRdvAnalyseController {
         });
 
         rdvAnalyseTrierButton.setOnAction(e -> {
-            Comparator<RdvAnalyse> comparateur = Comparator.comparing(RdvAnalyse::getDateRdv);
-            if (!trierRdvCroissant) {
-                comparateur = comparateur.reversed();
+            String champ = rdvAnalyseTrierComboBox.getSelectionModel().getSelectedItem();
+            Comparator<RdvAnalyse> comparateur = null;
+
+            if ("Patient".equals(champ)) {
+                comparateur = Comparator.comparing(a -> userServiceLight.findUserNameById(a.getIdPatient()), String.CASE_INSENSITIVE_ORDER);
+            } else if ("Date Rdv".equals(champ)) {
+                comparateur = Comparator.comparing(RdvAnalyse::getDateRdv, Comparator.nullsLast(Comparator.naturalOrder()));
+            } else if ("Disponibilité".equals(champ)) {
+                comparateur = Comparator.comparing(a -> disponibiliteAnalyseCrudService.findDispoHDebutById(a.getIdDisponibilite()), String.CASE_INSENSITIVE_ORDER);
             }
 
-            var triListe = rdvAnalyseListView.getItems().stream()
-                    .sorted(comparateur)
-                    .toList();
-            rdvAnalyseListView.setItems(FXCollections.observableList(triListe));
-
-            trierRdvCroissant = !trierRdvCroissant;
+            if (comparateur != null) {
+                if (!trierRdvCroissant) {
+                    comparateur = comparateur.reversed();
+                }
+                var triListe = rdvAnalyseListView.getItems().stream()
+                        .sorted(comparateur)
+                        .toList();
+                rdvAnalyseListView.setItems(FXCollections.observableList(triListe));
+                trierRdvCroissant = !trierRdvCroissant;
+            }
         });
 
+        // --- Recherche dynamique avec setOnKeyReleased ---
         rdvAnalyseRechercherTextField.setOnKeyReleased(e -> {
             String recherche = rdvAnalyseRechercherTextField.getText().strip().toLowerCase();
+            String champChoisi = rdvAnalyseRechercherComboBox.getSelectionModel().getSelectedItem();
 
             rdvAnalyseListView.setItems(FXCollections.observableList(
                     analyseRdvCrudService.findAll().stream()
-                            .filter(a -> {
-                                String nomPatient = userServiceLight.findUserNameById(a.getIdPatient()).toLowerCase();
-                                String dateRdvStr = a.getDateRdv() != null ? a.getDateRdv().toString().toLowerCase() : "";
+                            .filter(rdv -> {
+                                String valeurChamp = "";
 
-                                return recherche.isBlank()
-                                        || nomPatient.contains(recherche)
-                                        || dateRdvStr.contains(recherche);
+                                if ("Patient".equals(champChoisi)) {
+                                    valeurChamp = userServiceLight.findUserNameById(rdv.getIdPatient());
+                                } else if ("Date Rdv".equals(champChoisi)) {
+                                    valeurChamp = rdv.getDateRdv() != null ? rdv.getDateRdv().toString() : "";
+                                } else if ("Disponibilité".equals(champChoisi)) {
+                                    valeurChamp = disponibiliteAnalyseCrudService.findDispoHDebutById(rdv.getIdDisponibilite());
+                                }
+
+                                return valeurChamp.toLowerCase().contains(recherche);
                             })
                             .toList()
             ));
