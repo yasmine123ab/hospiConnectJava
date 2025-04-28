@@ -1,13 +1,20 @@
 package org.hospiconnect.controller;
 
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.EncodeHintType;
+import com.google.zxing.common.BitMatrix;
+import com.google.zxing.qrcode.QRCodeWriter;
 import javafx.animation.PauseTransition;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
@@ -18,12 +25,15 @@ import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.hospiconnect.controller.laboratoire.SceneUtils;
 import org.hospiconnect.model.Materiel;
+import org.hospiconnect.model.MouvementMaterielJoint;
 import org.hospiconnect.service.MaterielService1;
 import javafx.event.ActionEvent;
 import javafx.fxml.*;
 import javafx.scene.Parent;
 import javafx.fxml.FXMLLoader;
+import org.hospiconnect.service.mouvementService;
 
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -109,9 +119,14 @@ public class afficherMateriel {
                         btnSupprimer.setStyle("-fx-background-color: #f44336; -fx-text-fill: white;");
                         btnSupprimer.setOnAction(e -> supprimerMateriel(item));
 
+                        Button btnQRCode = new Button("QR Code");
+                        btnQRCode.setStyle("-fx-background-color: #008CBA; -fx-text-fill: white;");
+                        btnQRCode.setOnAction(e -> afficherQRCode(item));
+
+
                         content.getChildren().addAll(
                                 nomLabel, qteLabel, catLabel, etatLabel, empLabel, dateLabel,
-                                btnModifier, btnSupprimer
+                                btnModifier, btnSupprimer,btnQRCode
                         );
                         setGraphic(content);
                     }
@@ -123,6 +138,62 @@ public class afficherMateriel {
             showAlert("Erreur", "Erreur lors du chargement des matériels", e.getMessage());
         }
     }
+    private void afficherQRCode(Materiel materiel) {
+        try {
+            // Récupère les mouvements pour le matériel
+            mouvementService service = new mouvementService();
+            List<MouvementMaterielJoint> mouvements = service.getMouvementsByMaterielId(materiel.getId());
+
+            if (mouvements.isEmpty()) {
+                showAlert("Aucun mouvement", "Ce matériel n'a pas de mouvements enregistrés", "");
+                return;
+            }
+
+            // Construction du contenu du QR Code
+            StringBuilder qrContent = new StringBuilder("Historique des mouvements pour: " + materiel.getNom() + "\n\n");
+            for (MouvementMaterielJoint mouvement : mouvements) {
+                qrContent.append("Date: ").append(mouvement.getDateMouvement()).append("\n");
+                qrContent.append("Type: ").append(mouvement.getTypeMouvement()).append("\n");
+                qrContent.append("Quantité: ").append(mouvement.getQuantite()).append("\n");
+                qrContent.append("Motif: ").append(mouvement.getMotif()).append("\n\n");
+            }
+
+            // Génération du QR Code
+            QRCodeWriter qrCodeWriter = new QRCodeWriter();
+            Map<EncodeHintType, Object> hints = new HashMap<>();
+            hints.put(EncodeHintType.MARGIN, 1);  // Réduit la marge autour du QR Code
+            BitMatrix bitMatrix = qrCodeWriter.encode(qrContent.toString(), BarcodeFormat.QR_CODE, 200, 200, hints);
+
+            // Conversion du BitMatrix en BufferedImage
+            BufferedImage bufferedImage = new BufferedImage(200, 200, BufferedImage.TYPE_INT_RGB);
+            for (int i = 0; i < 200; i++) {
+                for (int j = 0; j < 200; j++) {
+                    bufferedImage.setRGB(i, j, bitMatrix.get(i, j) ? 0x000000 : 0xFFFFFF);  // Noir ou blanc
+                }
+            }
+
+            // Conversion du BufferedImage en Image JavaFX
+            Image qrCodeImage = SwingFXUtils.toFXImage(bufferedImage, null);
+
+            // Affichage du QR code dans un ImageView
+            ImageView qrCodeView = new ImageView(qrCodeImage);
+            qrCodeView.setFitWidth(200);
+            qrCodeView.setFitHeight(200);
+
+            // Affichage du QR Code dans une nouvelle fenêtre
+            Stage qrStage = new Stage();
+            qrStage.setTitle("QR Code - Historique des mouvements");
+            VBox vbox = new VBox(qrCodeView);
+            Scene qrScene = new Scene(vbox);
+            qrStage.setScene(qrScene);
+            qrStage.show();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            showAlert("Erreur", "Impossible de générer le QR Code", e.getMessage());
+        }
+    }
+
 
     // Export vers Excel
     private void exporterVersExcel() {
