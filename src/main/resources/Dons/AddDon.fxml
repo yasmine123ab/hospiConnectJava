@@ -15,7 +15,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane prefHeight="400.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.hospiconnect.controller.dons.AddDon">
+<BorderPane prefHeight="552.0" prefWidth="935.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.hospiconnect.controller.dons.AddDon">
 
     <!-- ===== MENU LATÉRAL GAUCHE ===== -->
     <left>
@@ -82,17 +82,7 @@
                     </font></Button>
             </HBox>
 
-            <HBox alignment="CENTER_LEFT" spacing="10">
-                <ImageView fitHeight="28.0" fitWidth="27.0">
-                    <image>
-                        <Image url="@../icons/pdf.png" /> <!-- icône PDF -->
-                    </image>
-                </ImageView>
-                <Button prefHeight="26.0" prefWidth="134.0" text="Exporter PDF">
-                    <font>
-                        <Font name="System Bold Italic" size="14.0" />
-                    </font></Button>
-            </HBox>
+
             <HBox alignment="CENTER_LEFT" spacing="10">
                 <Button fx:id="menuHomeButton" prefHeight="26.0" prefWidth="134.0" text="Home">
                     <font>

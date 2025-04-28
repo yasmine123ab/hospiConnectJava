@@ -12,14 +12,19 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import org.hospiconnect.controller.laboratoire.SceneUtils;
 import org.hospiconnect.model.AttributionsDons;
+import org.hospiconnect.model.DemandesDons;
 import org.hospiconnect.service.AttributionDonService;
+import org.hospiconnect.service.laboratoire.UserServiceLight;
+import org.xhtmlrenderer.pdf.ITextRenderer;
 
 
-
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
@@ -39,9 +44,11 @@ public class ShowAttribution {
     private javafx.scene.control.TextField searchField;
 
     @FXML private Button sortButton;
+    @FXML private Button exportPdfButton;
 
     private final AttributionDonService attributionDonService = new AttributionDonService();
     private List<AttributionsDons> attributionsDons = new ArrayList<>();
+    private final UserServiceLight userServiceLight = UserServiceLight.getInstance();
     private boolean isAscending = true;
 
     private final AttributionDonService attributionService = new AttributionDonService();
@@ -106,6 +113,22 @@ public class ShowAttribution {
         try {
             attributionsDons = attributionService.findAll(); // On garde la liste originale pour tri/filtrage
             displayFilteredAttributions(attributionsDons, "");
+            // Export PDF
+            exportPdfButton.setOnAction(e -> {
+                FileChooser chooser = new FileChooser();
+                chooser.setTitle("Enregistrer PDF");
+                chooser.setInitialFileName("attributions.pdf");
+                chooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("PDF", "*.pdf"));
+                File out = chooser.showSaveDialog(exportPdfButton.getScene().getWindow());
+                if (out != null) {
+                    try {
+                        exportToPdf(out);
+                        showSuccessAlert("Succès", "PDF généré : " + out.getAbsolutePath());
+                    } catch (Exception ex) {
+                        showErrorAlert("Erreur PDF", ex.getMessage());
+                    }
+                }
+            });
         } catch (SQLException e) {
             showErrorAlert("Erreur de récupération", "Erreur lors de la récupération des attributions : " + e.getMessage());
         }
@@ -276,7 +299,66 @@ public class ShowAttribution {
 
         return card;
     }
+    private void exportToPdf(File file) throws Exception {
+        String logoUri = getClass().getResource("/images/logo.png").toURI().toString();
+        StringBuilder html = new StringBuilder();
 
+        html.append("<html xmlns=\"http://www.w3.org/1999/xhtml\">")
+                .append("<head>")
+                .append("<meta charset='UTF-8'/>")
+                .append("<style>")
+                .append("body { font-family: Arial, sans-serif; }")
+                .append("h2 { text-align: center; color: #333; }")
+                .append(".logo { display: block; margin: 0 auto 20px auto; width: 100px; }")
+                .append("table { width: 100%; border-collapse: collapse; margin-top: 20px; }")
+                .append("th, td { border: 1px solid #ccc; padding: 8px; text-align: center; }")
+                .append("th { background-color: #f2f2f2; }")
+                .append("</style>")
+                .append("</head>")
+                .append("<body>")
+                .append("<img src='").append(logoUri).append("' class='logo'/>")
+                .append("<h2>Liste des attributions</h2>")
+                .append("<table>")
+                .append("<thead>")
+                .append("<tr>")
+                .append("<th>Bénéficiaire</th>")
+                .append("<th>Statut</th>")
+                .append("<th>Don</th>")
+                .append("<th>Date d'attribution</th>")
+                .append("</tr>")
+                .append("</thead>")
+                .append("<tbody>");
+
+        SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+        for (AttributionsDons d : attributionsDons) {
+            html.append("<tr>");
+
+            String nomBeneficiaire = "Inconnu";
+            if (d.getBeneficiaireId() != 0 && d.getBeneficiaire() != null) {
+                nomBeneficiaire = d.getBeneficiaire().getNom() + " " + d.getBeneficiaire().getPrenom();
+            }
+
+            html.append("<td>").append(nomBeneficiaire).append("</td>")
+                    .append("<td>").append(d.getStatut()).append("</td>")
+                    .append("<td>").append(d.getDon().getTypeDon()).append("</td>")
+                    .append("<td>").append(df.format(d.getDateAttribution())).append("</td>")
+                    .append("</tr>");
+        }
+
+
+        html.append("</tbody>")
+                .append("</table>")
+                .append("</body>")
+                .append("</html>");
+
+        ITextRenderer renderer = new ITextRenderer();
+        renderer.setDocumentFromString(html.toString());
+        renderer.layout();
+
+        try (FileOutputStream os = new FileOutputStream(file)) {
+            renderer.createPDF(os);
+        }
+    }
     private void showSuccessAlert(String title, String message) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle(title);

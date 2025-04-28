@@ -10,11 +10,16 @@ import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import org.hospiconnect.controller.laboratoire.SceneUtils;
 import org.hospiconnect.model.DemandesDons;
 import org.hospiconnect.service.DemandeDonService;
+import org.hospiconnect.service.laboratoire.UserServiceLight;
+import org.xhtmlrenderer.pdf.ITextRenderer;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
@@ -29,9 +34,12 @@ public class ShowDemande {
     @FXML private Button menuHomeButton;
     @FXML private TextField searchField;
     @FXML private Button sortButton;
+    @FXML private Button exportPdfButton;
+
 
     private final DemandeDonService demandeService = new DemandeDonService();
     private List<DemandesDons> demandeList = new ArrayList<>();
+    private final UserServiceLight userServiceLight = UserServiceLight.getInstance();
     private boolean isAscending = true;
 
     @FXML
@@ -49,6 +57,22 @@ public class ShowDemande {
 
             // Tri
             sortButton.setOnAction(e -> sortDemandesByType());
+            // Export PDF
+            exportPdfButton.setOnAction(e -> {
+                FileChooser chooser = new FileChooser();
+                chooser.setTitle("Enregistrer PDF");
+                chooser.setInitialFileName("demandes.pdf");
+                chooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("PDF", "*.pdf"));
+                File out = chooser.showSaveDialog(exportPdfButton.getScene().getWindow());
+                if (out != null) {
+                    try {
+                        exportToPdf(out);
+                        showSuccessAlert("Succès", "PDF généré : " + out.getAbsolutePath());
+                    } catch (Exception ex) {
+                        showErrorAlert("Erreur PDF", ex.getMessage());
+                    }
+                }
+            });
 
         } catch (SQLException e) {
             showErrorAlert("Erreur de récupération", "Erreur lors de la récupération des demandes : " + e.getMessage());
@@ -201,6 +225,68 @@ public class ShowDemande {
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+    private void exportToPdf(File file) throws Exception {
+        // Chemin vers le logo depuis le classpath
+        String logoUri = getClass().getResource("/images/logo.png").toURI().toString();
+
+        StringBuilder html = new StringBuilder();
+        html.append("<html><head><style>")
+                // style global
+                .append("body{font-family:Arial,sans-serif;margin:20px;} ")
+                // logo
+                .append(".logo{display:block;margin:0 auto 20px auto;width:150px;} ")
+                // titre centré et coloré
+                .append("h2{text-align:center;color:#4CAF50;margin-bottom:20px;} ")
+                // style tableau
+                .append("table{width:100%;border-collapse:collapse;font-size:12px;} ")
+                .append("th{background-color:#4CAF50;color:white;padding:8px;text-align:left;} ")
+                .append("td{padding:6px;border:1px solid #ddd;} ")
+                .append("tr:nth-child(even){background-color:#f9f9f2;} ")
+                .append("</style></head><body>")
+                // insertion du logo
+                .append("<img src=\"").append(logoUri).append("\" class=\"logo\"/>")
+                // titre
+                .append("<h2>Liste des demandes de dons</h2>")
+                // entêtes du tableau
+                .append("<table><thead><tr>")
+                .append("<th>Patient</th>")
+                .append("<th>Type de Besoin</th>")
+                .append("<th>Détails</th>")
+                .append("<th>Date</th>")
+                .append("<th>Statut</th>")
+                .append("</tr></thead><tbody>");
+
+        SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+        for (DemandesDons d : demandeList) {
+            // Récupération sécurisée du nom du patient
+            String patientName = "Inconnu";
+            if (d.getPatient() != null) {
+                patientName = d.getPatient().getNom() + " " + d.getPatient().getPrenom();
+            }
+
+            String formattedDate = d.getDateDemande() != null
+                    ? df.format(d.getDateDemande())
+                    : "";
+
+            html.append("<tr>")
+                    .append("<td>").append(patientName).append("</td>")
+                    .append("<td>").append(d.getTypeBesoin()).append("</td>")
+                    .append("<td>").append(d.getDetails()).append("</td>")
+                    .append("<td>").append(formattedDate).append("</td>")
+                    .append("<td>").append(d.getStatut()).append("</td>")
+                    .append("</tr>");
+        }
+
+        html.append("</tbody></table></body></html>");
+
+        // génération du PDF avec Flying-Saucer / iText
+        ITextRenderer renderer = new ITextRenderer();
+        renderer.setDocumentFromString(html.toString());
+        renderer.layout();
+        try (FileOutputStream os = new FileOutputStream(file)) {
+            renderer.createPDF(os);
         }
     }
 

@@ -161,7 +161,7 @@ public class ModifyDon {
                 return;
             }
 
-    // Vérification du donateur
+            // Vérification du donateur
             if (donateurComboBox.getValue() == null) {
                 showErrorAlert("Erreur", "Un donateur doit être sélectionné.");
                 return; // Arrêter l'exécution si aucun donateur n'est sélectionné
@@ -211,4 +211,3 @@ public class ModifyDon {
         alert.showAndWait();
     }
 }
-
