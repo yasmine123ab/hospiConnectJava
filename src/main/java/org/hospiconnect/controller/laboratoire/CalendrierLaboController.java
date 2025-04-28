@@ -131,42 +131,57 @@ public class CalendrierLaboController {
         LocalDate startOfWeek = currentDate.with(DayOfWeek.MONDAY);
         monthYearLabel.setText("Semaine du " + startOfWeek.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
 
+        calendarGrid.getChildren().clear();
+        calendarGrid.getColumnConstraints().clear();
+        calendarGrid.getRowConstraints().clear();
+
         for (int i = 0; i <= 7; i++) {
             ColumnConstraints cc = new ColumnConstraints();
-            cc.setPrefWidth(i == 0 ? 80 : 130);
+            cc.setPrefWidth(i == 0 ? 80 : 150);
             calendarGrid.getColumnConstraints().add(cc);
         }
-
-        for (int i = 0; i <= (16 - 8) * 2 + 1; i++) {
+        for (int i = 0; i <= 8; i++) {
             RowConstraints rc = new RowConstraints();
-            rc.setPrefHeight(40);
+            rc.setPrefHeight(60);
             calendarGrid.getRowConstraints().add(rc);
         }
 
+        // En-tête jours
         for (int i = 0; i < 7; i++) {
             Label dayLabel = createCell(startOfWeek.plusDays(i).getDayOfWeek().getDisplayName(TextStyle.SHORT, Locale.FRENCH), true);
             calendarGrid.add(dayLabel, i + 1, 0);
         }
 
-        for (int i = 0, hour = 8; hour <= 16; hour++, i += 2) {
+        // Heures sur la première colonne
+        for (int hour = 8; hour <= 16; hour++) {
             Label hourLabel = createCell(hour + ":00", true);
-            calendarGrid.add(hourLabel, 0, i + 1);
-            if (hour < 16) {
-                Label halfHourLabel = createCell(hour + ":30", true);
-                calendarGrid.add(halfHourLabel, 0, i + 2);
-            }
+            calendarGrid.add(hourLabel, 0, (hour - 8) + 1);
         }
 
-        for (DisponibiliteAnalyse dispo : dispos) {
-            if (!dispo.getDispo().isBefore(startOfWeek) && !dispo.getDispo().isAfter(startOfWeek.plusDays(6))) {
-                int col = dispo.getDispo().getDayOfWeek().getValue();
-                int startRow = ((dispo.getDebut().getHour() - 8) * 2) + (dispo.getDebut().getMinute() >= 30 ? 1 : 0) + 1;
-                int endRow = ((dispo.getFin().getHour() - 8) * 2) + (dispo.getFin().getMinute() > 0 ? 1 : 0) + 1;
-                int rowSpan = Math.max(1, endRow - startRow);
+        // Organiser les disponibilités par jour et par heure
+        for (int day = 0; day < 7; day++) {
+            LocalDate date = startOfWeek.plusDays(day);
+            List<DisponibiliteAnalyse> disposDuJour = dispos.stream()
+                    .filter(d -> d.getDispo().equals(date))
+                    .sorted((d1, d2) -> d1.getDebut().compareTo(d2.getDebut()))
+                    .toList();
 
-                Label event = createCell(dispo.getDebut() + " - " + dispo.getFin() + " (" + dispo.getNbrPlaces() + ")", false);
-                event.setStyle(event.getStyle() + "-fx-background-color: #90ee90; -fx-background-radius: 5px;");
-                calendarGrid.add(event, col, startRow, 1, rowSpan);
+            for (int hour = 8; hour <= 16; hour++) {
+                VBox box = new VBox();
+                box.setStyle("-fx-border-color: #cccccc; -fx-border-width: 0.5px;");
+                box.setPrefHeight(60);
+                box.setPrefWidth(150);
+
+                for (DisponibiliteAnalyse dispo : disposDuJour) {
+                    if (dispo.getDebut().getHour() == hour) {
+                        Label event = new Label(dispo.getDebut() + " - " + dispo.getFin() + " (" + dispo.getNbrPlaces() + ")");
+                        event.setStyle("-fx-background-color: #90ee90; -fx-background-radius: 5px; -fx-padding: 2; -fx-border-color: #008000; -fx-border-width: 0.5px;");
+                        event.setMaxWidth(Double.MAX_VALUE);
+                        box.getChildren().add(event);
+                    }
+                }
+
+                calendarGrid.add(box, day + 1, (hour - 8) + 1);
             }
         }
     }
@@ -178,6 +193,7 @@ public class CalendrierLaboController {
         label.setMaxHeight(Double.MAX_VALUE);
         return label;
     }
+
 
     private void showDisponibilitesPopup(LocalDate date, List<DisponibiliteAnalyse> dispos) {
         List<DisponibiliteAnalyse> dayDispos = dispos.stream()
