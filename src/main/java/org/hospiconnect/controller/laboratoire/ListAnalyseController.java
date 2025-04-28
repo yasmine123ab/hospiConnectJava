@@ -59,6 +59,8 @@ public class ListAnalyseController {
     private Button menuHospiChatButton;
     @FXML
     private Button menuHomeButton;
+    @FXML
+    private Button menuCalendrierButton;
 
     @FXML
     public void initialize() {
@@ -241,6 +243,8 @@ public class ListAnalyseController {
                 "/laboratoireBack/dashboardLabo.fxml", menuDashboardButton.getScene(), null));
         menuHospiChatButton.setOnAction(e -> SceneUtils.openNewScene(
                 "/laboratoireBack/hospiChatLabo.fxml", menuHospiChatButton.getScene(), null));
+        menuCalendrierButton.setOnAction(e -> SceneUtils.openNewScene(
+                "/laboratoireBack/calendrierLabo.fxml", menuCalendrierButton.getScene(), null));
         menuHomeButton.setOnAction(e -> SceneUtils.openNewScene(
                 "/HomePages/backList.fxml", menuHomeButton.getScene(), null));
     }
