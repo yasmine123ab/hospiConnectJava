@@ -51,6 +51,9 @@ public class afficherMateriel {
 
     @FXML
     private TextField recherche;
+    @FXML
+    private ComboBox<String> critereRecherche;
+
 
     private boolean triCroissant = false;
     private final PauseTransition pauseQueue = new PauseTransition(Duration.millis(300));
@@ -76,6 +79,11 @@ public class afficherMateriel {
 
         // Affichage initial des matériels
         afficherMateriels(null);
+        critereRecherche.setItems(FXCollections.observableArrayList(
+                "Nom", "Catégorie", "État", "Emplacement", "Quantité", "Date d'ajout"
+        ));
+        critereRecherche.getSelectionModel().selectFirst(); // Sélectionner "Nom" par défaut
+
     }
 
     @FXML
@@ -263,17 +271,31 @@ public class afficherMateriel {
             return;
         }
 
+        String critere = critereRecherche.getSelectionModel().getSelectedItem();
+
         try {
             MaterielService1 service = new MaterielService1();
             List<Materiel> tousMateriels = service.findAll();
 
             List<Materiel> materielsFiltres = tousMateriels.stream()
-                    .filter(m -> m.getNom().toLowerCase().contains(motCle.toLowerCase()) ||
-                            m.getCategorie().toLowerCase().contains(motCle.toLowerCase()) ||
-                            m.getEtat().toLowerCase().contains(motCle.toLowerCase()) ||
-                            m.getEmplacement().toLowerCase().contains(motCle.toLowerCase()) ||
-                            String.valueOf(m.getQuantite()).contains(motCle) ||
-                            m.getDate_ajout().toString().contains(motCle))
+                    .filter(m -> {
+                        switch (critere) {
+                            case "Nom":
+                                return m.getNom().toLowerCase().contains(motCle.toLowerCase());
+                            case "Catégorie":
+                                return m.getCategorie().toLowerCase().contains(motCle.toLowerCase());
+                            case "État":
+                                return m.getEtat().toLowerCase().contains(motCle.toLowerCase());
+                            case "Emplacement":
+                                return m.getEmplacement().toLowerCase().contains(motCle.toLowerCase());
+                            case "Quantité":
+                                return String.valueOf(m.getQuantite()).contains(motCle);
+                            case "Date d'ajout":
+                                return m.getDate_ajout().toString().contains(motCle);
+                            default:
+                                return true;
+                        }
+                    })
                     .collect(Collectors.toList());
 
             matrielTable.getItems().clear();
@@ -284,6 +306,7 @@ public class afficherMateriel {
             showAlert("Erreur de recherche", "Une erreur est survenue", e.getMessage());
         }
     }
+
 
     private void modifierMateriel(Materiel m) {
         try {
