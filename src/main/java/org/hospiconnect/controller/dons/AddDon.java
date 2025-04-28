@@ -52,6 +52,10 @@ public class AddDon {
     private Button revenirButton;
     @FXML
     private Button menuHomeButton;
+    @FXML
+    private CheckBox disponibilite1CheckBox;
+    @FXML
+    private CheckBox disponibilite2CheckBox;
 
     private DonService donService;
     private final TwilioService twilioService = new TwilioService();  // ① on instancie Twilio
@@ -117,6 +121,17 @@ public class AddDon {
 
         menuHomeButton.setOnAction(e -> SceneUtils.openNewScene(
                 "/HomePages/frontList.fxml", menuHomeButton.getScene(), null));
+        disponibilite1CheckBox.setOnAction(event -> {
+            if (disponibilite1CheckBox.isSelected()) {
+                disponibilite2CheckBox.setSelected(false);
+            }
+        });
+
+        disponibilite2CheckBox.setOnAction(event -> {
+            if (disponibilite2CheckBox.isSelected()) {
+                disponibilite1CheckBox.setSelected(false);
+            }
+        });
 
         try {
             ObservableList<User> donateurs = FXCollections.observableArrayList(loadUsersFromDB());
@@ -220,6 +235,7 @@ public class AddDon {
             String montantStr = montantTF.getText().trim();
             LocalDate selectedDate = dateDonDP.getValue();
 
+
             // Vérifications
             if (type.isEmpty()) {
                 showAlert(Alert.AlertType.WARNING, "Champ requis", "Le type de don est obligatoire.");
@@ -267,7 +283,18 @@ public class AddDon {
             don.setDateDon(Date.valueOf(selectedDate));
             don.setDonateurId(selectedDonateur.getId());
             don.setDonateur(selectedDonateur); // 🔥 Important !
-            don.setDisponibilite(true); // Par défaut
+
+            // Disponibilité selon le checkbox
+            boolean disponibilite;
+            if (disponibilite1CheckBox.isSelected()) {
+                disponibilite = true;
+            } else if (disponibilite2CheckBox.isSelected()) {
+                disponibilite = false;
+            } else {
+                showAlert(Alert.AlertType.WARNING, "Disponibilité manquante", "Veuillez choisir la disponibilité.");
+                return;
+            }
+            don.setDisponibilite(disponibilite);
 
             // Paiement Stripe si montant > 0
             if (montant > 0) {

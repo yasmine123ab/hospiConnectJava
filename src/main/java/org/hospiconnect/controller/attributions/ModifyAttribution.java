@@ -2,7 +2,12 @@ package org.hospiconnect.controller.attributions;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 import org.hospiconnect.controller.laboratoire.SceneUtils;
@@ -13,6 +18,7 @@ import org.hospiconnect.model.User;
 import org.hospiconnect.service.AttributionDonService;
 import org.hospiconnect.utils.DatabaseUtils;
 
+import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -243,6 +249,32 @@ public class ModifyAttribution {
     public void handleCancel() {
         if (saveButton != null) {
             ((Stage) saveButton.getScene().getWindow()).close();
+        }
+    }
+    @FXML
+    public void handleFaireUnDonClick(ActionEvent event) {
+        openScene("/Dons/ShowDon.fxml", event);
+    }
+
+    @FXML
+    public void handleFaireUneDemandeClick(ActionEvent event) {
+        openScene("/Demandes/ShowDemande.fxml", event);
+    }
+
+    @FXML
+    public void handleFaireUneAttributionClick(ActionEvent event) {
+        openScene("/Attributions/ShowAttribution.fxml", event);
+    }
+    private void openScene(String fxmlPath, ActionEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
+            Parent root = loader.load();
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            Scene scene = new Scene(root);
+            stage.setScene(scene);
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
