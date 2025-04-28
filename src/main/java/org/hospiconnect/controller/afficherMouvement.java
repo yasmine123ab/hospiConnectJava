@@ -173,10 +173,10 @@ public class afficherMouvement {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/AddMouvement.fxml"));
             Parent root = loader.load();
 
-            Stage stage = new Stage();
-            stage.setTitle("Ajouter mouvement");
-            stage.setScene(new javafx.scene.Scene(root));
-            stage.show();
+            Stage stageActuel1 = (Stage) mouvementTable.getScene().getWindow();
+            stageActuel1.setTitle("Ajouter mouvement");
+            stageActuel1.setScene(new javafx.scene.Scene(root));
+            stageActuel1.show();
 
         } catch (Exception e) {
             showAlert("Erreur", "Impossible d'ouvrir la fenêtre", "❌ Une erreur est survenue lors de l'ouverture de la fenêtre de mouvement.");

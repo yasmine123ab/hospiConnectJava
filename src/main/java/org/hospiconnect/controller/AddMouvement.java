@@ -19,10 +19,10 @@ public class AddMouvement {
     private DatePicker date_mouvement;
 
     @FXML
-    private ComboBox<String> id_matriel;
+    private TextField id_matriel;
 
     @FXML
-    private ComboBox<String> id_personnelll;
+    private TextField id_personnelll;
 
     @FXML
     private TextField motif;
@@ -43,8 +43,8 @@ public class AddMouvement {
         try {
             // Créer un objet mouvement_stock à partir des champs
             mouvement_stock m = new mouvement_stock();
-            m.setId_materiel_id(Integer.parseInt(id_matriel.getValue()));
-            m.setId_personnel_id(Integer.parseInt(id_personnelll.getValue()));
+            m.setId_materiel_id(Integer.parseInt(id_matriel.getText()));
+            m.setId_personnel_id(Integer.parseInt(id_personnelll.getText()));
             m.setQunatite(Integer.parseInt(qunatite.getText()));
             m.setDate_mouvement(Date.valueOf(date_mouvement.getValue()));
             m.setMotif(motif.getText());
@@ -62,8 +62,8 @@ public class AddMouvement {
             alert.showAndWait();
 
             // Réinitialiser les champs
-            id_matriel.getSelectionModel().selectFirst();
-            id_personnelll.getSelectionModel().selectFirst();
+            id_matriel.clear();
+            id_personnelll.clear();
             qunatite.clear();
             motif.clear();
             type_mouvement.clear();
@@ -82,13 +82,13 @@ public class AddMouvement {
     // Validation des champs
     private boolean validateForm() {
         // Vérification de l'ID matériel
-        if (id_matriel.getValue().isEmpty()) {
+        if (id_matriel.getText().isEmpty()) {
             showErrorAlert("L'ID du matériel est obligatoire.");
             return false;
         }
 
         // Vérification de l'ID personnel
-        if (id_personnelll.getValue().isEmpty()) {
+        if (id_personnelll.getText().isEmpty()) {
             showErrorAlert("L'ID du personnel est obligatoire.");
             return false;
         }
@@ -135,8 +135,8 @@ public class AddMouvement {
         this.mouvementExistant = m;
 
         // Remplir les champs avec les données du mouvement à modifier
-        id_matriel.setValue(String.valueOf(m.getNomMateriel()));
-        id_personnelll.setValue(String.valueOf(m.getNomPersonnel()));
+        id_matriel.setText(String.valueOf(m.getNomMateriel()));
+        id_personnelll.setText(String.valueOf(m.getNomPersonnel()));
         qunatite.setText(String.valueOf(m.getQuantite()));
         motif.setText(m.getMotif());
         type_mouvement.setText(m.getTypeMouvement());

@@ -3,31 +3,36 @@ package org.hospiconnect.controller;
 import javafx.animation.PauseTransition;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 import javafx.util.Duration;
+import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.hospiconnect.controller.laboratoire.SceneUtils;
 import org.hospiconnect.model.Materiel;
-import org.hospiconnect.model.laboratoire.Analyse;
 import org.hospiconnect.service.MaterielService1;
 import javafx.event.ActionEvent;
 import javafx.fxml.*;
 import javafx.scene.Parent;
-import javafx.stage.Stage;
 import javafx.fxml.FXMLLoader;
-import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
-import javafx.scene.control.ListView;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class afficherMateriel {
+
     @FXML
     private ListView<Materiel> matrielTable;
 
@@ -45,12 +50,18 @@ public class afficherMateriel {
         menuHomeButton.setOnAction(e -> SceneUtils.openNewScene(
                 "/HomePages/backList.fxml", menuHomeButton.getScene(), null));
 
-        // Configuration de la recherche avec délai
-        // Remplacer cette partie dans la méthode initialize()
-        recherche.textProperty().addListener((observable, oldValue, newValue) -> {
-            pauseQueue.setOnFinished(event -> filtrerMateriels(newValue)); // Ajout du paramètre 'event'
-            pauseQueue.playFromStart();
+        // Ajout du bouton "Exporter vers Excel"
+        Button exportExcelButton = new Button("Exporter Excel");
+        exportExcelButton.setStyle("-fx-background-color: #3F51B5; -fx-text-fill: white;");
+        exportExcelButton.setOnAction(e -> exporterVersExcel());
 
+        HBox buttonsBox = new HBox(10, menuHomeButton, exportExcelButton);
+        ((VBox) matrielTable.getParent()).getChildren().add(0, buttonsBox);  // ajouter le bouton en haut
+
+        // Configuration de la recherche avec délai
+        recherche.textProperty().addListener((observable, oldValue, newValue) -> {
+            pauseQueue.setOnFinished(event -> filtrerMateriels(newValue));
+            pauseQueue.playFromStart();
         });
 
         // Affichage initial des matériels
@@ -113,9 +124,70 @@ public class afficherMateriel {
         }
     }
 
+    // Export vers Excel
+    private void exporterVersExcel() {
+        try {
+            Workbook workbook = new XSSFWorkbook();
+            Sheet sheet = workbook.createSheet("Matériels");
+
+            // Entêtes
+            Row headerRow = sheet.createRow(0);
+            String[] columns = {
+                    "Nom", "Quantité", "Référence", "Disponibilité", "Catégorie",
+                    "État", "Emplacement", "Date d'ajout", "Âge (mois)", "Commentaire automatique"
+            };
+
+            for (int i = 0; i < columns.length; i++) {
+                Cell cell = headerRow.createCell(i);
+                cell.setCellValue(columns[i]);
+            }
+
+            // Remplissage des données
+            int rowNum = 1;
+            for (Materiel materiel : matrielTable.getItems()) {
+                Row row = sheet.createRow(rowNum++);
+
+                int ageMois = calculerAgeEnMois(materiel.getDate_ajout());
+                String commentaire = genererCommentaire(materiel);
+
+                row.createCell(0).setCellValue(materiel.getNom());
+                row.createCell(1).setCellValue(materiel.getQuantite());
+                row.createCell(2).setCellValue("MAT-" + String.format("%05d", materiel.getId())); // Référence formatée
+                row.createCell(3).setCellValue(materiel.getQuantite() > 0 ? 1 : 0); // Disponibilité (1 ou 0)
+                row.createCell(4).setCellValue(materiel.getCategorie());
+                row.createCell(5).setCellValue(materiel.getEtat());
+                row.createCell(6).setCellValue(materiel.getEmplacement());
+                row.createCell(7).setCellValue(materiel.getDate_ajout() != null ? materiel.getDate_ajout().toString() : "");
+                row.createCell(8).setCellValue(ageMois + " mois");
+                row.createCell(9).setCellValue(commentaire);
+            }
+
+            // Auto-size colonnes
+            for (int i = 0; i < columns.length; i++) {
+                sheet.autoSizeColumn(i);
+            }
+
+            // Choix de l'emplacement du fichier
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.setTitle("Enregistrer le fichier Excel");
+            fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Excel Files", "*.xlsx"));
+            File file = fileChooser.showSaveDialog(matrielTable.getScene().getWindow());
+
+            if (file != null) {
+                FileOutputStream fileOut = new FileOutputStream(file);
+                workbook.write(fileOut);
+                fileOut.close();
+                workbook.close();
+
+                showInformation("Succès", "Exportation réussie", "✅ Les matériels ont été exportés avec succès.");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            showAlert("Erreur", "Erreur d'exportation", e.getMessage());
+        }
+    }
     private void filtrerMateriels(String motCle) {
         if (motCle == null || motCle.isEmpty()) {
-            // Si le champ est vide, afficher tous les matériels
             afficherMateriels(null);
             return;
         }
@@ -124,23 +196,20 @@ public class afficherMateriel {
             MaterielService1 service = new MaterielService1();
             List<Materiel> tousMateriels = service.findAll();
 
-            // Filtrer la liste
             List<Materiel> materielsFiltres = tousMateriels.stream()
-                    .filter(m ->
-                            m.getNom().toLowerCase().contains(motCle.toLowerCase()) ||
-                                    m.getCategorie().toLowerCase().contains(motCle.toLowerCase()) ||
-                                    m.getEtat().toLowerCase().contains(motCle.toLowerCase()) ||
-                                    m.getEmplacement().toLowerCase().contains(motCle.toLowerCase()) ||
-                                    String.valueOf(m.getQuantite()).contains(motCle) ||
-                                    m.getDate_ajout().toString().contains(motCle))
+                    .filter(m -> m.getNom().toLowerCase().contains(motCle.toLowerCase()) ||
+                            m.getCategorie().toLowerCase().contains(motCle.toLowerCase()) ||
+                            m.getEtat().toLowerCase().contains(motCle.toLowerCase()) ||
+                            m.getEmplacement().toLowerCase().contains(motCle.toLowerCase()) ||
+                            String.valueOf(m.getQuantite()).contains(motCle) ||
+                            m.getDate_ajout().toString().contains(motCle))
                     .collect(Collectors.toList());
 
-            // Mettre à jour la ListView
             matrielTable.getItems().clear();
             matrielTable.getItems().addAll(materielsFiltres);
 
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            e.printStackTrace();
             showAlert("Erreur de recherche", "Une erreur est survenue", e.getMessage());
         }
     }
@@ -217,14 +286,11 @@ public class afficherMateriel {
         ObservableList<Materiel> items = matrielTable.getItems();
 
         if (triCroissant) {
-            // Tri croissant (plus ancien au plus récent)
             matrielTable.setItems(items.sorted(Comparator.comparing(Materiel::getDate_ajout)));
         } else {
-            // Tri décroissant (plus récent au plus ancien)
             matrielTable.setItems(items.sorted(Comparator.comparing(Materiel::getDate_ajout).reversed()));
         }
 
-        // Inverse l'état pour le prochain clic
         triCroissant = !triCroissant;
     }
 
@@ -235,4 +301,38 @@ public class afficherMateriel {
         alert.setContentText(content);
         alert.showAndWait();
     }
+
+    private int calculerAgeEnMois(java.util.Date dateAjout) {
+        if (dateAjout == null) {
+            return 0;
+        }
+
+        java.sql.Date sqlDateAjout = new java.sql.Date(dateAjout.getTime()); // conversion
+        java.time.LocalDate localDateAjout = sqlDateAjout.toLocalDate();     // puis LocalDate
+
+        java.time.Period period = java.time.Period.between(localDateAjout, java.time.LocalDate.now());
+        return period.getYears() * 12 + period.getMonths();
+    }
+
+
+
+
+    private String genererCommentaire(Materiel materiel) {
+        if (materiel.getEtat() != null && materiel.getEtat().toLowerCase().contains("réparer")) {
+            return "À remplacer rapidement";
+        } else if (materiel.getQuantite() == 0) {
+            return "Stock épuisé, à réapprovisionner";
+        } else {
+            return "Disponible";
+        }
+    }
+
+    private void showInformation(String title, String header, String content) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(title);
+        alert.setHeaderText(header);
+        alert.setContentText(content);
+        alert.showAndWait();
+    }
+
 }
