@@ -19,38 +19,15 @@ import java.util.Locale;
 
 public class CalendrierLaboController {
 
-    @FXML
-    private Label monthYearLabel;
-    @FXML
-    private Button prevMonthButton;
-    @FXML
-    private Button nextMonthButton;
-    @FXML
-    private Button todayButton;
-    @FXML
-    private ComboBox<String> viewModeComboBox;
-    @FXML
-    private GridPane calendarGrid;
-
-    @FXML
-    private Button FermerFenetreButton;
-    @FXML
-    private Button ReduireFenetreButton;
-
-    @FXML
-    private Button menuAnalyseButton;
-    @FXML
-    private Button menuTypeAnalyseButton;
-    @FXML
-    private Button menuDispoAnalyseButton;
-    @FXML
-    private Button menuDashboardButton;
-    @FXML
-    private Button menuHospiChatButton;
-    @FXML
-    private Button menuCalendrierButton;
-    @FXML
-    private Button menuHomeButton;
+    @FXML private Label monthYearLabel;
+    @FXML private Button prevMonthButton;
+    @FXML private Button nextMonthButton;
+    @FXML private Button todayButton;
+    @FXML private ComboBox<String> viewModeComboBox;
+    @FXML private GridPane calendarGrid;
+    @FXML private Button FermerFenetreButton, ReduireFenetreButton;
+    @FXML private Button menuAnalyseButton, menuTypeAnalyseButton, menuDispoAnalyseButton;
+    @FXML private Button menuDashboardButton, menuHospiChatButton, menuCalendrierButton, menuHomeButton;
 
     private LocalDate currentDate;
     private final DisponibiliteAnalyseCrudService dispoService = DisponibiliteAnalyseCrudService.getInstance();
@@ -58,25 +35,17 @@ public class CalendrierLaboController {
     @FXML
     public void initialize() {
         currentDate = LocalDate.now();
-
         viewModeComboBox.setItems(FXCollections.observableArrayList("Mois", "Semaine"));
         viewModeComboBox.setValue("Mois");
-
         updateCalendar();
 
         prevMonthButton.setOnAction(e -> {
-            switch (viewModeComboBox.getValue()) {
-                case "Mois" -> currentDate = currentDate.minusMonths(1);
-                case "Semaine" -> currentDate = currentDate.minusWeeks(1);
-            }
+            currentDate = viewModeComboBox.getValue().equals("Mois") ? currentDate.minusMonths(1) : currentDate.minusWeeks(1);
             updateCalendar();
         });
 
         nextMonthButton.setOnAction(e -> {
-            switch (viewModeComboBox.getValue()) {
-                case "Mois" -> currentDate = currentDate.plusMonths(1);
-                case "Semaine" -> currentDate = currentDate.plusWeeks(1);
-            }
+            currentDate = viewModeComboBox.getValue().equals("Mois") ? currentDate.plusMonths(1) : currentDate.plusWeeks(1);
             updateCalendar();
         });
 
@@ -86,7 +55,6 @@ public class CalendrierLaboController {
         });
 
         viewModeComboBox.setOnAction(e -> updateCalendar());
-
         setupNavigationMenu();
     }
 
@@ -98,22 +66,25 @@ public class CalendrierLaboController {
         menuHospiChatButton.setOnAction(e -> SceneUtils.openNewScene("/laboratoireBack/hospiChatLabo.fxml", menuHospiChatButton.getScene(), null));
         menuCalendrierButton.setOnAction(e -> SceneUtils.openNewScene("/laboratoireBack/calendrierLabo.fxml", menuCalendrierButton.getScene(), null));
         menuHomeButton.setOnAction(e -> SceneUtils.openNewScene("/HomePages/backList.fxml", menuHomeButton.getScene(), null));
-
         FermerFenetreButton.setOnAction(e -> ((Stage) FermerFenetreButton.getScene().getWindow()).close());
         ReduireFenetreButton.setOnAction(e -> ((Stage) ReduireFenetreButton.getScene().getWindow()).setIconified(true));
     }
 
     private void updateCalendar() {
         calendarGrid.getChildren().clear();
-        List<DisponibiliteAnalyse> allDispos = dispoService.findAll();
+        calendarGrid.getColumnConstraints().clear();
+        calendarGrid.getRowConstraints().clear();
 
-        switch (viewModeComboBox.getValue()) {
-            case "Mois" -> buildMonthView(allDispos);
-            case "Semaine" -> buildWeekView(allDispos);
+        List<DisponibiliteAnalyse> allDispos = dispoService.findAll();
+        if (viewModeComboBox.getValue().equals("Mois")) {
+            buildMonthView(allDispos);
+        } else {
+            buildWeekView(allDispos);
         }
     }
 
     private void buildMonthView(List<DisponibiliteAnalyse> dispos) {
+        // Reste inchangé pour le mode mois
         YearMonth yearMonth = YearMonth.from(currentDate);
         monthYearLabel.setText(yearMonth.getMonth().getDisplayName(TextStyle.FULL, Locale.FRENCH) + " " + yearMonth.getYear());
 
@@ -157,83 +128,65 @@ public class CalendrierLaboController {
     }
 
     private void buildWeekView(List<DisponibiliteAnalyse> dispos) {
-        calendarGrid.getChildren().clear();
-        calendarGrid.getColumnConstraints().clear();
-        calendarGrid.getRowConstraints().clear();
-
         LocalDate startOfWeek = currentDate.with(DayOfWeek.MONDAY);
         monthYearLabel.setText("Semaine du " + startOfWeek.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
 
-        // Définir les contraintes de colonnes
         for (int i = 0; i <= 7; i++) {
-            ColumnConstraints colConst = new ColumnConstraints();
-            if (i == 0) {
-                colConst.setPrefWidth(80); // Colonne horaire
-            } else {
-                colConst.setPrefWidth(130); // Colonne jour
-            }
-            calendarGrid.getColumnConstraints().add(colConst);
+            ColumnConstraints cc = new ColumnConstraints();
+            cc.setPrefWidth(i == 0 ? 80 : 130);
+            calendarGrid.getColumnConstraints().add(cc);
         }
 
-        // Définir les contraintes de lignes
         for (int i = 0; i <= (16 - 8) * 2 + 1; i++) {
-            RowConstraints rowConst = new RowConstraints();
-            rowConst.setPrefHeight(40); // Chaque tranche de 30 minutes = 40px
-            calendarGrid.getRowConstraints().add(rowConst);
+            RowConstraints rc = new RowConstraints();
+            rc.setPrefHeight(40);
+            calendarGrid.getRowConstraints().add(rc);
         }
 
-        // En-tête des jours
         for (int i = 0; i < 7; i++) {
-            Label dayLabel = new Label(startOfWeek.plusDays(i).getDayOfWeek().getDisplayName(TextStyle.SHORT, Locale.FRENCH));
-            dayLabel.setStyle("-fx-font-weight: bold; -fx-font-size: 16px; -fx-alignment: center; -fx-text-alignment: center;");
-            dayLabel.setMaxWidth(Double.MAX_VALUE);
-            dayLabel.setMaxHeight(Double.MAX_VALUE);
+            Label dayLabel = createCell(startOfWeek.plusDays(i).getDayOfWeek().getDisplayName(TextStyle.SHORT, Locale.FRENCH), true);
             calendarGrid.add(dayLabel, i + 1, 0);
         }
 
-        // Colonne des heures
         for (int i = 0, hour = 8; hour <= 16; hour++, i += 2) {
-            Label hourLabel = new Label(hour + ":00");
-            hourLabel.setStyle("-fx-font-weight: bold; -fx-font-size: 14px; -fx-alignment: center-right;");
+            Label hourLabel = createCell(hour + ":00", true);
             calendarGrid.add(hourLabel, 0, i + 1);
-
             if (hour < 16) {
-                Label halfHourLabel = new Label(hour + ":30");
-                halfHourLabel.setStyle("-fx-font-weight: bold; -fx-font-size: 14px; -fx-alignment: center-right;");
+                Label halfHourLabel = createCell(hour + ":30", true);
                 calendarGrid.add(halfHourLabel, 0, i + 2);
             }
         }
 
-        // Ajouter les disponibilités
         for (DisponibiliteAnalyse dispo : dispos) {
             if (!dispo.getDispo().isBefore(startOfWeek) && !dispo.getDispo().isAfter(startOfWeek.plusDays(6))) {
                 int col = dispo.getDispo().getDayOfWeek().getValue();
-                int rowStart = ((dispo.getDebut().getHour() - 8) * 2) + (dispo.getDebut().getMinute() >= 30 ? 1 : 0) + 1;
-                int rowEnd = ((dispo.getFin().getHour() - 8) * 2) + (dispo.getFin().getMinute() > 0 ? 1 : 0) + 1;
-                int rowSpan = Math.max(1, rowEnd - rowStart);
+                int startRow = ((dispo.getDebut().getHour() - 8) * 2) + (dispo.getDebut().getMinute() >= 30 ? 1 : 0) + 1;
+                int endRow = ((dispo.getFin().getHour() - 8) * 2) + (dispo.getFin().getMinute() > 0 ? 1 : 0) + 1;
+                int rowSpan = Math.max(1, endRow - startRow);
 
-                Label event = new Label(dispo.getDebut() + " - " + dispo.getFin() + " (" + dispo.getNbrPlaces() + ")");
-                event.setStyle("-fx-background-color: #90ee90; -fx-padding: 5; -fx-border-color: black; -fx-alignment: center; -fx-text-alignment: center;");
-                event.setMaxWidth(Double.MAX_VALUE);
-                event.setMaxHeight(Double.MAX_VALUE);
-                calendarGrid.add(event, col, rowStart, 1, rowSpan);
+                Label event = createCell(dispo.getDebut() + " - " + dispo.getFin() + " (" + dispo.getNbrPlaces() + ")", false);
+                event.setStyle(event.getStyle() + "-fx-background-color: #90ee90; -fx-background-radius: 5px;");
+                calendarGrid.add(event, col, startRow, 1, rowSpan);
             }
         }
     }
 
+    private Label createCell(String text, boolean isHeader) {
+        Label label = new Label(text);
+        label.setStyle("-fx-border-color: #cccccc; -fx-border-width: 0.5px; -fx-alignment: center; -fx-text-alignment: center; -fx-font-size: " + (isHeader ? "14px" : "12px") + ";");
+        label.setMaxWidth(Double.MAX_VALUE);
+        label.setMaxHeight(Double.MAX_VALUE);
+        return label;
+    }
 
     private void showDisponibilitesPopup(LocalDate date, List<DisponibiliteAnalyse> dispos) {
         List<DisponibiliteAnalyse> dayDispos = dispos.stream()
                 .filter(d -> d.getDispo().equals(date))
                 .toList();
-
         StringBuilder message = new StringBuilder();
         for (DisponibiliteAnalyse dispo : dayDispos) {
-            message.append("- Début : ").append(dispo.getDebut())
-                    .append(", Fin : ").append(dispo.getFin())
-                    .append(", Places : ").append(dispo.getNbrPlaces()).append("\n");
+            message.append("- Début : ").append(dispo.getDebut()).append(", Fin : ").append(dispo.getFin()).append(", Places : ").append(dispo.getNbrPlaces()).append("\n");
         }
-
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Disponibilités le " + date);
         alert.setHeaderText("Créneaux disponibles :");
