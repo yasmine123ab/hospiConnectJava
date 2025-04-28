@@ -12,6 +12,8 @@ public class SMSService {
     private static final String ACCOUNT_SID = dotenv.get("TWILIO_ACCOUNT_SID");
     private static final String AUTH_TOKEN = dotenv.get("TWILIO_AUTH_TOKEN");
     private static final String FROM_PHONE_NUMBER = dotenv.get("TWILIO_FROM_PHONE_NUMBER");
+    private static final String TO_PHONE_NUMBER = dotenv.get("TWILIO_TO_PHONE_NUMBER");
+
 
     private static final SMSService instance = new SMSService();
 
@@ -23,10 +25,10 @@ public class SMSService {
         return instance;
     }
 
-    public void sendSms(String sms, String phoneNumber) {
+    public void sendSms(String sms) {
         Message message = Message
                 .creator(
-                        new PhoneNumber(phoneNumber),
+                        new PhoneNumber(TO_PHONE_NUMBER),
                         new PhoneNumber(FROM_PHONE_NUMBER),
                         sms
                 )

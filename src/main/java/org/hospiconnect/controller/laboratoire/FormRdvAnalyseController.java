@@ -125,6 +125,18 @@ public class FormRdvAnalyseController {
             } else {
                 toSave.setStatut("En attente");
                 AnalyseRdvCrudService.getInstance().createNew(toSave);
+
+                // 👉 Envoi du SMS après l'enregistrement du nouveau RDV
+                try {
+                    SMSService.getInstance().sendSms(
+                            "Votre reservation a ete effectuee avec succes!"
+                    );
+                    System.out.println("SMS envoyé après création du RDV.");
+                } catch (Exception e) {
+                    System.err.println("Erreur lors de l'envoi du SMS : " + e.getMessage());
+                    e.printStackTrace();
+                }
+
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setTitle("Rdv Analyse crée");
                 alert.setContentText("Rdv Analyse insérée avec succés!");
