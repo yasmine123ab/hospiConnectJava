@@ -36,6 +36,7 @@ public class StatistiquesDonController {
     private void loadDonationStats() {
         try {
             Map<String, Integer> stats = donService.getDonStatistics();
+            Map<String, Integer> statsdispo = donService.getDonStatisticsByDisponibilite();
             // PieChart
             stats.forEach((type, count) -> {
                 PieChart.Data slice = new PieChart.Data(type, count);
@@ -43,7 +44,7 @@ public class StatistiquesDonController {
             });
             // BarChart
             XYChart.Series<String, Number> series = new XYChart.Series<>();
-            stats.forEach((type, count) ->
+            statsdispo.forEach((type, count) ->
                     series.getData().add(new XYChart.Data<>(type, count))
             );
             donBarChart.getData().add(series);

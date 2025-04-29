@@ -216,6 +216,10 @@ public class ShowDemande {
     public void handleFaireUneAttributionClick(ActionEvent event) {
         openScene("/Attributions/ShowAttribution.fxml", event);
     }
+    @FXML
+    public void handleStatClick(ActionEvent event) {
+        openScene("/Demandes/StatistiquesDemande.fxml",event);
+    }
 
     private void openScene(String path, ActionEvent event) {
         try {

@@ -73,7 +73,7 @@
                     </font>
                 </Button>
 
-                <Button fx:id="statistiquesButton" graphicTextGap="10.0" prefHeight="50.0" prefWidth="210.0" style="-fx-background-color: #ADD8E6;" text="Statistiques" textFill="#0e046e">
+                <Button fx:id="statistiquesButton" graphicTextGap="10.0" onAction="#handleStatClick" prefHeight="50.0" prefWidth="210.0" style="-fx-background-color: #ADD8E6;" text="Statistiques" textFill="#0e046e">
                     <graphic>
                         <ImageView fitHeight="30.0" fitWidth="30.0" preserveRatio="true">
                             <image>

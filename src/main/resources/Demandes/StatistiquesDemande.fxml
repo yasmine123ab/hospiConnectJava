@@ -11,7 +11,7 @@
 <?import javafx.scene.control.Label?>
 
 <AnchorPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
-            fx:controller="org.hospiconnect.controller.dons.StatistiquesDonController"
+            fx:controller="org.hospiconnect.controller.demandes.StatistiquesDemandeController"
             prefWidth="900" prefHeight="600">
 
     <!-- Titre -->
@@ -29,10 +29,6 @@
             <NumberAxis label="Nombre" />
         </yAxis>
     </BarChart>
-
-    <!-- Cagnotte -->
-    <Label fx:id="totalLabel" layoutX="50" layoutY="400" style="-fx-font-size: 18px;" />
-    <ProgressBar fx:id="progressBar" layoutX="50" layoutY="440" prefWidth="300" />
 
     <!-- Bouton pour revenir -->
     <Button fx:id="retourButton" text="Retour" layoutX="400" layoutY="520" prefWidth="100" onAction="#handleRetour" />

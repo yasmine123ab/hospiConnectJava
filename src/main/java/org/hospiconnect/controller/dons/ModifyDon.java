@@ -244,6 +244,10 @@ public class ModifyDon {
     public void handleFaireUneAttributionClick(ActionEvent event) {
         openScene("/Attributions/ShowAttribution.fxml", event);
     }
+    @FXML
+    public void handleStatClick(ActionEvent event) {
+        openScene("/Dons/StatistiquesDon.fxml", event);
+    }
     private void openScene(String fxmlPath, ActionEvent event) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));

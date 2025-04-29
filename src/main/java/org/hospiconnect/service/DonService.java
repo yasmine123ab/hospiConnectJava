@@ -112,6 +112,22 @@ public class DonService implements ICrud<Dons> {
         }
         return stats;
     }
+    /** Statistiques : compte par disponibilité */
+    public Map<String, Integer> getDonStatisticsByDisponibilite() throws SQLException {
+        Map<String, Integer> stats = new HashMap<>();
+        String sql = "SELECT disponibilite, COUNT(*) AS total FROM dons GROUP BY disponibilite";
+        try (PreparedStatement ps = con.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
+                boolean disponibilite = rs.getBoolean("disponibilite");
+                String dispoLabel = disponibilite ? "Disponible" : "Non Disponible";
+                stats.put(dispoLabel, rs.getInt("total"));
+            }
+        }
+        return stats;
+    }
+
+
 
     /** Somme totale des montants */
     public double getTotalMontant() throws SQLException {
