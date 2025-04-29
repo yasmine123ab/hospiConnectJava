@@ -39,6 +39,10 @@ public class ModifyDon {
     private Button saveButton;
     @FXML
     private Button annulerButton;
+    @FXML
+    private CheckBox disponibilite1CheckBox;
+    @FXML
+    private CheckBox disponibilite2CheckBox;
 
     @FXML
     private Button menuHomeButton;
@@ -55,6 +59,17 @@ public class ModifyDon {
                 "/HomePages/frontList.fxml", menuHomeButton.getScene(), null));
 
         donToModify = don;
+        disponibilite1CheckBox.setOnAction(event -> {
+            if (disponibilite1CheckBox.isSelected()) {
+                disponibilite2CheckBox.setSelected(false);
+            }
+        });
+
+        disponibilite2CheckBox.setOnAction(event -> {
+            if (disponibilite2CheckBox.isSelected()) {
+                disponibilite1CheckBox.setSelected(false);
+            }
+        });
 
         // Remplissage des champs avec les valeurs du don existant
         typeTF.setText(don.getTypeDon());
@@ -129,38 +144,38 @@ public class ModifyDon {
             String montantText = montantTF.getText();
             if (montantText.isEmpty()) {
                 showErrorAlert("Erreur", "Le montant ne peut pas être vide.");
-                return; // Arrêter l'exécution si le montant est vide
+                return;
             }
             double montant;
             try {
                 montant = Double.parseDouble(montantText);
                 if (montant < 0) {
                     showErrorAlert("Erreur", "Le montant doit être positif.");
-                    return; // Arrêter l'exécution si le montant est invalide
+                    return;
                 }
             } catch (NumberFormatException e) {
                 showErrorAlert("Erreur", "Le montant doit être un nombre valide.");
-                return; // Arrêter l'exécution si la conversion échoue
+                return;
             }
 
-// Vérification du type de don
+            // Vérification du type de don
             String typeDon = typeTF.getText();
             if (typeDon.isEmpty()) {
                 showErrorAlert("Erreur", "Le type de don ne peut pas être vide.");
-                return; // Arrêter l'exécution si le type de don est vide
+                return;
             }
 
-// Vérification de la description
+            // Vérification de la description
             String description = descriptionTF.getText();
             if (description.isEmpty()) {
                 showErrorAlert("Erreur", "La description ne peut pas être vide.");
-                return; // Arrêter l'exécution si la description est vide
+                return;
             }
 
-// Vérification de la date de don
+            // Vérification de la date de don
             if (dateDonDP.getValue() == null) {
                 showErrorAlert("Erreur", "La date de don doit être sélectionnée.");
-                return; // Arrêter l'exécution si la date n'est pas sélectionnée
+                return;
             }
             if (dateDonDP.getValue().isBefore(java.time.LocalDate.now())) {
                 showErrorAlert("Erreur", "La date de don ne peut pas être dans le passé.");
@@ -170,8 +185,27 @@ public class ModifyDon {
             // Vérification du donateur
             if (donateurComboBox.getValue() == null) {
                 showErrorAlert("Erreur", "Un donateur doit être sélectionné.");
-                return; // Arrêter l'exécution si aucun donateur n'est sélectionné
+                return;
             }
+
+            // 👉 MAJ DE L'OBJET donToModify
+            donToModify.setMontant(montant);
+            donToModify.setTypeDon(typeDon);
+            donToModify.setDescription(description);
+            donToModify.setDateDon(java.sql.Date.valueOf(dateDonDP.getValue()));
+            donToModify.setDonateurId(donateurComboBox.getValue().getId());
+
+            // ➡ Gestion de la disponibilité selon les cases cochées
+            boolean disponibilite;
+            if (disponibilite1CheckBox.isSelected()) {
+                disponibilite = true;
+            } else if (disponibilite2CheckBox.isSelected()) {
+                disponibilite = false;
+            } else {
+                showErrorAlert("Erreur", "Veuillez sélectionner la disponibilité.");
+                return;
+            }
+            donToModify.setDisponibilite(disponibilite);
 
             // Appeler la méthode de mise à jour
             donService.update(donToModify);
@@ -187,7 +221,6 @@ public class ModifyDon {
             showErrorAlert("Erreur de modification", "Erreur lors de la mise à jour du don : " + e.getMessage());
         }
     }
-
     @FXML
     public void handleCancel() {
         if (saveButton != null) {

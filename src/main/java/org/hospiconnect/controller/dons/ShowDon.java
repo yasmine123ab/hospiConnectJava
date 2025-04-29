@@ -7,11 +7,14 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import org.hospiconnect.controller.demandes.ModifyDemande;
 import org.hospiconnect.controller.laboratoire.SceneUtils;
+import org.hospiconnect.model.DemandesDons;
 import org.hospiconnect.model.Dons;
 import org.hospiconnect.service.DonService;
 import org.hospiconnect.service.laboratoire.UserServiceLight;
@@ -170,6 +173,7 @@ public class ShowDon {
 
         HBox btns = new HBox(10);
         Button mod = new Button("Modifier");
+        mod.setOnAction(event -> openModifyPage(don, event));
         Button del = new Button("Supprimer");
         mod.setStyle("-fx-background-color:green; -fx-text-fill:white;");
         del.setStyle("-fx-background-color:red; -fx-text-fill:white;");
@@ -179,6 +183,20 @@ public class ShowDon {
         btns.getChildren().addAll(mod, del);
         card.getChildren().addAll(type, montant, desc, date, dono, dispo, btns);
         return card;
+    }
+    private void openModifyPage(Dons don, ActionEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Dons/ModifyDon.fxml"));
+            BorderPane modifyPage = loader.load();
+            ModifyDon modifyController = loader.getController();
+            modifyController.initialize(don);
+
+            Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            currentStage.setScene(new Scene(modifyPage));
+            currentStage.setTitle("Modifier le don");
+        } catch (IOException e) {
+            showErrorAlert("Erreur de chargement", "Erreur lors du chargement de la page de modification : " + e.getMessage());
+        }
     }
 
     private void exportToPdf(File file) throws Exception {

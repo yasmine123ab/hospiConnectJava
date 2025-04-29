@@ -139,11 +139,6 @@ public class ModifyAttribution {
             });
 
             // Pré-sélections
-            if (attribution.getDon() != null)
-                donComboBox.getSelectionModel().select(attribution.getDon());
-
-            if (attribution.getDemande() != null)
-                demandeComboBox.getSelectionModel().select(attribution.getDemande());
 
             if (attribution.getBeneficiaire() != null)
                 beneficiaireComboBox.getSelectionModel().select(attribution.getBeneficiaire());

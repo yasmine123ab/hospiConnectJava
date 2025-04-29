@@ -110,7 +110,8 @@
                 <TextField fx:id="montantTF" promptText="Montant (en DNT)" />
                 <TextField fx:id="descriptionTF" promptText="Description" />
                 <DatePicker fx:id="dateDonDP" prefHeight="26.0" prefWidth="648.0" promptText="Date du Don" />
-                <CheckBox fx:id="disponibiliteCheckBox" prefHeight="18.0" prefWidth="86.0" text="Disponible" />
+                <CheckBox fx:id="disponibilite1CheckBox" text="Disponible" />
+                <CheckBox fx:id="disponibilite2CheckBox" text="Indisponible" />
 
                 <Button fx:id="saveButton" onAction="#handleSave" text="Sauvegarder" />
                 <Button fx:id="annulerButton" onAction="#handleCancel" text="Annuler" />

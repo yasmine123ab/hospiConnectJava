@@ -122,11 +122,15 @@ public class ModifyDemande {
                 }
             });
 
+            // Synchroniser le patientId dans le modèle de la demande
+            if (demande.getPatient() != null) {
+                demandeToModify.setPatientId(demande.getPatient().getId());
+            }
+
         } catch (SQLException e) {
             showErrorAlert("Erreur", "Impossible de charger les patients : " + e.getMessage());
         }
     }
-
     private List<User> loadUsersFromDB() throws SQLException {
         List<User> users = new ArrayList<>();
         String sql = "SELECT id, nom, prenom FROM user";
@@ -173,7 +177,6 @@ public class ModifyDemande {
                 return;
             }
 
-            // Contrôle de sélection du patient
             User patient = patientComboBox.getValue();
             if (patient == null) {
                 showErrorAlert("Erreur de saisie", "Veuillez sélectionner un patient.");
@@ -186,20 +189,21 @@ public class ModifyDemande {
                 showErrorAlert("Erreur de saisie", "Veuillez sélectionner un statut.");
                 return;
             }
-
-
-
+            // Mise à jour du modèle
             demandeToModify.setTypeBesoin(typeBesoin);
             demandeToModify.setDetails(details);
             demandeToModify.setDateDemande(Date.valueOf(date));
-            demandeToModify.setPatient(patient);
             demandeToModify.setStatut(statut);
 
+            // **Ici on met à jour le patientId aussi**
+            demandeToModify.setPatient(patient);
+            demandeToModify.setPatientId(patient.getId());
+
+            // Et maintenant le UPDATE passera bien avec un patient_id valide
             demandeService.update(demandeToModify);
 
-            // 👉 Redirection vers la page ShowDon.fxml
+            // Retour à la liste
             SceneUtils.openNewScene("/Demandes/ShowDemande.fxml", saveButton.getScene(), null);
-
 
         } catch (Exception e) {
             showErrorAlert("Erreur", "Erreur lors de la mise à jour : " + e.getMessage());
