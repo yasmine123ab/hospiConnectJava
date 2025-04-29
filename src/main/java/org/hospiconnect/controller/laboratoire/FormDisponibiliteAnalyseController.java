@@ -34,6 +34,8 @@ public class FormDisponibiliteAnalyseController {
     private Button menuHospiChatButton;
     @FXML
     private Button menuHomeButton;
+    @FXML
+    private Button menuCalendrierButton;
 
     @FXML
     private DatePicker dispoAnalyseFormDateDispoDatePicker;
@@ -95,6 +97,8 @@ public class FormDisponibiliteAnalyseController {
                 menuHospiChatButton.getScene(),
                 null
         ));
+        menuCalendrierButton.setOnAction(e -> SceneUtils.openNewScene(
+                "/laboratoireBack/calendrierLabo.fxml", menuCalendrierButton.getScene(), null));
         menuHomeButton.setOnAction(e -> SceneUtils.openNewScene(
                 "/HomePages/backList.fxml", menuHomeButton.getScene(), null));
     }

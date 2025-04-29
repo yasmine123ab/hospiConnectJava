@@ -30,6 +30,8 @@ public class AjoutResultatAnalyseController {
     private Button menuHospiChatButton;
     @FXML
     private Button menuHomeButton;
+    @FXML
+    private Button menuCalendrierButton;
 
     @FXML
     private CheckBox envoyerMailCheckBox;
@@ -121,6 +123,8 @@ public class AjoutResultatAnalyseController {
                 menuHospiChatButton.getScene(),
                 null
         ));
+        menuCalendrierButton.setOnAction(e -> SceneUtils.openNewScene(
+                "/laboratoireBack/calendrierLabo.fxml", menuCalendrierButton.getScene(), null));
         menuHomeButton.setOnAction(e -> SceneUtils.openNewScene(
                 "/HomePages/backList.fxml", menuHomeButton.getScene(), null));
 

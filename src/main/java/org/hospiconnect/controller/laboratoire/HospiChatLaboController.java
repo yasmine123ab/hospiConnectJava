@@ -36,6 +36,8 @@ public class HospiChatLaboController {
     private Button menuHospiChatButton;
     @FXML
     private Button menuHomeButton;
+    @FXML
+    private Button menuCalendrierButton;
 
     @FXML
     private Button hospiChatLaboButton;
@@ -61,6 +63,8 @@ public class HospiChatLaboController {
                 "/laboratoireBack/dashboardLabo.fxml", menuDashboardButton.getScene(), null));
         menuHospiChatButton.setOnAction(e -> SceneUtils.openNewScene(
                 "/laboratoireBack/hospiChatLabo.fxml", menuHospiChatButton.getScene(), null));
+        menuCalendrierButton.setOnAction(e -> SceneUtils.openNewScene(
+                "/laboratoireBack/calendrierLabo.fxml", menuCalendrierButton.getScene(), null));
         menuHomeButton.setOnAction(e -> SceneUtils.openNewScene(
                 "/HomePages/backList.fxml", menuHomeButton.getScene(), null));
 
