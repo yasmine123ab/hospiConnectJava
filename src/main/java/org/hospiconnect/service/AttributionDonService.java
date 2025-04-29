@@ -49,14 +49,16 @@ public class AttributionDonService implements ICrud<AttributionsDons> {
     @Override
     public void update(AttributionsDons obj) throws SQLException {
         String sql = "UPDATE attributions_dons SET date_attribution=?, statut=?, don_id=?, demande_id=?, beneficiaire_id=? WHERE id=?";
-        PreparedStatement ps = con.prepareStatement(sql);
-        ps.setDate(1, obj.getDateAttribution());
-        ps.setString(2, obj.getStatut());
-        ps.setInt(3, obj.getDon().getId());
-        ps.setInt(4, obj.getDemande().getId());
-        ps.setInt(5, obj.getBeneficiaire().getId());
-        ps.setInt(6, obj.getId());
-        ps.executeUpdate();
+        try (Connection con = DatabaseUtils.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setDate(1, obj.getDateAttribution());
+            ps.setString(2, obj.getStatut());
+            ps.setInt(3, obj.getDon().getId());
+            ps.setInt(4, obj.getDemande().getId());
+            ps.setInt(5, obj.getBeneficiaire().getId());
+            ps.setInt(6, obj.getId());
+            ps.executeUpdate();
+        }
     }
 
     @Override

@@ -272,6 +272,8 @@ public class ModifyAttribution {
 
             // Après la modification réussie
             envoyerNotificationAuPatient(beneficiaireComboBox.getValue(), statutComboBox.getValue());
+            showSuccessAlert("Succès", "Attribution modifiée avec succès !");
+
 
             // 👉 Redirection vers la liste
             SceneUtils.openNewScene("/Attributions/ShowAttribution.fxml", saveButton.getScene(), null);
