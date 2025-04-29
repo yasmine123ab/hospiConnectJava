@@ -13,6 +13,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import org.hospiconnect.controller.laboratoire.SceneUtils;
 import org.hospiconnect.model.MouvementMaterielJoint;
 import org.hospiconnect.model.mouvement_stock;
 import org.hospiconnect.service.mouvementService;
@@ -27,6 +28,10 @@ public class afficherMouvement {
     private ListView<MouvementMaterielJoint> mouvementTable;
     @FXML
     private TextField rechercheMouvement;
+    @FXML
+    private Button home;
+    @FXML
+    private ComboBox<String> critereRecherche;
 
     private final mouvementService service = new mouvementService();
     private final PauseTransition pauseQueue = new PauseTransition(Duration.millis(300));
@@ -39,9 +44,16 @@ public class afficherMouvement {
             pauseQueue.setOnFinished(event -> filtrerMouvements(newValue));
             pauseQueue.playFromStart();
         });
+        home.setOnAction(e -> SceneUtils.openNewScene(
+                "/HomePages/backList.fxml", home.getScene(), null));
 
         // Affichage initial des mouvements
         affichem(null);
+        critereRecherche.setItems(FXCollections.observableArrayList(
+                "Nom", "Quantité", "Motif", "Type", "Date"
+        ));
+        critereRecherche.getSelectionModel().selectFirst(); // Sélectionner "Nom" par défaut
+
     }
 
     @FXML
@@ -103,14 +115,38 @@ public class afficherMouvement {
 
     private void filtrerMouvements(String motCle) {
         if (motCle == null || motCle.isEmpty()) {
-            mouvementTable.setItems(mouvementsList);
+            mouvementTable.setItems(mouvementsList); // remet la liste complète
             return;
         }
 
-        FilteredList<MouvementMaterielJoint> filteredData = new FilteredList<>(mouvementsList);
-        filteredData.setPredicate(createPredicate(motCle));
-        mouvementTable.setItems(filteredData);
+        String critere = critereRecherche.getSelectionModel().getSelectedItem();
+
+        List<MouvementMaterielJoint> mouvementsFiltres = mouvementsList.stream()
+                .filter(m -> {
+                    switch (critere) {
+                        case "Nom":
+                            return m.getNomMateriel().toLowerCase().contains(motCle.toLowerCase());
+                        case "Quantité":
+                            return String.valueOf(m.getQuantite()).contains(motCle);
+                        case "Motif":
+                            return m.getMotif().toLowerCase().contains(motCle.toLowerCase());
+                        case "Type":
+                            return m.getTypeMouvement().toLowerCase().contains(motCle.toLowerCase());
+                        case "Date":
+                            return m.getDateMouvement().toString().contains(motCle);
+                        default: // "Tous" ou autre
+                            return m.getNomMateriel().toLowerCase().contains(motCle.toLowerCase())
+                                    || String.valueOf(m.getQuantite()).contains(motCle)
+                                    || m.getMotif().toLowerCase().contains(motCle.toLowerCase())
+                                    || m.getTypeMouvement().toLowerCase().contains(motCle.toLowerCase())
+                                    || m.getDateMouvement().toString().contains(motCle);
+                    }
+                })
+                .toList();
+
+        mouvementTable.setItems(FXCollections.observableArrayList(mouvementsFiltres));
     }
+
 
     private Predicate<MouvementMaterielJoint> createPredicate(String motCle) {
         return mouvement -> {
@@ -190,4 +226,5 @@ public class afficherMouvement {
         alert.setContentText(content);
         alert.showAndWait();
     }
+
 }

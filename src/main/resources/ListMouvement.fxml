@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.TextField?>
@@ -25,7 +26,9 @@
 
    <!-- Boutons -->
    <HBox alignment="CENTER_RIGHT" spacing="10">
+      <ComboBox fx:id="critereRecherche" prefWidth="150.0" />
       <TextField fx:id="rechercheMouvement" />
+      <Button fx:id="home" mnemonicParsing="false" text="home" />
       <Button onAction="#affichem" text="afficher" />
       <Button onAction="#ajouterM" text="ajouter" />
    </HBox>

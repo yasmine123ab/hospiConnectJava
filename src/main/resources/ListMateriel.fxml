@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox spacing="10.0" style="-fx-padding: 20;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.hospiconnect.controller.afficherMateriel">
+<VBox prefHeight="620.0" prefWidth="1181.0" spacing="10.0" style="-fx-padding: 20;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.hospiconnect.controller.afficherMateriel">
 
    <!-- Titre des colonnes -->
    <HBox alignment="CENTER_LEFT" spacing="10" style="-fx-padding: 10; -fx-background-color: #E0E0E0;">
@@ -25,6 +26,7 @@
 
    <!-- Boutons -->
    <HBox alignment="CENTER_RIGHT" spacing="10">
+      <ComboBox fx:id="critereRecherche" prefWidth="150.0" />
       <TextField fx:id="recherche" />
       <Button fx:id="menuHomeButton" text="Home" />
       <Button onAction="#afficherMateriels" text="afficher" />

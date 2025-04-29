@@ -41,6 +41,10 @@ import java.sql.SQLException;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import org.controlsfx.control.Notifications;
+import javafx.util.Duration;
+import javafx.geometry.Pos;
+
 public class afficherMateriel {
 
     @FXML
@@ -84,6 +88,7 @@ public class afficherMateriel {
         ));
         critereRecherche.getSelectionModel().selectFirst(); // Sélectionner "Nom" par défaut
 
+
     }
 
     @FXML
@@ -91,6 +96,7 @@ public class afficherMateriel {
         MaterielService1 service = new MaterielService1();
         try {
             List<Materiel> materiels = service.findAll();
+            verifierQuantiteTotale(materiels);
             matrielTable.getItems().clear();
             matrielTable.getItems().addAll(materiels);
 
@@ -428,5 +434,46 @@ public class afficherMateriel {
         alert.setContentText(content);
         alert.showAndWait();
     }
+    private static final int SEUIL_ALERTE = 1000;
+    private static final int SEUIL_CRITIQUE = 2000;
+    private static final int SEUIL_URGENT = 3000;
 
+    private static final Duration DUREE_NOTIFICATION = Duration.seconds(15);
+
+    public static void verifierQuantiteTotale(List<Materiel> listeMateriel) {
+        int totalQuantite = calculerQuantiteTotale(listeMateriel);
+
+        if (totalQuantite >= SEUIL_ALERTE) {
+            afficherNotificationAlerte(totalQuantite);
+        }
+    }
+
+    private static int calculerQuantiteTotale(List<Materiel> materiels) {
+        return materiels.stream()
+                .mapToInt(Materiel::getQuantite)
+                .sum();
+    }
+
+    private static void afficherNotificationAlerte(int quantiteTotale) {
+        String titre, message;
+        Notifications notification = Notifications.create()
+                .hideAfter(DUREE_NOTIFICATION)
+                .position(Pos.TOP_RIGHT);
+
+        if (quantiteTotale >= SEUIL_URGENT) {
+            titre = "⚠️ URGENCE STOCK";
+            message = "Le stock est extrêmement élevé : " + quantiteTotale + " unités.";
+            notification.title(titre).text(message).showError();
+        } else if (quantiteTotale >= SEUIL_CRITIQUE) {
+            titre = "🔴 Alerte Critique";
+            message = "La quantité totale dépasse un seuil critique : " + quantiteTotale + " unités.";
+            notification.title(titre).text(message).showWarning();
+        } else {
+            titre = "🟠 Alerte";
+            message = "La quantité totale atteint " + quantiteTotale + " unités.";
+            notification.title(titre).text(message).showInformation();
+        }
+    }
 }
+
+

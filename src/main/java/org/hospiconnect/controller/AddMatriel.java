@@ -36,6 +36,17 @@ public class AddMatriel {
 
     @FXML
     private Button retourner;
+    @FXML
+    private Button listeMateriels;
+
+    @FXML
+    private Button listeMouvement;
+
+    @FXML
+    private Button menuDashboardButton;
+
+    @FXML
+    private Button menuHomeButton;
 
     private final ObservableList<String> etats = FXCollections.observableArrayList(
             "Neuf", "Usagé", "En réparation"
@@ -46,6 +57,15 @@ public class AddMatriel {
     public void initialize() {
         retourner.setOnAction(e -> SceneUtils.openNewScene(
                 "/ListMateriel.fxml", retourner.getScene(), null));
+        listeMateriels.setOnAction(e -> SceneUtils.openNewScene(
+                "/ListMateriel.fxml", listeMateriels.getScene(), null));
+        listeMouvement.setOnAction(e -> SceneUtils.openNewScene(
+                "/ListMouvement.fxml", listeMouvement.getScene(), null));
+        menuDashboardButton.setOnAction(e -> SceneUtils.openNewScene(
+                "//laboratoireBack/dashboardLabo.fxml", menuDashboardButton.getScene(), null));
+        menuHomeButton.setOnAction(e -> SceneUtils.openNewScene(
+                "/HomePages/backList.fxml", menuHomeButton.getScene(), null));
+
     }
 
     @FXML

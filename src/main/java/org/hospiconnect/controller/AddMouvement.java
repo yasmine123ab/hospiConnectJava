@@ -2,10 +2,8 @@ package org.hospiconnect.controller;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import org.hospiconnect.controller.laboratoire.SceneUtils;
 import org.hospiconnect.model.MouvementMaterielJoint;
 import org.hospiconnect.model.mouvement_stock;
 import org.hospiconnect.service.mouvementService;
@@ -32,16 +30,42 @@ public class AddMouvement {
 
     @FXML
     private TextField type_mouvement;
+    @FXML
+    private Button retourner;
+    @FXML
+    private Button listeMateriels;
+
+    @FXML
+    private Button listeMouvement;
+
+    @FXML
+    private Button menuDashboardButton;
+
+    @FXML
+    private Button menuHomeButton;
+    public void initialize() {
+        retourner.setOnAction(e -> SceneUtils.openNewScene(
+                "/ListMouvement.fxml", retourner.getScene(), null));
+        listeMateriels.setOnAction(e -> SceneUtils.openNewScene(
+                "/ListMateriel.fxml", listeMateriels.getScene(), null));
+        listeMouvement.setOnAction(e -> SceneUtils.openNewScene(
+                "/ListMouvement.fxml", listeMouvement.getScene(), null));
+        menuDashboardButton.setOnAction(e -> SceneUtils.openNewScene(
+                "//laboratoireBack/dashboardLabo.fxml", menuDashboardButton.getScene(), null));
+        menuHomeButton.setOnAction(e -> SceneUtils.openNewScene(
+                "/HomePages/backList.fxml", menuHomeButton.getScene(), null));
+
+    }
 
     // Méthode d'ajout d'un mouvement avec contrôle de saisie
+
     @FXML
     void ajouterMouvement(ActionEvent event) {
         if (!validateForm()) {
-            return;  // Arrêter l'exécution si la validation échoue
+            return;
         }
 
         try {
-            // Créer un objet mouvement_stock à partir des champs
             mouvement_stock m = new mouvement_stock();
             m.setId_materiel_id(Integer.parseInt(id_matriel.getText()));
             m.setId_personnel_id(Integer.parseInt(id_personnelll.getText()));
@@ -50,34 +74,25 @@ public class AddMouvement {
             m.setMotif(motif.getText());
             m.setType_mouvement(type_mouvement.getText());
 
-            // Appeler le service pour insérer le mouvement
             mouvementService service = new mouvementService();
-            service.insert(m);
 
-            // Affichage d'une alerte de succès
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Succès");
-            alert.setHeaderText(null);
-            alert.setContentText("✅ Mouvement ajouté avec succès !");
-            alert.showAndWait();
+            if (mouvementModifie != null) {
+                m.setId(mouvementModifie.getId()); // essentiel pour l’UPDATE
+                service.update(m);
+                showSuccess("✅ Mouvement modifié avec succès !");
+            } else {
+                service.insert(m);
+                showSuccess("✅ Mouvement ajouté avec succès !");
+            }
 
-            // Réinitialiser les champs
-            id_matriel.clear();
-            id_personnelll.clear();
-            qunatite.clear();
-            motif.clear();
-            type_mouvement.clear();
-            date_mouvement.setValue(null);
+            resetForm();
 
         } catch (Exception e) {
             e.printStackTrace();
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Erreur");
-            alert.setHeaderText("Impossible d'ajouter le mouvement");
-            alert.setContentText("❌ Vérifiez vos données ou contactez l'administrateur.");
-            alert.showAndWait();
+            showError("❌ Vérifiez vos données ou contactez l'administrateur.");
         }
     }
+
 
     // Validation des champs
     private boolean validateForm() {
@@ -131,15 +146,41 @@ public class AddMouvement {
 
     private MouvementMaterielJoint mouvementExistant;
 
+    private mouvement_stock mouvementModifie = null;
     public void setMouvementExistant(MouvementMaterielJoint m) {
-        this.mouvementExistant = m;
+        mouvementModifie = new mouvement_stock();
+        mouvementModifie.setId(m.getId()); // Pour le WHERE id=?
 
-        // Remplir les champs avec les données du mouvement à modifier
-        id_matriel.setText(String.valueOf(m.getNomMateriel()));
+        id_matriel.setText(String.valueOf(m.getNomMateriel())); // met bien l’ID, pas le nom
         id_personnelll.setText(String.valueOf(m.getNomPersonnel()));
         qunatite.setText(String.valueOf(m.getQuantite()));
         motif.setText(m.getMotif());
         type_mouvement.setText(m.getTypeMouvement());
         date_mouvement.setValue(LocalDate.now());
     }
+    private void showSuccess(String msg) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Succès");
+        alert.setContentText(msg);
+        alert.showAndWait();
+    }
+
+    private void showError(String msg) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Erreur");
+        alert.setHeaderText("Erreur lors de l'enregistrement");
+        alert.setContentText(msg);
+        alert.showAndWait();
+    }
+
+    private void resetForm() {
+        id_matriel.clear();
+        id_personnelll.clear();
+        qunatite.clear();
+        motif.clear();
+        type_mouvement.clear();
+        date_mouvement.setValue(null);
+        mouvementModifie = null;
+    }
+
 }
