@@ -10,12 +10,22 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 public class DonService implements ICrud<Dons> {
     private Connection con;
-
+    // Variable statique pour stocker l'instance unique
+    private static DonService instance;
+    // Méthode statique pour obtenir l'instance unique
+    public static DonService getInstance() {
+        if (instance == null) {
+            instance = new DonService();
+        }
+        return instance;
+    }
     public DonService() {
         try {
             this.con = DatabaseUtils.getConnection(); // Connexion à la base de données via DatabaseUtils
@@ -89,6 +99,29 @@ public class DonService implements ICrud<Dons> {
 
         return list;
     }
+    /** Statistiques : compte par type */
+    public Map<String,Integer> getDonStatistics() throws SQLException {
+        Map<String,Integer> stats = new HashMap<>();
+        String sql = "SELECT type_don, COUNT(*) AS total FROM dons GROUP BY type_don";
+        try (PreparedStatement ps = con.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
+                stats.put(rs.getString("type_don"),
+                        rs.getInt("total"));
+            }
+        }
+        return stats;
+    }
 
-
+    /** Somme totale des montants */
+    public double getTotalMontant() throws SQLException {
+        String sql = "SELECT SUM(montant) AS sumtot FROM dons";
+        try (PreparedStatement ps = con.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+            if (rs.next()) {
+                return rs.getDouble("sumtot");
+            }
+        }
+        return 0.0;
+    }
 }

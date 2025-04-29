@@ -37,6 +37,7 @@ public class ShowDon {
     @FXML private TextField searchField;
     @FXML private Button sortButton;
     @FXML private Button exportPdfButton;
+    @FXML private Button statistiquesButton;
 
     private final DonService donService = new DonService();
     private final UserServiceLight userServiceLight = UserServiceLight.getInstance();
@@ -123,6 +124,10 @@ public class ShowDon {
     @FXML
     public void handleFaireUneAttributionClick(ActionEvent event) {
         openScene("/Attributions/ShowAttribution.fxml", (Node) event.getSource());
+    }
+    @FXML
+    public void handleStatClick(ActionEvent event) {
+        openScene("/Dons/StatistiquesDon.fxml", (Node) event.getSource());
     }
 
     private void openScene(String fxmlPath, Node source) {
