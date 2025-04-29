@@ -95,6 +95,23 @@ public class AddAttribution {
         }
     }
     @FXML
+    public void handleStatClick(ActionEvent event) {
+        try {
+            // Charger la page ShowDon.fxml
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Attributions/StatistiquesAttribution.fxml"));
+            Parent root = loader.load();
+
+            // Obtenir la scène actuelle à partir de l'événement
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+
+            // Remplacer le contenu de la scène avec la page ShowDon
+            stage.setScene(new Scene(root));
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    @FXML
     public void handleRevenir() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/Attributions/ShowAttribution.fxml"));

@@ -326,6 +326,10 @@ public class ModifyAttribution {
     public void handleFaireUneAttributionClick(ActionEvent event) {
         openScene("/Attributions/ShowAttribution.fxml", event);
     }
+    @FXML
+    public void handleStatClick(ActionEvent event) {
+        openScene("/Attributions/StatistiquesAttribution.fxml",event);
+    }
     private void openScene(String fxmlPath, ActionEvent event) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));

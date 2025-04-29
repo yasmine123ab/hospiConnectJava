@@ -11,10 +11,20 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class AttributionDonService implements ICrud<AttributionsDons> {
     private Connection con;
+    private static AttributionDonService instance;
+    // Méthode statique pour obtenir l'instance unique
+    public static AttributionDonService getInstance() {
+        if (instance == null) {
+            instance = new AttributionDonService();
+        }
+        return instance;
+    }
 
     public AttributionDonService() {
         try {
@@ -119,6 +129,19 @@ public class AttributionDonService implements ICrud<AttributionsDons> {
             list.add(attribution);
         }
         return list;
+    }
+    /** Statistiques : compte par statut */
+    public Map<String, Integer> getAttributionStatisticsByStatut() throws SQLException {
+        Map<String, Integer> stats = new HashMap<>();
+        String sql = "SELECT statut, COUNT(*) AS total FROM attributions_dons GROUP BY statut";
+        try (PreparedStatement ps = con.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
+                stats.put(rs.getString("statut"),
+                        rs.getInt("total"));
+            }
+        }
+        return stats;
     }
 
 
