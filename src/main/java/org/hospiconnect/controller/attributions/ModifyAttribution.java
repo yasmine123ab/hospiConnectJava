@@ -5,11 +5,14 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
+import javafx.util.Duration;
+import org.controlsfx.control.Notifications;
 import org.hospiconnect.controller.laboratoire.SceneUtils;
 import org.hospiconnect.model.AttributionsDons;
 import org.hospiconnect.model.DemandesDons;
@@ -33,6 +36,8 @@ public class ModifyAttribution {
     private ComboBox<User> beneficiaireComboBox;
     @FXML
     private DatePicker dateAttributionDP;
+    @FXML
+    private ComboBox<String> statutComboBox;
     @FXML
     private Button saveButton;
     @FXML
@@ -210,35 +215,96 @@ public class ModifyAttribution {
     @FXML
     public void handleSave() {
         try {
-            if (donComboBox.getValue() == null) {
-                showErrorAlert("Erreur", "Veuillez sélectionner un don.");
+            // 👉 Vérification du don sélectionné
+            Dons selectedDon = donComboBox.getValue();
+            if (selectedDon == null) {
+                showErrorAlert("Erreur de saisie", "Veuillez sélectionner un don.");
                 return;
             }
 
-            if (demandeComboBox.getValue() == null) {
-                showErrorAlert("Erreur", "Veuillez sélectionner une demande.");
+            // 👉 Vérification de la demande sélectionnée
+            DemandesDons selectedDemande = demandeComboBox.getValue();
+            if (selectedDemande == null) {
+                showErrorAlert("Erreur de saisie", "Veuillez sélectionner une demande.");
                 return;
             }
 
-            if (dateAttributionDP.getValue() == null) {
-                showErrorAlert("Erreur", "Veuillez sélectionner une date.");
+            // 👉 Vérification de la date
+            java.time.LocalDate date = dateAttributionDP.getValue();
+            if (date == null) {
+                showErrorAlert("Erreur de saisie", "Veuillez sélectionner une date.");
+                return;
+            }
+            if (date.isBefore(java.time.LocalDate.now())) {
+                showErrorAlert("Erreur de saisie", "La date ne peut pas être dans le passé.");
                 return;
             }
 
-            attributionToModify.setDon(donComboBox.getValue());
-            attributionToModify.setDemande(demandeComboBox.getValue());
-            attributionToModify.setDateAttribution(Date.valueOf(dateAttributionDP.getValue()));
+            // 👉 Vérification du statut
+            String statut = statutComboBox.getValue();
+            if (statut == null || statut.trim().isEmpty()) {
+                showErrorAlert("Erreur de saisie", "Veuillez sélectionner un statut.");
+                return;
+            }
 
+            // 👉 Vérification du bénéficiaire
+            User selectedBeneficiaire = beneficiaireComboBox.getValue();
+            if (selectedBeneficiaire == null) {
+                showErrorAlert("Erreur de saisie", "Veuillez sélectionner un bénéficiaire.");
+                return;
+            }
+
+            // ✍️ Mise à jour des données
+            attributionToModify.setDon(selectedDon);
+            attributionToModify.setDonId(selectedDon.getId());
+
+            attributionToModify.setDemande(selectedDemande);
+            attributionToModify.setDemandeId(selectedDemande.getId());
+
+            attributionToModify.setDateAttribution(Date.valueOf(date));
+            attributionToModify.setStatut(statut);
+
+            attributionToModify.setBeneficiaire(selectedBeneficiaire);
+            attributionToModify.setBeneficiaireId(selectedBeneficiaire.getId());
+
+            // 👉 Update en base de données
             attributionService.update(attributionToModify);
 
-            // 👉 Redirection vers la page ShowDon.fxml
+            // Après la modification réussie
+            envoyerNotificationAuPatient(beneficiaireComboBox.getValue(), statutComboBox.getValue());
+
+            // 👉 Redirection vers la liste
             SceneUtils.openNewScene("/Attributions/ShowAttribution.fxml", saveButton.getScene(), null);
 
-
-        } catch (SQLException e) {
-            showErrorAlert("Erreur", "Échec de modification : " + e.getMessage());
+        } catch (Exception e) {
+            showErrorAlert("Erreur", "Erreur lors de la mise à jour : " + e.getMessage());
         }
     }
+    private void envoyerNotificationAuPatient(User patient, String statut) {
+        String message = "";
+
+        switch (statut) {
+            case "Attribué":
+                message = "Bonjour " + patient.getNom() + ", votre demande a été acceptée avec succès ! 🎉";
+                break;
+            case "En attente":
+                message = "Bonjour " + patient.getNom() + ", votre demande est en attente de traitement.";
+                break;
+            case "Refusé":
+                message = "Bonjour " + patient.getNom() + ", malheureusement votre demande a été refusée.";
+                break;
+            default:
+                message = "Bonjour " + patient.getNom() + ", il y a eu une mise à jour concernant votre demande.";
+        }
+
+        Notifications.create()
+                .title("Mise à jour de votre demande")
+                .text(message)
+                .hideAfter(Duration.seconds(5))
+                .position(Pos.TOP_RIGHT)
+                .showInformation();
+    }
+
 
     @FXML
     public void handleCancel() {

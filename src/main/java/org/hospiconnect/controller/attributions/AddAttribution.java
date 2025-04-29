@@ -5,6 +5,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -13,7 +14,9 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ListCell;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import javafx.util.StringConverter;
+import org.controlsfx.control.Notifications;
 import org.hospiconnect.controller.laboratoire.SceneUtils;
 import org.hospiconnect.model.AttributionsDons;
 import org.hospiconnect.model.DemandesDons;
@@ -227,7 +230,7 @@ public class AddAttribution {
                 return;
             }
 
-            // Vérifier si le statut est parmi une liste valide (si applicable)
+            // Vérification du statut
             List<String> statutsValides = Arrays.asList("Attribué", "En attente", "Refusé");
             if (!statutsValides.contains(statut)) {
                 showAlert(Alert.AlertType.WARNING, "Statut invalide", "Le statut sélectionné n'est pas valide.");
@@ -250,6 +253,7 @@ public class AddAttribution {
                 return;
             }
 
+            // Création et insertion de l'attribution
             AttributionsDons attribution = new AttributionsDons();
             attribution.setDateAttribution(new Date(System.currentTimeMillis()));
             attribution.setStatut(statut);
@@ -257,11 +261,14 @@ public class AddAttribution {
             attribution.setDemande(selectedDemande);
             attribution.setBeneficiaire(selectedBeneficiaire);
 
-
             attributionService.insert(attribution);
 
+            // ✅ Notification après succès
             showAlert(Alert.AlertType.INFORMATION, "Succès", "Attribution enregistrée avec succès.");
-//            clearFields();
+            envoyerNotificationAuPatient(selectedBeneficiaire);
+
+            // Optionnel : vider les champs après l'enregistrement
+            // clearFields();
 
         } catch (SQLException e) {
             showAlert(Alert.AlertType.ERROR, "Erreur SQL", e.getMessage());
@@ -269,13 +276,16 @@ public class AddAttribution {
             showAlert(Alert.AlertType.ERROR, "Erreur inattendue", e.getMessage());
         }
     }
+    private void envoyerNotificationAuPatient(User patient) {
+        Notifications.create()
+                .title("Notification de Don")
+                .text("Bonjour " + patient.getNom() + ", votre demande a été enregistrée avec succès ! 🎉")
+                .hideAfter(Duration.seconds(5))
+                .position(Pos.TOP_RIGHT)
+                .showInformation();
+    }
 
-//    private void clearFields() {
-//        statutTF.clear();
-//        donComboBox.getSelectionModel().clearSelection();
-//        demandeComboBox.getSelectionModel().clearSelection();
-//        beneficiaireComboBox.getSelectionModel().clearSelection();
-//    }
+
 
     private void showAlert(Alert.AlertType type, String title, String message) {
         Alert alert = new Alert(type);
