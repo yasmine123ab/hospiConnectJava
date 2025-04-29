@@ -1,3 +1,5 @@
+// CalendrierLaboController.java - Ajout code couleur pour disponibilités
+
 package org.hospiconnect.controller.laboratoire;
 
 import javafx.collections.FXCollections;
@@ -102,7 +104,7 @@ public class CalendrierLaboController {
             box.setSpacing(5);
             box.setStyle("-fx-border-color: #cccccc; -fx-padding: 5;");
 
-            boolean hasDispo = dispos.stream().anyMatch(d -> d.getDispo().equals(date));
+            boolean hasDispo = dispoService.findAll().stream().anyMatch(d -> d.getDispo().equals(date));
 
             Label dayLabel = new Label(String.valueOf(day));
             dayLabel.setStyle("-fx-font-weight: bold; -fx-font-size: 14;");
@@ -115,7 +117,7 @@ public class CalendrierLaboController {
             }
 
             if (hasDispo) {
-                box.setOnMouseClicked(e -> showDisponibilitesPopup(date, dispos));
+                box.setOnMouseClicked(e -> showDisponibilitesPopup(date, dispoService.findAll()));
             }
 
             calendarGrid.add(box, col, row);
@@ -146,19 +148,16 @@ public class CalendrierLaboController {
             calendarGrid.getRowConstraints().add(rc);
         }
 
-        // En-tête jours
         for (int i = 0; i < 7; i++) {
             Label dayLabel = createCell(startOfWeek.plusDays(i).getDayOfWeek().getDisplayName(TextStyle.SHORT, Locale.FRENCH), true);
             calendarGrid.add(dayLabel, i + 1, 0);
         }
 
-        // Heures sur la première colonne
         for (int hour = 8; hour <= 16; hour++) {
             Label hourLabel = createCell(hour + ":00", true);
             calendarGrid.add(hourLabel, 0, (hour - 8) + 1);
         }
 
-        // Organiser les disponibilités par jour et par heure
         for (int day = 0; day < 7; day++) {
             LocalDate date = startOfWeek.plusDays(day);
             List<DisponibiliteAnalyse> disposDuJour = dispos.stream()
@@ -175,7 +174,8 @@ public class CalendrierLaboController {
                 for (DisponibiliteAnalyse dispo : disposDuJour) {
                     if (dispo.getDebut().getHour() == hour) {
                         Label event = new Label(dispo.getDebut() + " - " + dispo.getFin() + " (" + dispo.getNbrPlaces() + ")");
-                        event.setStyle("-fx-background-color: #90ee90; -fx-background-radius: 5px; -fx-padding: 2; -fx-border-color: #008000; -fx-border-width: 0.5px;");
+                        String bgColor = (dispo.getNbrPlaces() <= 3) ? "#f8d7da" : (dispo.getNbrPlaces() <= 7) ? "#fff3cd" : "#d4edda";
+                        event.setStyle("-fx-background-color: " + bgColor + "; -fx-background-radius: 5px; -fx-padding: 2; -fx-border-color: #cccccc; -fx-border-width: 0.5px;");
                         event.setMaxWidth(Double.MAX_VALUE);
                         box.getChildren().add(event);
                     }
@@ -193,7 +193,6 @@ public class CalendrierLaboController {
         label.setMaxHeight(Double.MAX_VALUE);
         return label;
     }
-
 
     private void showDisponibilitesPopup(LocalDate date, List<DisponibiliteAnalyse> dispos) {
         List<DisponibiliteAnalyse> dayDispos = dispos.stream()
