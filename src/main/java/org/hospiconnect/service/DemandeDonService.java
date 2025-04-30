@@ -121,6 +121,19 @@ public class DemandeDonService implements ICrud<DemandesDons> {
         }
         return stats;
     }
+    public boolean isDemandeLinkedToAttribution(DemandesDons demande) throws SQLException {
+        String query = "SELECT COUNT(*) FROM attributions_dons WHERE demande_id = ?";  // Supposez que la table d'attribution ait une colonne `demande_id`
+
+        try (PreparedStatement stmt = con.prepareStatement(query)) {
+            stmt.setInt(1, demande.getId()); // Utilisez l'ID de la demande
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                return rs.getInt(1) > 0; // Si le nombre d'enregistrements est supérieur à 0, cela signifie qu'il est lié à une attribution
+            }
+        }
+        return false;
+    }
 
 
 

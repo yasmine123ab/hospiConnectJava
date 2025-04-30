@@ -140,4 +140,18 @@ public class DonService implements ICrud<Dons> {
         }
         return 0.0;
     }
+    public boolean isDonLinkedToAttribution(Dons don) throws SQLException {
+        String query = "SELECT COUNT(*) FROM attributions_dons WHERE don_id = ?";
+
+        try (PreparedStatement stmt = con.prepareStatement(query)) {
+            stmt.setInt(1, don.getId()); // Utiliser l'ID du don
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                return rs.getInt(1) > 0; // Si le nombre de références est supérieur à 0, c'est lié
+            }
+        }
+        return false;
+    }
+
 }

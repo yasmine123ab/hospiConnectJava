@@ -145,15 +145,26 @@ public class ShowDon {
     public void handleDelete(ActionEvent event) {
         Button btn = (Button) event.getSource();
         Dons don = (Dons) btn.getUserData();
+
         try {
+            // Vérifier si le don est déjà lié à une attribution
+            if (donService.isDonLinkedToAttribution(don)) {
+                // Afficher un message d'erreur si le don est lié à une attribution
+                showErrorAlert("Erreur", "Ce don est en cours de traitement et ne peut pas être supprimé.");
+                return; // Sortir de la méthode sans effectuer la suppression
+            }
+
+            // Si le don n'est pas lié à une attribution, le supprimer
             donService.delete(don);
             donList.remove(don);
             displayFilteredDons(donList, searchField.getText());
             showSuccessAlert("Succès", "Don supprimé.");
+
         } catch (SQLException ex) {
             showErrorAlert("Erreur", "Impossible de supprimer : " + ex.getMessage());
         }
     }
+
 
     private VBox createDonCard(Dons don) {
         VBox card = new VBox(8);

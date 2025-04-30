@@ -193,14 +193,24 @@ public class ShowDemande {
         DemandesDons demande = (DemandesDons) sourceButton.getUserData();
 
         try {
+            // Vérifier si la demande est déjà liée à une attribution
+            if (demandeService.isDemandeLinkedToAttribution(demande)) {
+                // Afficher un message d'erreur si la demande est liée à une attribution
+                showErrorAlert("Erreur", "Cette demande est en cours de traitement et ne peut pas être supprimée.");
+                return; // Sortir de la méthode sans effectuer la suppression
+            }
+
+            // Si la demande n'est pas liée à une attribution, procéder à la suppression
             demandeService.delete(demande);
             demandeList.remove(demande);  // Mise à jour de la liste principale
             displayFilteredDemandes(demandeList, searchField.getText());
             showSuccessAlert("Succès", "La demande a été supprimée.");
+
         } catch (SQLException e) {
             showErrorAlert("Erreur de suppression", "Erreur lors de la suppression de la demande : " + e.getMessage());
         }
     }
+
 
     @FXML
     public void handleFaireUnDonClick(ActionEvent event) {
