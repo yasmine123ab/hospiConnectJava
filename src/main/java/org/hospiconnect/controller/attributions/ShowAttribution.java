@@ -350,10 +350,9 @@ public class ShowAttribution {
         for (AttributionsDons d : attributionsDons) {
             html.append("<tr>");
 
-            String nomBeneficiaire = "Inconnu";
-            if (d.getBeneficiaireId() != 0 && d.getBeneficiaire() != null) {
-                nomBeneficiaire = d.getBeneficiaire().getNom() + " " + d.getBeneficiaire().getPrenom();
-            }
+            String nomBeneficiaire="Inconnu";
+            nomBeneficiaire = d.getDemande().getPatient().getNom() + " " + d.getDemande().getPatient().getPrenom();
+
 
             html.append("<td>").append(nomBeneficiaire).append("</td>")
                     .append("<td>").append(d.getStatut()).append("</td>")
