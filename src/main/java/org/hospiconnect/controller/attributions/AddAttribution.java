@@ -296,7 +296,7 @@ public class AddAttribution {
     private void envoyerNotificationAuPatient(User patient) {
         Notifications.create()
                 .title("Notification de Don")
-                .text("Bonjour " + patient.getNom() + ", votre demande a été enregistrée avec succès ! 🎉")
+                .text("Bonjour " + patient.getNom() + ", toute mes félicitations votre demande a bien été enregistrée avec succès ! 🎉")
                 .hideAfter(Duration.seconds(5))
                 .position(Pos.TOP_RIGHT)
                 .showInformation();

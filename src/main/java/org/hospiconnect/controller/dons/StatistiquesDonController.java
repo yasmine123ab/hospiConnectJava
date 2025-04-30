@@ -20,6 +20,8 @@ public class StatistiquesDonController {
     @FXML private Label totalLabel;
     @FXML private ProgressBar progressBar;
     @FXML private Button retourButton;
+    @FXML private Label objectifLabel;
+    @FXML private Label pourcentageLabel;
 
     // Service pour accéder aux dons
     private final DonService donService = DonService.getInstance();
@@ -60,15 +62,23 @@ public class StatistiquesDonController {
             double total = donService.getTotalMontant();
             totalLabel.setText(String.format("Cagnotte totale : %.2f DT", total));
 
-            // Calcul du % de l'objectif
+            // Set the objective text (you can replace this with your actual value)
+            objectifLabel.setText(String.format("Objectif : %.2f DT", OBJECTIF));
+
+            // Calculate the % of the objective
             double progress = Math.min(total / OBJECTIF, 1.0);
             progressBar.setProgress(progress);
+
+            // Update the percentage label
+            double percentage = progress * 100;
+            pourcentageLabel.setText(String.format("Pourcentage atteint : %.2f%%", percentage));
 
         } catch (SQLException e) {
             e.printStackTrace();
             totalLabel.setText("Erreur chargement cagnotte");
         }
     }
+
 
     @FXML
     private void handleRetour() {
