@@ -320,20 +320,21 @@ public class ShowAttribution {
         String logoUri = getClass().getResource("/images/logo.png").toURI().toString();
         StringBuilder html = new StringBuilder();
 
-        html.append("<html xmlns=\"http://www.w3.org/1999/xhtml\">")
-                .append("<head>")
-                .append("<meta charset='UTF-8'/>")
-                .append("<style>")
-                .append("body { font-family: Arial, sans-serif; }")
-                .append("h2 { text-align: center; color: #333; }")
-                .append(".logo { display: block; margin: 0 auto 20px auto; width: 100px; }")
-                .append("table { width: 100%; border-collapse: collapse; margin-top: 20px; }")
-                .append("th, td { border: 1px solid #ccc; padding: 8px; text-align: center; }")
-                .append("th { background-color: #f2f2f2; }")
-                .append("</style>")
-                .append("</head>")
-                .append("<body>")
-                .append("<img src='").append(logoUri).append("' class='logo'/>")
+        html.append("<html><head><style>")
+                // style global
+                .append("body{font-family:Arial,sans-serif;margin:20px;} ")
+                // logo
+                .append(".logo{display:block;margin:0 auto 20px auto;width:150px;} ")
+                // titre centré et coloré
+                .append("h2{text-align:center;color:#4CAF50;margin-bottom:20px;} ")
+                // style tableau
+                .append("table{width:100%;border-collapse:collapse;font-size:12px;} ")
+                .append("th{background-color:#4CAF50;color:white;padding:8px;text-align:left;} ")
+                .append("td{padding:6px;border:1px solid #ddd;} ")
+                .append("tr:nth-child(even){background-color:#f9f9f2;} ")
+                .append("</style></head><body>")
+                // insertion du logo
+                .append("<img src=\"").append(logoUri).append("\" class=\"logo\"/>")
                 .append("<h2>Liste des attributions</h2>")
                 .append("<table>")
                 .append("<thead>")
