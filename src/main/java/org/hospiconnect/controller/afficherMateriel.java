@@ -219,7 +219,7 @@ public class afficherMateriel {
             Row headerRow = sheet.createRow(0);
             String[] columns = {
                     "Nom", "Quantité", "Référence", "Disponibilité", "Catégorie",
-                    "État", "Emplacement", "Date d'ajout", "Âge (mois)", "Commentaire automatique"
+                    "État", "Emplacement", "Date d'ajout", "Âge (mois)", "Commentaire "
             };
 
             for (int i = 0; i < columns.length; i++) {
@@ -422,10 +422,13 @@ public class afficherMateriel {
             return "À remplacer rapidement";
         } else if (materiel.getQuantite() == 0) {
             return "Stock épuisé, à réapprovisionner";
+        } else if (materiel.getQuantite() < 5) {
+            return "Stock faible";
         } else {
             return "Disponible";
         }
     }
+
 
     private void showInformation(String title, String header, String content) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);

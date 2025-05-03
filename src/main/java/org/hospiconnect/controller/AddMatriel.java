@@ -67,10 +67,9 @@ public class AddMatriel {
                 "/HomePages/backList.fxml", menuHomeButton.getScene(), null));
 
     }
-
     @FXML
     void ajouter(ActionEvent event) {
-        // Vérification que tous les champs sont remplis
+        // Vérification des champs obligatoires
         if (nom.getText().isEmpty()) {
             showErrorAlert("Le champ 'Nom' est obligatoire.");
             return;
@@ -80,7 +79,7 @@ public class AddMatriel {
             return;
         }
         if (etat.getValue() == null) {
-            showErrorAlert("Le champ 'Etat' est obligatoire.");
+            showErrorAlert("Le champ 'État' est obligatoire.");
             return;
         }
         if (quantite.getText().isEmpty()) {
@@ -96,67 +95,83 @@ public class AddMatriel {
             return;
         }
 
-        // Vérification que la quantité est un entier positif
+        // Quantité valide
         int qte;
         try {
             qte = Integer.parseInt(quantite.getText());
-            if (qte < 0) {
-                throw new NumberFormatException("Quantité négative");
-            }
+            if (qte < 0) throw new NumberFormatException();
         } catch (NumberFormatException e) {
             showErrorAlert("La quantité doit être un entier positif.");
             return;
         }
 
-        // Vérification de la date
+        // Date valide
         LocalDate selectedDate = date.getValue();
-        LocalDate today = LocalDate.now();
-        if (selectedDate.isAfter(today)) {
+        if (selectedDate.isAfter(LocalDate.now())) {
             showErrorAlert("La date doit être inférieure ou égale à aujourd'hui.");
             return;
         }
 
-        // Création du matériel
-        MaterielService1 us = new MaterielService1();
-        Materiel m = new Materiel(
-                qte,
-                nom.getText(),
-                categorie.getText(),
-                etat.getValue(),
-                emplacement.getText(),
-                java.sql.Date.valueOf(date.getValue())
-        );
+        MaterielService1 service = new MaterielService1();
 
         try {
-            us.insert(m);
+            if (materielEnCours != null) {
+                // 🔁 MODIFICATION
+                materielEnCours.setNom(nom.getText());
+                materielEnCours.setQuantite(qte);
+                materielEnCours.setCategorie(categorie.getText());
+                materielEnCours.setEtat(etat.getValue());
+                materielEnCours.setEmplacement(emplacement.getText());
+                materielEnCours.setDate_ajout(java.sql.Date.valueOf(selectedDate));
 
-            // Vérification seuil après insertion
-            int seuil = 5;
-            if (m.getQuantite() <= seuil) {
-                envoyerAlerteMail(m);
+                service.update(materielEnCours);
+                if (materielEnCours.getQuantite() <= 5) {
+                    envoyerAlerteMail(materielEnCours);
+                }
+
+
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Succès");
+                alert.setHeaderText(null);
+                alert.setContentText("Matériel modifié avec succès !");
+                alert.showAndWait();
+            } else {
+                // ➕ AJOUT
+                Materiel m = new Materiel(
+                        qte,
+                        nom.getText(),
+                        categorie.getText(),
+                        etat.getValue(),
+                        emplacement.getText(),
+                        java.sql.Date.valueOf(selectedDate)
+                );
+
+                service.insert(m);
+
+                if (m.getQuantite() <= 5) {
+                    envoyerAlerteMail(m);
+                }
+
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Succès");
+                alert.setHeaderText(null);
+                alert.setContentText("Matériel ajouté avec succès !");
+                alert.showAndWait();
+
+                // Réinitialisation des champs
+                quantite.clear();
+                nom.clear();
+                categorie.clear();
+                etat.getSelectionModel().selectFirst();
+                emplacement.clear();
+                date.setValue(null);
             }
-
-            // Message de succès
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Succès");
-            alert.setHeaderText(null);
-            alert.setContentText("Matériel ajouté avec succès !");
-            alert.showAndWait();
-
-            // Réinitialisation des champs
-            quantite.clear();
-            nom.clear();
-            categorie.clear();
-            etat.getSelectionModel().selectFirst();
-            emplacement.clear();
-            date.setValue(null);
-
         } catch (Exception e) {
-            System.out.println("Erreur lors de l'ajout du matériel : " + e.getMessage());
+            System.out.println("Erreur lors de l'opération sur le matériel : " + e.getMessage());
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Erreur");
             alert.setHeaderText(null);
-            alert.setContentText("Une erreur est survenue lors de l'ajout.");
+            alert.setContentText("Une erreur est survenue.");
             alert.showAndWait();
         }
     }
@@ -209,14 +224,13 @@ public class AddMatriel {
 
     // 📩 Méthode pour envoyer un mail d'alerte
     public void envoyerAlerteMail(Materiel materiel) {
-        String to = "saoudihamadi2003@gmail.com"; // <-- ici tu mets l'email du destinataire final (ex: ton chef, toi-même, un collègue...)
+        String to = "saoudihamadi2003@gmail.com";
+        String from = "mahdisaoufi@gmail.com";
 
-        String from = "mahdisaoufi@gmail.com";       // <-- ici tu mets TON adresse Gmail d'envoi
+        String host = "smtp.gmail.com";
 
-        String host = "smtp.gmail.com";           // <-- laisse comme ça pour Gmail
-
-        final String username = "mahdisaoufi@gmail.com";    // <-- TON adresse Gmail (pareil que "from")
-        final String password = "dbjq npas xbiv ecfz";     // <-- TON mot de passe d'application (voir ci-dessous 👇)
+        final String username = "mahdisaoufi@gmail.com";
+        final String password = "dbjq npas xbiv ecfz";
 
         Properties props = new Properties();
         props.put("mail.smtp.auth", "true");
