@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
@@ -13,95 +11,87 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.TextField?>
-<BorderPane prefHeight="400.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/23.0.1"
+<BorderPane prefHeight="552.0" prefWidth="935.0" xmlns="http://javafx.com/javafx/23.0.1"
             xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="org.hospiconnect.controller.attributions.ShowAttribution">
 
     <!-- ===== MENU LATÉRAL GAUCHE ===== -->
     <left>
-        <VBox alignment="CENTER" spacing="15" style="-fx-background-color: #ADD8E6;">
-            <padding>
-                <Insets bottom="20" left="20" right="20" top="20" />
-            </padding>
-            <!-- Logo en haut à gauche -->
-            <ImageView fitHeight="50.0" fitWidth="90.0">
+        <VBox prefHeight="552.0" prefWidth="227.0" spacing="0.0">
+            <!-- Logo au-dessus -->
+            <ImageView fitHeight="177.0" fitWidth="230.0" pickOnBounds="true">
                 <image>
                     <Image url="@../images/logo.png" />
                 </image>
             </ImageView>
-            <!-- Logo -->
-            <AnchorPane />
 
-            <!-- Boutons de navigation avec icônes -->
-            <HBox alignment="CENTER_LEFT" spacing="10">
-                <ImageView fitHeight="26.0" fitWidth="26.0">
-                    <image>
-                        <Image url="@../icons/donation.png" /> <!-- icône don -->
-                    </image>
-                </ImageView>
-                <Button onAction="#handleFaireUnDonClick" prefHeight="26.0" prefWidth="134.0" text="Faire un Don">
-                    <font>
-                        <Font name="System Bold Italic" size="14.0" />
-                    </font></Button>
-            </HBox>
+            <!-- Bande bleue avec les boutons -->
+            <VBox prefHeight="413.0" prefWidth="224.0" spacing="10.0" style="-fx-background-color: #ADD8E6;">
+                <padding>
+                    <Insets bottom="20" left="10" right="10" top="20" />
+                </padding>
 
-            <HBox alignment="CENTER_LEFT" spacing="10">
-                <ImageView fitHeight="28.0" fitWidth="27.0">
-                    <image>
-                        <Image url="@../icons/request.png" /> <!-- icône demande -->
-                    </image>
-                </ImageView>
-                <Button onAction="#handleFaireUneDemandeClick" prefHeight="26.0" prefWidth="134.0" text="Demande de Don">
+                <!-- Boutons de navigation -->
+                <Button fx:id="faireDonButton" graphicTextGap="10.0" onAction="#handleFaireUnDonClick" prefHeight="50.0" prefWidth="210.0" style="-fx-background-color: #ADD8E6;" text="Faire un Don" textFill="#0e046e">
+                    <graphic>
+                        <ImageView fitHeight="30.0" fitWidth="30.0" preserveRatio="true">
+                            <image>
+                                <Image url="@../icons/donation.png" />
+                            </image>
+                        </ImageView>
+                    </graphic>
                     <font>
-                        <Font name="System Bold Italic" size="14.0" />
-                    </font></Button>
-            </HBox>
+                        <Font name="System Bold" size="15.0" />
+                    </font>
+                </Button>
 
-            <HBox alignment="CENTER_LEFT" spacing="10">
-                <ImageView fitHeight="28.0" fitWidth="27.0">
-                    <image>
-                        <Image url="@../icons/request.png" /> <!-- icône demande -->
-                    </image>
-                </ImageView>
-                <Button onAction="#handleFaireUneAttributionClick" prefHeight="26.0" prefWidth="134.0" text="Attribution des Dons">
+                <Button fx:id="faireDemandeButton" graphicTextGap="10.0" onAction="#handleFaireUneDemandeClick" prefHeight="50.0" prefWidth="210.0" style="-fx-background-color: #ADD8E6;" text="Demande de Don" textFill="#0e046e">
+                    <graphic>
+                        <ImageView fitHeight="30.0" fitWidth="30.0" preserveRatio="true">
+                            <image>
+                                <Image url="@../icons/request.png" />
+                            </image>
+                        </ImageView>
+                    </graphic>
                     <font>
-                        <Font name="System Bold Italic" size="14.0" />
-                    </font></Button>
-            </HBox>
+                        <Font name="System Bold" size="15.0" />
+                    </font>
+                </Button>
 
-            <HBox alignment="CENTER_LEFT" spacing="10">
-                <ImageView fitHeight="29.0" fitWidth="28.0">
-                    <image>
-                        <Image url="@../icons/stats.png" /> <!-- icône stats -->
-                    </image>
-                </ImageView>
-                <Button prefHeight="26.0" prefWidth="134.0" text="Statistiques">
+                <Button fx:id="faireAttributionButton" graphicTextGap="10.0" onAction="#handleFaireUneAttributionClick" prefHeight="50.0" prefWidth="210.0" style="-fx-background-color: #ADD8E6;" text="Attribution Dons" textFill="#0e046e">
+                    <graphic>
+                        <ImageView fitHeight="30.0" fitWidth="30.0" preserveRatio="true">
+                            <image>
+                                <Image url="@../icons/request.png" />
+                            </image>
+                        </ImageView>
+                    </graphic>
                     <font>
-                        <Font name="System Bold Italic" size="14.0" />
-                    </font></Button>
-            </HBox>
+                        <Font name="System Bold" size="15.0" />
+                    </font>
+                </Button>
 
-            <HBox alignment="CENTER_LEFT" spacing="10">
-                <ImageView fitHeight="28.0" fitWidth="27.0">
-                    <image>
-                        <Image url="@../icons/pdf.png" /> <!-- icône PDF -->
-                    </image>
-                </ImageView>
-                <Button prefHeight="26.0" prefWidth="134.0" text="Exporter PDF">
+                <Button fx:id="statistiquesButton" graphicTextGap="10.0" onAction="#handleStatClick" prefHeight="50.0" prefWidth="210.0" style="-fx-background-color: #ADD8E6;" text="Statistiques" textFill="#0e046e">
+                    <graphic>
+                        <ImageView fitHeight="30.0" fitWidth="30.0" preserveRatio="true">
+                            <image>
+                                <Image url="@../icons/stats.png" />
+                            </image>
+                        </ImageView>
+                    </graphic>
                     <font>
-                        <Font name="System Bold Italic" size="14.0" />
-                    </font></Button>
-            </HBox>
-            <HBox alignment="CENTER_LEFT" spacing="10">
-                <Button fx:id="menuHomeButton" prefHeight="26.0" prefWidth="134.0" text="Home">
+                        <Font name="System Bold" size="15.0" />
+                    </font>
+                </Button>
+
+                <Button fx:id="menuHomeButton" prefHeight="50.0" prefWidth="210.0" style="-fx-background-color: #ADD8E6;" text="Home" textFill="#0e046e">
                     <font>
-                        <Font name="System Bold Italic" size="14.0" />
-                    </font></Button>
-            </HBox>
+                        <Font name="System Bold" size="15.0" />
+                    </font>
+                </Button>
+            </VBox>
         </VBox>
     </left>
-
-
     <!-- ===== CONTENU PRINCIPAL : LISTE DES ATTRIBUTIONS ===== -->
     <center>
         <ScrollPane fitToWidth="true" vbarPolicy="ALWAYS">
@@ -114,11 +104,18 @@
                     <!-- BARRE DE RECHERCHE + BOUTON -->
                     <HBox alignment="CENTER_LEFT" spacing="10.0">
                         <TextField fx:id="searchField" prefHeight="26.0" prefWidth="435.0" promptText="Rechercher une Attribution..." />
+                        <Button fx:id="sortButton" text="Trier ↑" prefWidth="80.0" style="-fx-background-color: #2196F3; -fx-text-fill: white;" />
                         <Button fx:id="addAttributionButton" style="-fx-background-color: #4CAF50; -fx-text-fill: white;" text="Ajouter Attribution" />
                     </HBox>
 
                     <!-- LISTE DES DONS -->
                     <VBox fx:id="attributionListContainer" spacing="10.0" />
+                    <!-- BOUTON EXPORTER PDF -->
+                    <HBox alignment="CENTER_RIGHT" spacing="10.0">
+                        <Button fx:id="exportPdfButton" text="Exporter PDF"
+                                style="-fx-background-color: #FF5722; -fx-text-fill: white;"
+                                prefWidth="150.0" prefHeight="30.0" />
+                    </HBox>
                 </VBox>
             </content>
         </ScrollPane>

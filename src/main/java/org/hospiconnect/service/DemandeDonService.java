@@ -9,12 +9,21 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-
+import java.util.Map;
 
 
 public class DemandeDonService implements ICrud<DemandesDons> {
     private Connection con;
+    private static DemandeDonService instance;
+    // Méthode statique pour obtenir l'instance unique
+    public static DemandeDonService getInstance() {
+        if (instance == null) {
+            instance = new DemandeDonService();
+        }
+        return instance;
+    }
 
     public DemandeDonService() {
         try {
@@ -86,5 +95,46 @@ public class DemandeDonService implements ICrud<DemandesDons> {
         }
         return list;
     }
+    /** Statistiques : compte par type de besoin */
+    public Map<String, Integer> getDemandeStatisticsByTypeBesoin() throws SQLException {
+        Map<String, Integer> stats = new HashMap<>();
+        String sql = "SELECT type_besoin, COUNT(*) AS total FROM demandes_dons GROUP BY type_besoin";
+        try (PreparedStatement ps = con.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
+                stats.put(rs.getString("type_besoin"),
+                        rs.getInt("total"));
+            }
+        }
+        return stats;
+    }
+    /** Statistiques : compte par statut */
+    public Map<String, Integer> getDemandeStatisticsByStatut() throws SQLException {
+        Map<String, Integer> stats = new HashMap<>();
+        String sql = "SELECT statut, COUNT(*) AS total FROM demandes_dons GROUP BY statut";
+        try (PreparedStatement ps = con.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
+                stats.put(rs.getString("statut"),
+                        rs.getInt("total"));
+            }
+        }
+        return stats;
+    }
+    public boolean isDemandeLinkedToAttribution(DemandesDons demande) throws SQLException {
+        String query = "SELECT COUNT(*) FROM attributions_dons WHERE demande_id = ?";  // Supposez que la table d'attribution ait une colonne `demande_id`
+
+        try (PreparedStatement stmt = con.prepareStatement(query)) {
+            stmt.setInt(1, demande.getId()); // Utilisez l'ID de la demande
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                return rs.getInt(1) > 0; // Si le nombre d'enregistrements est supérieur à 0, cela signifie qu'il est lié à une attribution
+            }
+        }
+        return false;
+    }
+
+
 
 }
