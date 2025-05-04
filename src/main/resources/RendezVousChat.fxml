@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="650.0" prefWidth="1259.0" style="-fx-background-color: #ffff;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.hospiconnect.controller.ChatbotController">
+    <children>
+        <VBox prefHeight="650.0" prefWidth="224.0" style="-fx-background-color: #ADD8E6;">
+            <children>
+                <Label text="HospiChat" style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-padding: 20; -fx-text-fill: #0e046e;"/>
+                <Button fx:id="menuAnalyseButton" mnemonicParsing="false" prefHeight="50.0" prefWidth="231.0" style="-fx-background-color: #ADD8E5;" text="Analyses" textFill="#0e046e">
+                    <font>
+                        <Font name="System Bold" size="15.0" />
+                    </font>
+                </Button>
+                <Button fx:id="menuTypeAnalyseButton" mnemonicParsing="false" prefHeight="50.0" prefWidth="237.0" style="-fx-background-color: #ADD8E6;" text="Types Analyse" textFill="#0e046e">
+                    <font>
+                        <Font name="System Bold" size="15.0" />
+                    </font>
+                </Button>
+                <Button fx:id="menuDispoAnalyseButton" mnemonicParsing="false" prefHeight="50.0" prefWidth="229.0" style="-fx-background-color: #ADD8E6;" text="Disponibilités" textFill="#0e046e">
+                    <font>
+                        <Font name="System Bold" size="15.0" />
+                    </font>
+                </Button>
+                <Button fx:id="menuDashboardButton" mnemonicParsing="false" prefHeight="50.0" prefWidth="239.0" style="-fx-background-color: #ADD8E6;" text="Dashboard" textFill="#0e046e">
+                    <font>
+                        <Font name="System Bold" size="15.0" />
+                    </font>
+                </Button>
+                <Button fx:id="menuHospiChatButton" mnemonicParsing="false" prefHeight="50.0" prefWidth="233.0" style="-fx-background-color: #ADD8E6;" text="HospiChat" textFill="#0e046e">
+                    <font>
+                        <Font name="System Bold" size="15.0" />
+                    </font>
+                </Button>
+                <Button fx:id="menuCalendrierButton" mnemonicParsing="false" prefHeight="50.0" prefWidth="233.0" style="-fx-background-color: #ADD8E6;" text="Calendrier" textFill="#0e046e">
+                    <font>
+                        <Font name="System Bold" size="15.0" />
+                    </font>
+                </Button>
+                <Button fx:id="menuHomeButton" mnemonicParsing="false" prefHeight="50.0" prefWidth="233.0" style="-fx-background-color: #ADD8E6;" text="Home" textFill="#0e046e">
+                    <font>
+                        <Font name="System Bold" size="15.0" />
+                    </font>
+                </Button>
+            </children>
+        </VBox>
+        <Label layoutX="255.0" layoutY="34.0" text="I'm HospiChat, how can I assist you?" textFill="#1605ac">
+            <font>
+                <Font name="System Bold" size="24.0" />
+            </font>
+        </Label>
+        <Button fx:id="fermerFenetreButton" layoutX="1218.0" mnemonicParsing="false" style="-fx-background-color: #ffff;" text="x" textFill="#f40505">
+            <font>
+                <Font name="System Bold" size="18.0" />
+            </font>
+        </Button>
+        <Button fx:id="reduireFenetreButton" layoutX="1195.0" mnemonicParsing="false" style="-fx-background-color: #ffff;" text="-" textFill="#07f259">
+            <font>
+                <Font name="System Bold" size="18.0" />
+            </font>
+        </Button>
+        <Pane layoutX="302.0" layoutY="112.0" prefHeight="506.0" prefWidth="874.0">
+            <children>
+                <ScrollPane fx:id="chatScrollPane" layoutX="22.0" layoutY="37.0" prefHeight="367.0" prefWidth="835.0">
+                    <content>
+                        <VBox fx:id="chatMessagesBox" />
+                    </content>
+                </ScrollPane>
+                <TextField fx:id="userInputField" layoutX="25.0" layoutY="434.0" prefHeight="50.0" prefWidth="736.0" promptText="Type your question here..." />
+                <Button fx:id="sendButton" layoutX="782.0" layoutY="444.0" mnemonicParsing="false" prefHeight="29.0" prefWidth="78.0" style="-fx-background-color: #ADD8E6;" text="SEND" textFill="#09097b">
+                    <font>
+                        <Font name="System Bold" size="12.0" />
+                    </font>
+                </Button>
+            </children>
+        </Pane>
+    </children>
+</AnchorPane>

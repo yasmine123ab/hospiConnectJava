@@ -4,23 +4,22 @@ import org.hospiconnect.model.RendezVous;
 import org.hospiconnect.utils.DatabaseUtils;
 
 import java.sql.*;
-import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
 public class RendezVousService implements ICrud<RendezVous> {
 
     @Override
-    public void insert(RendezVous rdv) throws SQLException {
-        String query = "INSERT INTO rendez_vous (patient_id, medecin_id, date_rendezvous, heure_rendezvous, type_rendezvous, nom, prenom, numtel_patient, mail_patient, gravite, commentaire, statut) " +
-                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    public int insert(RendezVous rdv) throws SQLException {
+        String query = "INSERT INTO rendez_vous (patient_id, medecin_id, date_rendezvous, heure_rendezvous, type_rendezvous, nom, prenom, num_tel_patient, mail_patient, gravite, commentaire) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         try (Connection conn = DatabaseUtils.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(query)) {
-            stmt.setObject(1, null, Types.INTEGER); // patient_id
-            stmt.setObject(2, null, Types.INTEGER); // medecin_id
+             PreparedStatement stmt = conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
+
+            stmt.setObject(1, null); // patient_id (null pour l'instant)
+            stmt.setObject(2, null); // medecin_id (null pour l'instant)
             stmt.setDate(3, DatabaseUtils.toSqlDate(rdv.getDate()));
-            stmt.setTime(4, Time.valueOf(rdv.getHeure()));
+            stmt.setTime(4, rdv.getHeure() != null ? Time.valueOf(rdv.getHeure()) : null);
             stmt.setString(5, rdv.getType());
             stmt.setString(6, rdv.getNom());
             stmt.setString(7, rdv.getPrenom());
@@ -28,20 +27,30 @@ public class RendezVousService implements ICrud<RendezVous> {
             stmt.setString(9, rdv.getEmail());
             stmt.setString(10, rdv.getGravite());
             stmt.setString(11, rdv.getCommentaire());
-            stmt.setString(12, rdv.getStatut());
+
             stmt.executeUpdate();
+
+            // Récupérer l'id généré
+            try (ResultSet generatedKeys = stmt.getGeneratedKeys()) {
+                if (generatedKeys.next()) {
+                    return generatedKeys.getInt(1);
+                } else {
+                    throw new SQLException("Échec de l'insertion : aucun ID généré.");
+                }
+            }
         }
     }
 
     @Override
     public void update(RendezVous rdv) throws SQLException {
-        String query = "UPDATE rendez_vous SET patient_id = ?, medecin_id = ?, date_rendezvous = ?, heure_rendezvous = ?, type_rendezvous = ?, nom = ?, prenom = ?, numtel_patient = ?, mail_patient = ?, gravite = ?, commentaire = ?, statut = ? WHERE id = ?";
+        String query = "UPDATE rendez_vous SET patient_id = ?, medecin_id = ?, date_rendezvous = ?, heure_rendezvous = ?, type_rendezvous = ?, nom = ?, prenom = ?, num_tel_patient = ?, mail_patient = ?, gravite = ?, commentaire = ? WHERE id = ?";
         try (Connection conn = DatabaseUtils.getConnection();
              PreparedStatement stmt = conn.prepareStatement(query)) {
-            stmt.setObject(1, null, Types.INTEGER); // patient_id
-            stmt.setObject(2, null, Types.INTEGER); // medecin_id
+
+            stmt.setObject(1, null); // patient_id
+            stmt.setObject(2, null); // medecin_id
             stmt.setDate(3, DatabaseUtils.toSqlDate(rdv.getDate()));
-            stmt.setTime(4, Time.valueOf(rdv.getHeure()));
+            stmt.setTime(4, rdv.getHeure() != null ? Time.valueOf(rdv.getHeure()) : null);
             stmt.setString(5, rdv.getType());
             stmt.setString(6, rdv.getNom());
             stmt.setString(7, rdv.getPrenom());
@@ -49,8 +58,7 @@ public class RendezVousService implements ICrud<RendezVous> {
             stmt.setString(9, rdv.getEmail());
             stmt.setString(10, rdv.getGravite());
             stmt.setString(11, rdv.getCommentaire());
-            stmt.setString(12, rdv.getStatut());
-            stmt.setInt(13, rdv.getId());
+            stmt.setInt(12, rdv.getId()); // correction ici: c'était 13 par erreur
             stmt.executeUpdate();
         }
     }
@@ -60,6 +68,7 @@ public class RendezVousService implements ICrud<RendezVous> {
         String query = "DELETE FROM rendez_vous WHERE id = ?";
         try (Connection conn = DatabaseUtils.getConnection();
              PreparedStatement stmt = conn.prepareStatement(query)) {
+
             stmt.setInt(1, rdv.getId());
             stmt.executeUpdate();
         }
@@ -72,25 +81,27 @@ public class RendezVousService implements ICrud<RendezVous> {
         try (Connection conn = DatabaseUtils.getConnection();
              Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery(query)) {
-            while (rs.next()) {
-                int id = rs.getInt("id");
-                LocalDate date = rs.getDate("date_rendezvous") != null ? rs.getDate("date_rendezvous").toLocalDate() : null;
-                LocalTime heure = rs.getTime("heure_rendezvous") != null ? rs.getTime("heure_rendezvous").toLocalTime() : null;
-                String type = rs.getString("type_rendezvous");
-                String nom = rs.getString("nom");
-                String prenom = rs.getString("prenom");
-                String telephone = rs.getString("numtel_patient");
-                String email = rs.getString("mail_patient");
-                String gravite = rs.getString("gravite");
-                String commentaire = rs.getString("commentaire");
-                String statut = rs.getString("statut");
 
-                RendezVous rdv = new RendezVous(nom, prenom, telephone, email, date, heure, type, gravite, statut, commentaire);
-                rdv.setId(id);
+            while (rs.next()) {
+                RendezVous rdv = new RendezVous();
+                rdv.setId(rs.getInt("id"));
+                rdv.setDate(rs.getDate("date_rendezvous") != null ? rs.getDate("date_rendezvous").toLocalDate() : null);
+                rdv.setHeure(rs.getTime("heure_rendezvous") != null ? rs.getTime("heure_rendezvous").toLocalTime() : null);
+                rdv.setType(rs.getString("type_rendezvous"));
+                rdv.setNom(rs.getString("nom"));
+                rdv.setPrenom(rs.getString("prenom"));
+                rdv.setTelephone(rs.getString("num_tel_patient"));
+                rdv.setEmail(rs.getString("mail_patient"));
+                rdv.setGravite(rs.getString("gravite"));
+                rdv.setCommentaire(rs.getString("commentaire"));
+
                 rendezVousList.add(rdv);
             }
             System.out.println("RendezVous récupérés de la base de données : " + rendezVousList.size());
         }
         return rendezVousList;
+    }
+
+    public void add(RendezVous rdv) {
     }
 }

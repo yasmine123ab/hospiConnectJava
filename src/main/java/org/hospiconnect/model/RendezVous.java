@@ -19,9 +19,7 @@ public class RendezVous {
 
 
     // Constructeur complet modifié
-    public RendezVous(String nom, String prenom, String telephone, String email,
-                      LocalDate date, LocalTime heure, String type, String gravite,
-                      String statut, String commentaire) {
+    public RendezVous() {
         this.nom = nom;
         this.prenom = prenom;
         this.telephone = telephone;

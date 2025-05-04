@@ -3,60 +3,56 @@ package org.hospiconnect.model;
 import java.time.LocalDateTime;
 
 public class InterventionUrgence {
-
     private Long id;
+    private String nom;
+    private String prenom;
     private String commentaire;
     private LocalDateTime dateIntervention;
     private String gravite;
+    private RendezVous rendezVous;
 
-    // Constructeurs
-    public InterventionUrgence() {
-    }
 
-    public InterventionUrgence(Long id, String commentaire, LocalDateTime dateIntervention, String gravite) {
-        this.id = id;
-        this.commentaire = commentaire;
-        this.dateIntervention = dateIntervention;
-        this.gravite = gravite;
+    public InterventionUrgence() {}
+
+    public InterventionUrgence(RendezVous rendezVous) {
+        this.nom = rendezVous.getNom();
+        this.prenom = rendezVous.getPrenom();
+        this.commentaire = rendezVous.getCommentaire();
+        this.gravite = rendezVous.getGravite();
+        this.dateIntervention = LocalDateTime.of(rendezVous.getDate(), rendezVous.getHeure());
+        this.rendezVous = rendezVous;
+
     }
 
     // Getters et Setters
-    public Long getId() {
-        return id;
-    }
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+    public String getNom() { return nom; }
+    public void setNom(String nom) { this.nom = nom; }
 
-    public String getCommentaire() {
-        return commentaire;
-    }
+    public String getPrenom() { return prenom; }
+    public void setPrenom(String prenom) { this.prenom = prenom; }
 
-    public void setCommentaire(String commentaire) {
-        this.commentaire = commentaire;
-    }
+    public String getCommentaire() { return commentaire; }
+    public void setCommentaire(String commentaire) { this.commentaire = commentaire; }
 
-    public LocalDateTime getDateIntervention() {
-        return dateIntervention;
-    }
+    public LocalDateTime getDateIntervention() { return dateIntervention; }
+    public void setDateIntervention(LocalDateTime dateIntervention) { this.dateIntervention = dateIntervention; }
 
-    public void setDateIntervention(LocalDateTime dateIntervention) {
-        this.dateIntervention = dateIntervention;
-    }
+    public String getGravite() { return gravite; }
+    public void setGravite(String gravite) { this.gravite = gravite; }
 
-    public String getGravite() {
-        return gravite;
-    }
+    public RendezVous getRendezVous() { return rendezVous; }
+    public void setRendezVous(RendezVous rendezVous) { this.rendezVous = rendezVous; }
 
-    public void setGravite(String gravite) {
-        this.gravite = gravite;
-    }
 
     @Override
     public String toString() {
         return "InterventionUrgence{" +
                 "id=" + id +
+                ", nom='" + nom + '\'' +
+                ", prenom='" + prenom + '\'' +
                 ", commentaire='" + commentaire + '\'' +
                 ", dateIntervention=" + dateIntervention +
                 ", gravite='" + gravite + '\'' +
