@@ -61,5 +61,9 @@
     <Button layoutX="480.0" layoutY="440.0" onAction="#AjouterRendezVous" text="Enregistrer" />
     <Button layoutX="100.0" layoutY="440.0" onAction="#AfficherListe" text="Liste des rendez-vous" />
 
+    <!-- Ajoutez ceci près de vos autres boutons -->
+    <Button fx:id="chatbotButton" text="Chat Bot" onAction="#openChatbot" style="-fx-background-color: #4CAF50; -fx-text-fill: white;"/>
+
 </children>
+
 </AnchorPane>

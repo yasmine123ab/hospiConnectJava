@@ -1,36 +1,75 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
-<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.*?>
 
 <AnchorPane prefHeight="500.0" prefWidth="900.0"
-            stylesheets="@css/style.css"
             xmlns="http://javafx.com/javafx/23.0.1"
             xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="org.hospiconnect.controller.ListeRendezVousController">
+            fx:controller="org.hospiconnect.controller.ListeRendezVousController"
+            style="-fx-background-color: #f4f9ff; -fx-font-family: 'Segoe UI';">
+    <!-- Search and Sort Controls -->
+    <TextField fx:id="searchField" layoutX="14.0" layoutY="30.0" promptText="Rechercher..."
+               prefWidth="250.0"
+               style="-fx-background-color: white; -fx-border-color: #1a3d7c; -fx-border-radius: 4; -fx-background-radius: 4;" />
+    <ComboBox fx:id="sortComboBox" layoutX="270.0" layoutY="30.0" prefWidth="200.0" promptText="Trier par..."
+              style="-fx-background-color: white; -fx-border-color: #1a3d7c; -fx-border-radius: 4; -fx-background-radius: 4;" />
 
+    <!-- Title Label -->
     <children>
-        <Label layoutX="370.0" layoutY="20.0" text="Liste des rendez-vous" style="-fx-font-size: 18px; -fx-font-weight: bold;" />
+        <Label layoutX="370.0" layoutY="20.0" text="Liste des rendez-vous"
+               style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #1a3d7c;" />
 
-        <TableView fx:id="tableRendezVous" layoutX="14.0" layoutY="60.0" prefHeight="380.0" prefWidth="870.0">
-            <columns>
-                <TableColumn fx:id="colNom" prefWidth="100.0" text="Nom" />
-                <TableColumn fx:id="colPrenom" prefWidth="100.0" text="Prénom" />
-                <TableColumn fx:id="colTel" prefWidth="110.0" text="Téléphone" />
-                <TableColumn fx:id="colEmail" prefWidth="150.0" text="Email" />
-                <TableColumn fx:id="colDate" prefWidth="90.0" text="Date" />
-                <TableColumn fx:id="colHeure" prefWidth="80.0" text="Heure" />
-                <TableColumn fx:id="colType" prefWidth="110.0" text="Type" />
-                <TableColumn fx:id="colGravite" prefWidth="80.0" text="Gravité" />
-                <TableColumn fx:id="colStatut" prefWidth="80.0" text="Statut" />
-                <TableColumn fx:id="colCommentaire" prefWidth="140.0" text="Commentaire" />
-            </columns>
-        </TableView>
+        <!-- Custom Table Implementation with Image Design -->
+        <ScrollPane layoutX="14.0" layoutY="60.0" prefHeight="380.0" prefWidth="870.0"
+                    style="-fx-background-color: white; -fx-border-color: #1a3d7c; -fx-border-width: 1; -fx-border-radius: 2;">
+            <content>
+                <VBox fx:id="tableContainer" spacing="0" style="-fx-background-color: white;">
+                    <!-- Header Row -->
+                    <HBox prefHeight="40.0" style="-fx-background-color: #1a3d7c; -fx-border-width: 0;">
+                        <Label text="Nom" prefWidth="100.0" style="-fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 0 10 0 10; -fx-alignment: center-left;" />
+                        <Label text="Prénom" prefWidth="100.0" style="-fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 0 10 0 10; -fx-alignment: center-left;" />
+                        <Label text="Téléphone" prefWidth="110.0" style="-fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 0 10 0 10; -fx-alignment: center-left;" />
+                        <Label text="Email" prefWidth="150.0" style="-fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 0 10 0 10; -fx-alignment: center-left;" />
+                        <Label text="Date" prefWidth="90.0" style="-fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 0 10 0 10; -fx-alignment: center-left;" />
+                        <Label text="Heure" prefWidth="80.0" style="-fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 0 10 0 10; -fx-alignment: center-left;" />
+                        <Label text="Type" prefWidth="110.0" style="-fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 0 10 0 10; -fx-alignment: center-left;" />
+                        <Label text="Gravité" prefWidth="80.0" style="-fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 0 10 0 10; -fx-alignment: center-left;" />
+                        <Label text="Commentaire" prefWidth="140.0" style="-fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 0 10 0 10; -fx-alignment: center-left;" />
+                        <Label text="Actions" prefWidth="110.0" style="-fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 0 10 0 10; -fx-alignment: center;" />
+                    </HBox>
+                    <!-- Data Rows (Placeholder, to be populated by controller) -->
+                    <VBox fx:id="dataRows" style="-fx-font-size: 13px;">
+                        <!-- Example Row (Controller should populate dynamically) -->
+                        <HBox prefHeight="40.0" style="-fx-border-color: #e0e0e0; -fx-border-width: 0 0 1 0; -fx-background-color: white;">
+                            <Label fx:id="nom" prefWidth="100.0" style="-fx-padding: 0 10 0 10; -fx-alignment: center-left;" />
+                            <Label fx:id="prenom" prefWidth="100.0" style="-fx-padding: 0 10 0 10; -fx-alignment: center-left;" />
+                            <Label fx:id="tel" prefWidth="110.0" style="-fx-padding: 0 10 0 10; -fx-alignment: center-left;" />
+                            <Label fx:id="email" prefWidth="150.0" style="-fx-padding: 0 10 0 10; -fx-alignment: center-left;" />
+                            <Label fx:id="date" prefWidth="90.0" style="-fx-padding: 0 10 0 10; -fx-alignment: center-left;" />
+                            <Label fx:id="heure" prefWidth="80.0" style="-fx-padding: 0 10 0 10; -fx-alignment: center-left;" />
+                            <Label fx:id="type" prefWidth="110.0" style="-fx-padding: 0 10 0 10; -fx-alignment: center-left;" />
+                            <Label fx:id="gravite" prefWidth="80.0" style="-fx-padding: 0 10 0 10; -fx-alignment: center-left;" />
+                            <Label fx:id="commentaire" prefWidth="140.0" style="-fx-padding: 0 10 0 10; -fx-alignment: center-left;" />
+                            <HBox prefWidth="110.0" style="-fx-alignment: center;">
+                                <Button text="Modifier" style="-fx-background-color: #007acc; -fx-text-fill: white; -fx-font-size: 12px; -fx-background-radius: 4;" />
+                                <Button text="Supprimer" style="-fx-background-color: #d93d3d; -fx-text-fill: white; -fx-font-size: 12px; -fx-background-radius: 4; -fx-margin: 0 5 0 5;" />
+                            </HBox>
+                        </HBox>
+                    </VBox>
+                </VBox>
+            </content>
+        </ScrollPane>
 
-        <Button layoutX="400.0" layoutY="460.0" mnemonicParsing="false" onAction="#retourAjout" text="Retour" />
-        <Button fx:id="menuHomeButton" layoutX="300.0" layoutY="460.0" mnemonicParsing="false" text="Home" />
+        <!-- Buttons -->
+        <HBox spacing="20" layoutY="460.0" layoutX="300.0">
+            <Button mnemonicParsing="false" onAction="#afficherCalendrier" text="Voir Calendrier"
+                    style="-fx-background-color: #1a3d7c; -fx-text-fill: white; -fx-background-radius: 6; -fx-font-weight: bold;" />
+            <Button mnemonicParsing="false" onAction="#retourAjout" text="Prendre un Rendez Vous"
+                    style="-fx-background-color: #d93d3d; -fx-text-fill: white; -fx-background-radius: 6; -fx-font-weight: bold;" />
+            <Button fx:id="menuHomeButton" mnemonicParsing="false" text="Home"
+                    style="-fx-background-color: #007acc; -fx-text-fill: white; -fx-background-radius: 6; -fx-font-weight: bold;" />
+        </HBox>
     </children>
 </AnchorPane>
