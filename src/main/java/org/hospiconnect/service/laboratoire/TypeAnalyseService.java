@@ -20,7 +20,7 @@ public class TypeAnalyseService {
         Hématies: 
         Hémoglobine: 
         Hématocrite: 
-        VGM: 
+        VGM:
         TCMH:
         Leucocytes:  
         """;

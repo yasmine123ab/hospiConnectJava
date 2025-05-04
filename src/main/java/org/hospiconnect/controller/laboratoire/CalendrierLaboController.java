@@ -1,5 +1,3 @@
-// CalendrierLaboController.java - Ajout code couleur pour disponibilités
-
 package org.hospiconnect.controller.laboratoire;
 
 import javafx.collections.FXCollections;
