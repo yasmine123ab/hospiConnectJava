@@ -1,17 +1,18 @@
 package org.hospiconnect.controller;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.scene.control.*;
+import org.hospiconnect.controller.laboratoire.SceneUtils;
 import org.hospiconnect.model.Materiel;
 import org.hospiconnect.service.MaterielService1;
 import javafx.event.ActionEvent;
 import javafx.fxml.*;
-import javafx.scene.Parent;
-import javafx.scene.control.Alert;
-import javafx.scene.control.TextField;
-import javafx.stage.Stage;
-import javafx.scene.control.DatePicker;
-
 import java.time.LocalDate;
-import java.time.ZoneId;
+import java.util.Properties;
+import jakarta.mail.*;
+import jakarta.mail.internet.InternetAddress;
+import jakarta.mail.internet.MimeMessage;
 
 
 public class AddMatriel {
@@ -22,7 +23,7 @@ public class AddMatriel {
     private TextField categorie;
 
     @FXML
-    private TextField etat;
+    private ComboBox<String> etat;
 
     @FXML
     private TextField quantite;
@@ -32,9 +33,43 @@ public class AddMatriel {
 
     @FXML
     private DatePicker date;
+
+    @FXML
+    private Button retourner;
+    @FXML
+    private Button listeMateriels;
+
+    @FXML
+    private Button listeMouvement;
+
+    @FXML
+    private Button menuDashboardButton;
+
+    @FXML
+    private Button menuHomeButton;
+
+    private final ObservableList<String> etats = FXCollections.observableArrayList(
+            "Neuf", "Usagé", "En réparation"
+    );
+
+    private Materiel materielEnCours;
+
+    public void initialize() {
+        retourner.setOnAction(e -> SceneUtils.openNewScene(
+                "/ListMateriel.fxml", retourner.getScene(), null));
+        listeMateriels.setOnAction(e -> SceneUtils.openNewScene(
+                "/ListMateriel.fxml", listeMateriels.getScene(), null));
+        listeMouvement.setOnAction(e -> SceneUtils.openNewScene(
+                "/ListMouvement.fxml", listeMouvement.getScene(), null));
+        menuDashboardButton.setOnAction(e -> SceneUtils.openNewScene(
+                "//laboratoireBack/dashboardLabo.fxml", menuDashboardButton.getScene(), null));
+        menuHomeButton.setOnAction(e -> SceneUtils.openNewScene(
+                "/HomePages/backList.fxml", menuHomeButton.getScene(), null));
+
+    }
     @FXML
     void ajouter(ActionEvent event) {
-        // Vérification que tous les champs sont remplis
+        // Vérification des champs obligatoires
         if (nom.getText().isEmpty()) {
             showErrorAlert("Le champ 'Nom' est obligatoire.");
             return;
@@ -43,7 +78,7 @@ public class AddMatriel {
             showErrorAlert("Le champ 'Catégorie' est obligatoire.");
             return;
         }
-        if (etat.getText().isEmpty()) {
+        if (etat.getValue() == null) {
             showErrorAlert("Le champ 'État' est obligatoire.");
             return;
         }
@@ -60,64 +95,87 @@ public class AddMatriel {
             return;
         }
 
-        // Vérification que la quantité est un entier positif
+        // Quantité valide
         int qte;
         try {
             qte = Integer.parseInt(quantite.getText());
-            if (qte < 0) {
-                throw new NumberFormatException("Quantité négative");
-            }
+            if (qte < 0) throw new NumberFormatException();
         } catch (NumberFormatException e) {
             showErrorAlert("La quantité doit être un entier positif.");
             return;
         }
-        // Vérification de la date
+
+        // Date valide
         LocalDate selectedDate = date.getValue();
-        LocalDate today = LocalDate.now();
-        if (selectedDate.isAfter(today)) {
-            showErrorAlert("La date doit être inférieure ou égale à la date d'aujourd'hui.");
+        if (selectedDate.isAfter(LocalDate.now())) {
+            showErrorAlert("La date doit être inférieure ou égale à aujourd'hui.");
             return;
         }
 
-        // Création du matériel
-        MaterielService1 us = new MaterielService1();
-        Materiel m = new Materiel(
-                qte,
-                nom.getText(),
-                categorie.getText(),
-                etat.getText(),
-                emplacement.getText(),
-                java.sql.Date.valueOf(date.getValue()));
+        MaterielService1 service = new MaterielService1();
 
         try {
-            us.insert(m);
+            if (materielEnCours != null) {
+                // 🔁 MODIFICATION
+                materielEnCours.setNom(nom.getText());
+                materielEnCours.setQuantite(qte);
+                materielEnCours.setCategorie(categorie.getText());
+                materielEnCours.setEtat(etat.getValue());
+                materielEnCours.setEmplacement(emplacement.getText());
+                materielEnCours.setDate_ajout(java.sql.Date.valueOf(selectedDate));
 
-            // Message de succès
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Succès");
-            alert.setHeaderText(null);
-            alert.setContentText("Matériel ajouté avec succès !");
-            alert.showAndWait();
+                service.update(materielEnCours);
+                if (materielEnCours.getQuantite() <= 5) {
+                    envoyerAlerteMail(materielEnCours);
+                }
 
-            // Réinitialisation des champs
-            quantite.clear();
-            nom.clear();
-            categorie.clear();
-            etat.clear();
-            emplacement.clear();
-            date.setValue(null);
 
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Succès");
+                alert.setHeaderText(null);
+                alert.setContentText("Matériel modifié avec succès !");
+                alert.showAndWait();
+            } else {
+                // ➕ AJOUT
+                Materiel m = new Materiel(
+                        qte,
+                        nom.getText(),
+                        categorie.getText(),
+                        etat.getValue(),
+                        emplacement.getText(),
+                        java.sql.Date.valueOf(selectedDate)
+                );
+
+                service.insert(m);
+
+                if (m.getQuantite() <= 5) {
+                    envoyerAlerteMail(m);
+                }
+
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Succès");
+                alert.setHeaderText(null);
+                alert.setContentText("Matériel ajouté avec succès !");
+                alert.showAndWait();
+
+                // Réinitialisation des champs
+                quantite.clear();
+                nom.clear();
+                categorie.clear();
+                etat.getSelectionModel().selectFirst();
+                emplacement.clear();
+                date.setValue(null);
+            }
         } catch (Exception e) {
-            System.out.println("Erreur lors de l'ajout du matériel : " + e.getMessage());
+            System.out.println("Erreur lors de l'opération sur le matériel : " + e.getMessage());
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Erreur");
             alert.setHeaderText(null);
-            alert.setContentText("Une erreur est survenue lors de l'ajout.");
+            alert.setContentText("Une erreur est survenue.");
             alert.showAndWait();
         }
     }
 
-    // Méthode pour afficher une alerte d'erreur avec un message personnalisé
     private void showErrorAlert(String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Erreur de saisie");
@@ -126,63 +184,94 @@ public class AddMatriel {
         alert.showAndWait();
     }
 
-    private Materiel materielEnCours;
-
     public void setMateriel(Materiel m) {
-        // Pré-remplir les champs ici
         this.materielEnCours = m;
         nom.setText(m.getNom());
         quantite.setText(String.valueOf(m.getQuantite()));
         categorie.setText(m.getCategorie());
-        etat.setText(m.getEtat());
+        etat.setValue(m.getEtat());
         emplacement.setText(m.getEmplacement());
         date.setValue(LocalDate.now());
 
-        // Validation des champs
-
-        // Vérification du nom
         if (m.getNom() == null || m.getNom().isEmpty()) {
             showErrorAlert("Le nom du matériel est obligatoire.");
             return;
         }
-
-        // Vérification de la catégorie
         if (m.getCategorie() == null || m.getCategorie().isEmpty()) {
             showErrorAlert("La catégorie du matériel est obligatoire.");
             return;
         }
-
-        // Vérification de l'état
         if (m.getEtat() == null || m.getEtat().isEmpty()) {
             showErrorAlert("L'état du matériel est obligatoire.");
             return;
         }
-
-        // Vérification de la quantité
         if (m.getQuantite() < 0) {
             showErrorAlert("La quantité du matériel ne peut pas être négative.");
             return;
         }
-
-        // Vérification de l'emplacement
         if (m.getEmplacement() == null || m.getEmplacement().isEmpty()) {
             showErrorAlert("L'emplacement du matériel est obligatoire.");
             return;
         }
 
-        // Vérification de la date
         LocalDate today = LocalDate.now();
         LocalDate selectedDate = date.getValue();
         if (selectedDate.isAfter(today)) {
-            showErrorAlert("La date doit être inférieure ou égale à la date d'aujourd'hui.");
+            showErrorAlert("La date doit être inférieure ou égale à aujourd'hui.");
             return;
         }
-
-        // Si tous les champs sont valides, procéder avec l'édition du matériel
-        // ... (votre logique pour mettre à jour le matériel)
     }
 
+    // 📩 Méthode pour envoyer un mail d'alerte
+    public void envoyerAlerteMail(Materiel materiel) {
+        String to = "saoudihamadi2003@gmail.com";
+        String from = "mahdisaoufi@gmail.com";
 
+        String host = "smtp.gmail.com";
 
+        final String username = "mahdisaoufi@gmail.com";
+        final String password = "dbjq npas xbiv ecfz";
+
+        Properties props = new Properties();
+        props.put("mail.smtp.auth", "true");
+        props.put("mail.smtp.starttls.enable", "true");
+        props.put("mail.smtp.host", host);
+        props.put("mail.smtp.port", "587");
+
+        Session session = Session.getInstance(props,
+                new jakarta.mail.Authenticator() {
+                    protected PasswordAuthentication getPasswordAuthentication() {
+                        return new PasswordAuthentication(username, password);
+                    }
+                });
+
+        try {
+            Message message = new MimeMessage(session);
+            message.setFrom(new InternetAddress(from));
+            message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(to));
+            message.setSubject("Alerte - Stock Faible");
+
+            String emailContent = "<html>"
+                    + "<body>"
+                    + "<h2>Attention !</h2>"
+                    + "<p><strong>Le matériel</strong> : '" + materiel.getNom() + "'</p>"
+                    + "<p><strong>Quantité restante</strong> : " + materiel.getQuantite() + "</p>"
+                    + "<p><strong>Date de dernière mise à jour</strong> : " + materiel.getDate_ajout() + "</p>"
+                    + "<p><strong>Action requise</strong> : Merci de renouveler le stock dès que possible.</p>"
+                    + "<hr>"
+                    + "<p>Merci de votre attention.</p>"
+                    + "</body>"
+                    + "</html>";
+
+            message.setContent(emailContent, "text/html");
+
+            Transport.send(message);
+
+            System.out.println("Alerte email envoyée avec succès.");
+
+        } catch (MessagingException e) {
+            System.out.println("Erreur lors de l'envoi du mail : " + e.getMessage());
+        }
+    }
 
 }

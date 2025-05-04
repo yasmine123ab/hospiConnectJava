@@ -1,7 +1,9 @@
 package org.hospiconnect.controller;
 
+import javafx.animation.PauseTransition;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -10,26 +12,56 @@ import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.stage.Stage;
+import javafx.util.Duration;
+import org.hospiconnect.controller.laboratoire.SceneUtils;
 import org.hospiconnect.model.MouvementMaterielJoint;
 import org.hospiconnect.model.mouvement_stock;
 import org.hospiconnect.service.mouvementService;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.function.Predicate;
 
 public class afficherMouvement {
 
     @FXML
     private ListView<MouvementMaterielJoint> mouvementTable;
+    @FXML
+    private TextField rechercheMouvement;
+    @FXML
+    private Button home;
+    @FXML
+    private ComboBox<String> critereRecherche;
 
     private final mouvementService service = new mouvementService();
+    private final PauseTransition pauseQueue = new PauseTransition(Duration.millis(300));
+    private ObservableList<MouvementMaterielJoint> mouvementsList;
+
+    @FXML
+    public void initialize() {
+        // Configuration de la recherche avec délai
+        rechercheMouvement.textProperty().addListener((observable, oldValue, newValue) -> {
+            pauseQueue.setOnFinished(event -> filtrerMouvements(newValue));
+            pauseQueue.playFromStart();
+        });
+        home.setOnAction(e -> SceneUtils.openNewScene(
+                "/HomePages/backList.fxml", home.getScene(), null));
+
+        // Affichage initial des mouvements
+        affichem(null);
+        critereRecherche.setItems(FXCollections.observableArrayList(
+                "Nom", "Quantité", "Motif", "Type", "Date"
+        ));
+        critereRecherche.getSelectionModel().selectFirst(); // Sélectionner "Nom" par défaut
+
+    }
 
     @FXML
     void affichem(ActionEvent event) {
         try {
             List<MouvementMaterielJoint> mouvements = service.getMouvementsAvecNomMateriel();
-            ObservableList<MouvementMaterielJoint> observableList = FXCollections.observableArrayList(mouvements);
-            mouvementTable.setItems(observableList);
+            mouvementsList = FXCollections.observableArrayList(mouvements);
+            mouvementTable.setItems(mouvementsList);
 
             mouvementTable.setCellFactory(param -> new ListCell<>() {
                 @Override
@@ -41,14 +73,22 @@ public class afficherMouvement {
                         HBox content = new HBox(10);
                         content.setStyle("-fx-padding: 10; -fx-alignment: CENTER_LEFT;");
 
-                        Label label = new Label(
-                                item.getNomMateriel() + " | " +
-                                        item.getTypeMouvement() + " | " +
-                                        item.getQuantite() + " | " +
-                                        item.getDateMouvement()
-                        );
-                        label.setMaxWidth(Double.MAX_VALUE);
-                        HBox.setHgrow(label, Priority.ALWAYS);
+                        // Création des labels (simulant des colonnes)
+                        Label nomLabel = new Label(item.getNomMateriel());
+
+                        Label qteLabel = new Label(String.valueOf(item.getQuantite()));
+                        Label etatLabel = new Label(item.getMotif());
+                        Label empLabel = new Label(item.getTypeMouvement());
+                        Label dateLabel = new Label(item.getDateMouvement().toString());
+
+
+
+
+                        // Largeur fixe ou maxWidth avec priorités
+                        for (Label label : new Label[]{nomLabel, qteLabel, etatLabel, empLabel, dateLabel}) {
+                            label.setPrefWidth(120);
+                            label.setWrapText(true);
+                        }
 
                         Button btnModifier = new Button("Modifier");
                         btnModifier.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white;");
@@ -58,15 +98,74 @@ public class afficherMouvement {
                         btnSupprimer.setStyle("-fx-background-color: #f44336; -fx-text-fill: white;");
                         btnSupprimer.setOnAction(e -> supprimerMouvement(item));
 
-                        content.getChildren().addAll(label, btnModifier, btnSupprimer);
+
+                        content.getChildren().addAll(
+                                nomLabel, qteLabel, etatLabel, empLabel, dateLabel,
+                                btnModifier, btnSupprimer
+                        );
                         setGraphic(content);
                     }
                 }
             });
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            showAlert("Erreur", "Erreur lors du chargement des mouvements", e.getMessage());
         }
+    }
+
+    private void filtrerMouvements(String motCle) {
+        if (motCle == null || motCle.isEmpty()) {
+            mouvementTable.setItems(mouvementsList); // remet la liste complète
+            return;
+        }
+
+        String critere = critereRecherche.getSelectionModel().getSelectedItem();
+
+        List<MouvementMaterielJoint> mouvementsFiltres = mouvementsList.stream()
+                .filter(m -> {
+                    switch (critere) {
+                        case "Nom":
+                            return m.getNomMateriel().toLowerCase().contains(motCle.toLowerCase());
+                        case "Quantité":
+                            return String.valueOf(m.getQuantite()).contains(motCle);
+                        case "Motif":
+                            return m.getMotif().toLowerCase().contains(motCle.toLowerCase());
+                        case "Type":
+                            return m.getTypeMouvement().toLowerCase().contains(motCle.toLowerCase());
+                        case "Date":
+                            return m.getDateMouvement().toString().contains(motCle);
+                        default: // "Tous" ou autre
+                            return m.getNomMateriel().toLowerCase().contains(motCle.toLowerCase())
+                                    || String.valueOf(m.getQuantite()).contains(motCle)
+                                    || m.getMotif().toLowerCase().contains(motCle.toLowerCase())
+                                    || m.getTypeMouvement().toLowerCase().contains(motCle.toLowerCase())
+                                    || m.getDateMouvement().toString().contains(motCle);
+                    }
+                })
+                .toList();
+
+        mouvementTable.setItems(FXCollections.observableArrayList(mouvementsFiltres));
+    }
+
+
+    private Predicate<MouvementMaterielJoint> createPredicate(String motCle) {
+        return mouvement -> {
+            String lowerCaseFilter = motCle.toLowerCase();
+
+            if (mouvement.getNomMateriel().toLowerCase().contains(lowerCaseFilter)) {
+                return true;
+            }
+            if (mouvement.getTypeMouvement().toLowerCase().contains(lowerCaseFilter)) {
+                return true;
+            }
+            if (String.valueOf(mouvement.getQuantite()).contains(motCle)) {
+                return true;
+            }
+            if (mouvement.getDateMouvement().toString().contains(motCle)) {
+                return true;
+            }
+            return false;
+        };
     }
 
     private void modifierMouvement(MouvementMaterielJoint m) {
@@ -74,55 +173,58 @@ public class afficherMouvement {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/AddMouvement.fxml"));
             Parent root = loader.load();
 
-            // Récupérer le contrôleur
             AddMouvement controller = loader.getController();
-            controller.setMouvementExistant(m); // pré-remplir les champs
+            controller.setMouvementExistant(m);
 
-            // Afficher la nouvelle fenêtre
-            Stage stage = new Stage();
-            stage.setTitle("Modifier Matériel");
-            stage.setScene(new javafx.scene.Scene(root));
-            stage.show();
+            Stage stageActuel = (Stage) mouvementTable.getScene().getWindow();
+            stageActuel.getScene().setRoot(root);
+            stageActuel.setTitle("Modifier Mouvement");
 
         } catch (Exception e) {
-            e.printStackTrace();
+            showAlert("Erreur", "Impossible d'ouvrir l'éditeur", e.getMessage());
         }
     }
 
     private void supprimerMouvement(MouvementMaterielJoint m) {
-        try {
-            mouvement_stock mouvement = new mouvement_stock();
-            mouvement.setId(m.getId()); // on a besoin que de l'ID
-            service.delete(mouvement);
-            affichem(null); // refresh
-        } catch (SQLException e) {
-            e.printStackTrace();
+        Alert confirmation = new Alert(Alert.AlertType.CONFIRMATION);
+        confirmation.setTitle("Confirmation de suppression");
+        confirmation.setHeaderText("Supprimer le mouvement");
+        confirmation.setContentText("Êtes-vous sûr de vouloir supprimer ce mouvement?");
+
+        if (confirmation.showAndWait().get() == ButtonType.OK) {
+            try {
+                mouvement_stock mouvement = new mouvement_stock();
+                mouvement.setId(m.getId());
+                service.delete(mouvement);
+                affichem(null);
+            } catch (SQLException e) {
+                showAlert("Erreur", "Erreur lors de la suppression", e.getMessage());
+            }
         }
     }
+
     @FXML
     void ajouterM(ActionEvent event) {
         try {
-            // Charger le fichier FXML pour AddMatriel
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/AddMouvement.fxml"));
             Parent root = loader.load();
 
-            // Créer une nouvelle scène avec la racine chargée
-            Stage stage = new Stage();
-            stage.setTitle("ajouter mouvement");
-            stage.setScene(new javafx.scene.Scene(root));
-
-            // Afficher la fenêtre
-            stage.show();
+            Stage stageActuel1 = (Stage) mouvementTable.getScene().getWindow();
+            stageActuel1.setTitle("Ajouter mouvement");
+            stageActuel1.setScene(new javafx.scene.Scene(root));
+            stageActuel1.show();
 
         } catch (Exception e) {
-            e.printStackTrace();
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Erreur");
-            alert.setHeaderText("Impossible d'ouvrir la fenêtre");
-            alert.setContentText("❌ Une erreur est survenue lors de l'ouverture de la fenêtre de mouvement.");
-            alert.showAndWait();
+            showAlert("Erreur", "Impossible d'ouvrir la fenêtre", "❌ Une erreur est survenue lors de l'ouverture de la fenêtre de mouvement.");
         }
     }
 
+    private void showAlert(String title, String header, String content) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(title);
+        alert.setHeaderText(header);
+        alert.setContentText(content);
+        alert.showAndWait();
     }
 
+}

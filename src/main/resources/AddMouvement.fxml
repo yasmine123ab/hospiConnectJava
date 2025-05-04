@@ -4,23 +4,97 @@
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.hospiconnect.controller.AddMouvement">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="615.0" prefWidth="1199.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.hospiconnect.controller.AddMouvement">
    <children>
-      <Label layoutX="152.0" layoutY="100.0" text="id_materiel" />
-      <Label layoutX="136.0" layoutY="266.0" text="type mouvement" />
-      <Label layoutX="147.0" layoutY="131.0" text="id_personnel" />
-      <Label layoutX="158.0" layoutY="164.0" text="quantite" />
-      <Label layoutX="135.0" layoutY="204.0" text="date mouvement" />
-      <Label layoutX="167.0" layoutY="233.0" text="motif" />
-      <TextField fx:id="id_materiel" layoutX="268.0" layoutY="96.0" promptText="ajouter id materiel" />
-      <TextField fx:id="id_personnel" layoutX="268.0" layoutY="127.0" promptText="ajouter id personnel" />
-      <TextField fx:id="qunatite" layoutX="268.0" layoutY="160.0" promptText="ajouter quantite" />
-      <TextField fx:id="motif" layoutX="268.0" layoutY="229.0" promptText="ajouter motif" />
-      <TextField fx:id="type_mouvement" layoutX="268.0" layoutY="262.0" promptText="ajouter type" />
-      <Button layoutX="490.0" layoutY="296.0" mnemonicParsing="false" onAction="#ajouterMouvement" text="ajouter" />
-      <DatePicker fx:id="date_mouvement" layoutX="267.0" layoutY="191.0" promptText="date_mouvement" />
-      <Label layoutX="206.0" layoutY="35.0" prefHeight="39.0" prefWidth="194.0" text="ajouter mouvement stock" textFill="#c70d2c" />
+
+      <VBox prefHeight="650.0" prefWidth="224.0" style="-fx-background-color: #ADD8E6;">
+         <children>
+            <ImageView fitHeight="177.0" fitWidth="224.0" pickOnBounds="true">
+               <image>
+                  <Image url="@imagesLabo/logo.png" />
+               </image></ImageView>
+            <Button fx:id="listeMateriels" graphicTextGap="15.0" mnemonicParsing="false" prefHeight="70.0" prefWidth="230.0" style="-fx-background-color: #ADD8E5;" text="liste materiels " textFill="#0e046e">
+
+               <font>
+                  <Font name="System Bold" size="15.0" />
+               </font>
+            </Button>
+            <Button fx:id="listeMouvement" graphicTextGap="15.0" mnemonicParsing="false" prefHeight="70.0" prefWidth="233.0" style="-fx-background-color: #ADD8E6;" text="liste mouvements stock" textFill="#0e046e">
+
+               <font>
+                  <Font name="System Bold" size="15.0" />
+               </font>
+            </Button>
+            <Button fx:id="menuDashboardButton" graphicTextGap="15.0" mnemonicParsing="false" prefHeight="70.0" prefWidth="239.0" style="-fx-background-color: #ADD8E6;" text="Dashboard" textFill="#0e046e">
+
+               <font>
+                  <Font name="System Bold" size="15.0" />
+               </font>
+            </Button>
+            <Button fx:id="menuHomeButton" graphicTextGap="15.0" mnemonicParsing="false" prefHeight="70.0" prefWidth="233.0" style="-fx-background-color: #ADD8E6;" text="Home" textFill="#0e046e">
+               <font>
+                  <Font name="System Bold" size="15.0" />
+               </font>
+            </Button>
+         </children>
+      </VBox>
+
+      <Label layoutX="255.0" layoutY="135.0" text="id matriel">
+         <font>
+            <Font name="System Bold" size="16.0" />
+         </font>
+      </Label>
+      <Label layoutX="255.0" layoutY="209.0" text="id_personnel">
+         <font>
+            <Font name="System Bold" size="16.0" />
+         </font>
+      </Label>
+
+      <Label layoutX="255.0" layoutY="283.0" text="quantite">
+         <font>
+            <Font name="System Bold" size="16.0" />
+         </font>
+      </Label>
+
+      <Label layoutX="255.0" layoutY="357.0" text="date mouvement">
+         <font>
+            <Font name="System Bold" size="16.0" />
+         </font>
+      </Label>
+
+      <Label layoutX="255.0" layoutY="426.0" text="motif">
+         <font>
+            <Font name="System Bold" size="16.0" />
+         </font>
+      </Label>
+
+      <Label layoutX="783.0" layoutY="135.0" text="type mouvement">
+         <font>
+            <Font name="System Bold" size="16.0" />
+         </font>
+      </Label>
+
+
+      <TextField fx:id="qunatite" layoutX="255.0" layoutY="309.0" prefHeight="26.0" prefWidth="310.0" promptText="ajouter quantite" style="-fx-background-color: #f8f4e4;" />
+      <TextField fx:id="motif" layoutX="255.0" layoutY="452.0" prefHeight="26.0" prefWidth="310.0" promptText="ajouter motif" style="-fx-background-color: #f8f4e4;" />
+      <TextField fx:id="type_mouvement" layoutX="783.0" layoutY="161.0" prefHeight="26.0" prefWidth="310.0" promptText="ajouter type" style="-fx-background-color: #f8f4e4;" />
+
+      <DatePicker fx:id="date_mouvement" layoutX="255.0" layoutY="383.0" prefHeight="26.0" prefWidth="310.0" promptText="date_mouvement" style="-fx-background-color: #f8f4e4;" />
+      <Label layoutX="255.0" layoutY="34.0" text="Enregistrer mouvement" textFill="#1605ac">
+         <font>
+            <Font name="System Bold" size="24.0" />
+         </font>
+      </Label>
+
+      <Button layoutX="1006.0" layoutY="568.0" mnemonicParsing="false" onAction="#ajouterMouvement" prefHeight="40.0" prefWidth="190.0" style="-fx-background-color: #f8f4e4;" text="ajouter" />
+      <Button fx:id="retourner" layoutX="787.0" layoutY="568.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="190.0" style="-fx-background-color: #f8f4e4;" text="retourner" />
+      <TextField fx:id="id_matriel" layoutX="255.0" layoutY="161.0" prefHeight="26.0" prefWidth="310.0" promptText="ajouter matriel" style="-fx-background-color: #f8f4e4;" />
+      <TextField fx:id="id_personnelll" layoutX="255.0" layoutY="235.0" prefHeight="26.0" prefWidth="310.0" promptText="ajouter personnel" style="-fx-background-color: #f8f4e4;" />
    </children>
 </AnchorPane>

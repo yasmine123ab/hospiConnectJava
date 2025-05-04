@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class mouvementService implements ICrud<mouvement_stock> {
-    private Connection con;
+    private  Connection con;
 
     public mouvementService() {
         try {
@@ -106,4 +106,32 @@ public class mouvementService implements ICrud<mouvement_stock> {
 
         return mouvements;
     }
+    // Suppression du mot-clé static
+    public  List<MouvementMaterielJoint> getMouvementsByMaterielId(int materielId) throws SQLException {
+        List<MouvementMaterielJoint> resultats = new ArrayList<>();
+        String sql = """
+        SELECT m.id, mat.nom AS nom_materiel, m.qunatite, m.date_mouvement, m.motif, m.type_mouvement
+        FROM mouvements_stock m
+        INNER JOIN materiel mat ON m.id_materiel_id = mat.id
+        WHERE m.id_materiel_id = ?
+        ORDER BY m.date_mouvement DESC
+    """;
+        try (PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, materielId);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                MouvementMaterielJoint mvt = new MouvementMaterielJoint(
+                        rs.getInt("id"),
+                        rs.getString("nom_materiel"),
+                        rs.getInt("qunatite"),
+                        rs.getDate("date_mouvement"),
+                        rs.getString("motif"),
+                        rs.getString("type_mouvement")
+                );
+                resultats.add(mvt);
+            }
+        }
+        return resultats;
+    }
+
 }
