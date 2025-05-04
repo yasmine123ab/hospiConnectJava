@@ -19,7 +19,7 @@ import org.hospiconnect.model.RendezVous;
 import org.hospiconnect.service.RendezVousSMSService;
 import org.hospiconnect.service.RendezVousService;
 import org.hospiconnect.service.OpenAiService;
-import org.hospiconnect.utils.SceneUtils;
+import org.hospiconnect.controller.laboratoire.SceneUtils;
 
 import java.io.IOException;
 import java.net.InetAddress;

@@ -10,7 +10,7 @@ import java.util.List;
 public class RendezVousService implements ICrud<RendezVous> {
 
     @Override
-    public int insert(RendezVous rdv) throws SQLException {
+    public void insert(RendezVous rdv) throws SQLException {
         String query = "INSERT INTO rendez_vous (patient_id, medecin_id, date_rendezvous, heure_rendezvous, type_rendezvous, nom, prenom, num_tel_patient, mail_patient, gravite, commentaire) " +
                 "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         try (Connection conn = DatabaseUtils.getConnection();
@@ -33,7 +33,7 @@ public class RendezVousService implements ICrud<RendezVous> {
             // Récupérer l'id généré
             try (ResultSet generatedKeys = stmt.getGeneratedKeys()) {
                 if (generatedKeys.next()) {
-                    return generatedKeys.getInt(1);
+                    generatedKeys.getInt(1);
                 } else {
                     throw new SQLException("Échec de l'insertion : aucun ID généré.");
                 }
