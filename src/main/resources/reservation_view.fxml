@@ -4,49 +4,75 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox spacing="10" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" 
-      fx:controller="org.hospiconnect.controller.ReservationController">
+<VBox spacing="15" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" 
+      fx:controller="org.hospiconnect.controller.ReservationController"
+      stylesheets="@styles/modern-style.css">
     <padding>
         <Insets bottom="20" left="20" right="20" top="20"/>
     </padding>
     
-    <Label text="Medication Reservations Management" style="-fx-font-size: 18; -fx-font-weight: bold;"/>
+    <Label text="Medication Reservations Management" styleClass="section-header"/>
     
-    <GridPane hgap="10" vgap="10">
-        <columnConstraints>
-            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="150.0"/>
-            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="200.0"/>
-        </columnConstraints>
+    <HBox spacing="20" VBox.vgrow="ALWAYS">
+        <!-- Form Panel -->
+        <VBox spacing="15" styleClass="content-area" HBox.hgrow="SOMETIMES" prefWidth="400">
+            <padding>
+                <Insets bottom="15" left="15" right="15" top="15"/>
+            </padding>
+            
+            <Label text="Medication Reservation Details" styleClass="section-header"/>
+            
+            <GridPane hgap="15" vgap="15">
+                <columnConstraints>
+                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="150.0"/>
+                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="200.0"/>
+                </columnConstraints>
+                
+                <Label text="Date:" styleClass="form-label" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+                <DatePicker fx:id="datePicker" GridPane.columnIndex="1" GridPane.rowIndex="0" prefWidth="200"/>
+                
+                <Label text="Time:" styleClass="form-label" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+                <HBox spacing="5" GridPane.columnIndex="1" GridPane.rowIndex="1" alignment="CENTER_LEFT">
+                    <ComboBox fx:id="hourComboBox" prefWidth="80"/>
+                    <Label text=":" style="-fx-font-weight: bold;"/>
+                    <ComboBox fx:id="minuteComboBox" prefWidth="80"/>
+                </HBox>
+                
+                <Label text="Medication Name:" styleClass="form-label" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+                <TextField fx:id="medicamentField" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+                
+                <Label text="Times per Day:" styleClass="form-label" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
+                <Spinner fx:id="foisSpinner" GridPane.columnIndex="1" GridPane.rowIndex="3" prefWidth="100" editable="true"/>
+            </GridPane>
+            
+            <Region VBox.vgrow="ALWAYS"/>
+            
+            <HBox spacing="10" alignment="CENTER_RIGHT">
+                <Button fx:id="saveButton" text="Save" onAction="#handleSave" styleClass="button, action-button, save-button"/>
+                <Button fx:id="clearButton" text="Clear" onAction="#handleClear" styleClass="button, action-button, clear-button"/>
+                <Button fx:id="deleteButton" text="Delete" onAction="#handleDelete" disable="true" styleClass="button, action-button, delete-button"/>
+            </HBox>
+        </VBox>
         
-        <Label text="Date:" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
-        <DatePicker fx:id="datePicker" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
-        
-        <Label text="Time:" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
-        <HBox spacing="5" GridPane.columnIndex="1" GridPane.rowIndex="1">
-            <ComboBox fx:id="hourComboBox" prefWidth="80"/>
-            <Label text=":"/>
-            <ComboBox fx:id="minuteComboBox" prefWidth="80"/>
-        </HBox>
-        
-        <Label text="Medication Name:" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
-        <TextField fx:id="medicamentField" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
-        
-        <Label text="Times per Day:" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
-        <Spinner fx:id="foisSpinner" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
-    </GridPane>
-    
-    <HBox spacing="10" alignment="CENTER_RIGHT">
-        <Button fx:id="saveButton" text="Save" onAction="#handleSave"/>
-        <Button fx:id="clearButton" text="Clear" onAction="#handleClear"/>
-        <Button fx:id="deleteButton" text="Delete" onAction="#handleDelete" disable="true"/>
+        <!-- Table Panel -->
+        <VBox spacing="10" styleClass="content-area" HBox.hgrow="ALWAYS">
+            <padding>
+                <Insets bottom="15" left="15" right="15" top="15"/>
+            </padding>
+            
+            <Label text="Medication Reservation Records" styleClass="section-header"/>
+            
+            <TableView fx:id="reservationTable" VBox.vgrow="ALWAYS">
+                <columns>
+                    <TableColumn fx:id="idColumn" text="ID" prefWidth="50"/>
+                    <TableColumn fx:id="dureeColumn" text="Treatment Date/Time" prefWidth="200"/>
+                    <TableColumn fx:id="medicamentColumn" text="Medication" prefWidth="200"/>
+                    <TableColumn fx:id="foisColumn" text="Times per Day" prefWidth="100"/>
+                </columns>
+                <placeholder>
+                    <Label text="No medication reservations available"/>
+                </placeholder>
+            </TableView>
+        </VBox>
     </HBox>
-    
-    <TableView fx:id="reservationTable" VBox.vgrow="ALWAYS">
-        <columns>
-            <TableColumn fx:id="idColumn" text="ID" prefWidth="50"/>
-            <TableColumn fx:id="dureeColumn" text="Treatment Date/Time" prefWidth="200"/>
-            <TableColumn fx:id="medicamentColumn" text="Medication" prefWidth="200"/>
-            <TableColumn fx:id="foisColumn" text="Times per Day" prefWidth="100"/>
-        </columns>
-    </TableView>
 </VBox>

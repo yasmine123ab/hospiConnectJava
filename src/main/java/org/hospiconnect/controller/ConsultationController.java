@@ -50,7 +50,7 @@ public class ConsultationController implements Initializable {
     }
     
     private void loadTableColumns() {
-        idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
+//        idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
         typeColumn.setCellValueFactory(new PropertyValueFactory<>("typeConsultation"));
         dateColumn.setCellValueFactory(cellData -> {
             LocalDate date = cellData.getValue().getDateConsultation();

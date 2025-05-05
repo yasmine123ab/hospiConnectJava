@@ -7,6 +7,7 @@ public class Reservation {
     private LocalDateTime dureeTraitement;
     private String nomMedicament;
     private int nombresFois;
+    private String note; // AI-generated notes about the medication
 
     public Reservation() {
     }
@@ -17,12 +18,27 @@ public class Reservation {
         this.nomMedicament = nomMedicament;
         this.nombresFois = nombresFois;
     }
+    
+    public Reservation(int id, LocalDateTime dureeTraitement, String nomMedicament, int nombresFois, String note) {
+        this.id = id;
+        this.dureeTraitement = dureeTraitement;
+        this.nomMedicament = nomMedicament;
+        this.nombresFois = nombresFois;
+        this.note = note;
+    }
 
-
+    // Constructor without ID for new reservations
     public Reservation(LocalDateTime dureeTraitement, String nomMedicament, int nombresFois) {
         this.dureeTraitement = dureeTraitement;
         this.nomMedicament = nomMedicament;
         this.nombresFois = nombresFois;
+    }
+    
+    public Reservation(LocalDateTime dureeTraitement, String nomMedicament, int nombresFois, String note) {
+        this.dureeTraitement = dureeTraitement;
+        this.nomMedicament = nomMedicament;
+        this.nombresFois = nombresFois;
+        this.note = note;
     }
 
     public int getId() {
@@ -57,6 +73,14 @@ public class Reservation {
         this.nombresFois = nombresFois;
     }
 
+    public String getNote() {
+        return note;
+    }
+
+    public void setNote(String note) {
+        this.note = note;
+    }
+
     @Override
     public String toString() {
         return "Reservation{" +
@@ -64,6 +88,7 @@ public class Reservation {
                 ", dureeTraitement=" + dureeTraitement +
                 ", nomMedicament='" + nomMedicament + '\'' +
                 ", nombresFois=" + nombresFois +
+                ", note='" + note + '\'' +
                 '}';
     }
 }

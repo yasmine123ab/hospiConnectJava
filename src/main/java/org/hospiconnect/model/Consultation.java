@@ -9,8 +9,11 @@ public class Consultation {
     private String note;
     private String firstname;
     private String lastname;
+    private int rating; // Rating from 1-5
+    private String email; // Patient email for notifications
 
     public Consultation() {
+        this.rating = 0; // Default rating is 0 (not rated)
     }
 
     public Consultation(int id, String typeConsultation, LocalDate dateConsultation, String note, String firstname, String lastname) {
@@ -20,15 +23,57 @@ public class Consultation {
         this.note = note;
         this.firstname = firstname;
         this.lastname = lastname;
+        this.rating = 0; // Default rating is 0 (not rated)
+    }
+    
+    public Consultation(int id, String typeConsultation, LocalDate dateConsultation, String note, String firstname, String lastname, int rating) {
+        this.id = id;
+        this.typeConsultation = typeConsultation;
+        this.dateConsultation = dateConsultation;
+        this.note = note;
+        this.firstname = firstname;
+        this.lastname = lastname;
+        this.rating = rating;
+    }
+    
+    public Consultation(int id, String typeConsultation, LocalDate dateConsultation, String note, String firstname, String lastname, int rating, String email) {
+        this.id = id;
+        this.typeConsultation = typeConsultation;
+        this.dateConsultation = dateConsultation;
+        this.note = note;
+        this.firstname = firstname;
+        this.lastname = lastname;
+        this.rating = rating;
+        this.email = email;
     }
 
-
+    // Constructor without ID for new consultations
     public Consultation(String typeConsultation, LocalDate dateConsultation, String note, String firstname, String lastname) {
         this.typeConsultation = typeConsultation;
         this.dateConsultation = dateConsultation;
         this.note = note;
         this.firstname = firstname;
         this.lastname = lastname;
+        this.rating = 0; // Default rating is 0 (not rated)
+    }
+    
+    public Consultation(String typeConsultation, LocalDate dateConsultation, String note, String firstname, String lastname, int rating) {
+        this.typeConsultation = typeConsultation;
+        this.dateConsultation = dateConsultation;
+        this.note = note;
+        this.firstname = firstname;
+        this.lastname = lastname;
+        this.rating = rating;
+    }
+    
+    public Consultation(String typeConsultation, LocalDate dateConsultation, String note, String firstname, String lastname, int rating, String email) {
+        this.typeConsultation = typeConsultation;
+        this.dateConsultation = dateConsultation;
+        this.note = note;
+        this.firstname = firstname;
+        this.lastname = lastname;
+        this.rating = rating;
+        this.email = email;
     }
 
     public int getId() {
@@ -78,6 +123,22 @@ public class Consultation {
     public void setLastname(String lastname) {
         this.lastname = lastname;
     }
+    
+    public int getRating() {
+        return rating;
+    }
+    
+    public void setRating(int rating) {
+        this.rating = rating;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
     @Override
     public String toString() {
@@ -87,6 +148,8 @@ public class Consultation {
                 ", dateConsultation=" + dateConsultation +
                 ", firstname='" + firstname + '\'' +
                 ", lastname='" + lastname + '\'' +
+                ", rating=" + rating +
+                ", email='" + email + '\'' +
                 '}';
     }
 }
