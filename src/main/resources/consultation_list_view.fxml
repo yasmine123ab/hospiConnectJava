@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox spacing="15" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" 
+      fx:controller="org.hospiconnect.controller.ConsultationListController"
+      stylesheets="@styles/modern-style.css">
+    <padding>
+        <Insets bottom="20" left="20" right="20" top="20"/>
+    </padding>
+    
+    <HBox alignment="CENTER_LEFT" spacing="20">
+        <Label text="Consultations Management" styleClass="section-header"/>
+        <Region HBox.hgrow="ALWAYS"/>
+        <Button text="Add New Consultation" onAction="#handleAddNew" 
+                styleClass="button, action-button" style="-fx-background-color: #3498db;"/>
+    </HBox>
+    
+    <VBox spacing="10" styleClass="content-area" VBox.vgrow="ALWAYS">
+        <padding>
+            <Insets bottom="15" left="15" right="15" top="15"/>
+        </padding>
+        
+        <HBox alignment="CENTER_LEFT" spacing="15">
+            <Label text="Consultation Records" styleClass="section-header"/>
+            <Region HBox.hgrow="ALWAYS"/>
+           
+        </HBox>
+        
+        <TableView fx:id="consultationTable" VBox.vgrow="ALWAYS" visible="false" managed="false">
+            <columns>
+                <TableColumn fx:id="idColumn" text="ID" prefWidth="50"/>
+                <TableColumn fx:id="typeColumn" text="Type" prefWidth="150"/>
+                <TableColumn fx:id="dateColumn" text="Date" prefWidth="100"/>
+                <TableColumn fx:id="firstnameColumn" text="First Name" prefWidth="150"/>
+                <TableColumn fx:id="lastnameColumn" text="Last Name" prefWidth="150"/>
+                <TableColumn fx:id="ratingColumn" text="Rating" prefWidth="100"/>
+            </columns>
+            <placeholder>
+                <Label text="No consultations available"/>
+            </placeholder>
+        </TableView>
+        
+        <ScrollPane fx:id="scrollPane" VBox.vgrow="ALWAYS" styleClass="edge-to-edge" fitToWidth="true">
+            <FlowPane fx:id="cardContainer" hgap="20" vgap="20">
+                <padding>
+                    <Insets top="10" right="10" bottom="10" left="10"/>
+                </padding>
+            </FlowPane>
+        </ScrollPane>
+        
+        <HBox spacing="10" alignment="CENTER_RIGHT" style="-fx-padding: 10 0 0 0;">
+            <Button fx:id="editButton" text="Edit" onAction="#handleEdit" 
+                    styleClass="button, action-button" disable="true"/>
+            <Button fx:id="deleteButton" text="Delete" onAction="#handleDelete" 
+                    styleClass="button, action-button, delete-button" disable="true"/>
+        </HBox>
+    </VBox>
+</VBox>
