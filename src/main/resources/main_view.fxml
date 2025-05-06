@@ -22,6 +22,8 @@
             <HBox styleClass="nav-container" spacing="10" alignment="CENTER_LEFT">
                 <Button text="Consultations" onAction="#openConsultations" styleClass="nav-button"/>
                 <Button text="Medication Reservations" onAction="#openReservations" styleClass="nav-button"/>
+                <Button text="Home" fx:id="menuHomeButton" styleClass="nav-button"/>
+
             </HBox>
         </VBox>
     </top>

@@ -4,7 +4,9 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
+import javafx.scene.control.Button;
 import javafx.scene.layout.StackPane;
+import org.hospiconnect.controller.laboratoire.SceneUtils;
 
 import java.io.IOException;
 import java.net.URL;
@@ -14,9 +16,13 @@ public class MainController implements Initializable {
 
     @FXML
     private StackPane contentArea;
+    @FXML
+    private Button menuHomeButton;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        menuHomeButton.setOnAction(e -> SceneUtils.openNewScene(
+                "/HomePages/frontList.fxml", menuHomeButton.getScene(), null));
         // Initialize main view
     }
 
