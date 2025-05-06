@@ -13,6 +13,7 @@ import org.hospiconnect.service.ReservationService;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -52,31 +53,37 @@ public class ReservationController implements Initializable {
     }
     
     private void setupControls() {
-
+        // Hours setup (00-23)
         ObservableList<String> hours = FXCollections.observableArrayList();
         for (int i = 0; i < 24; i++) {
             hours.add(String.format("%02d", i));
         }
         hourComboBox.setItems(hours);
         
-
+        // Minutes setup (00-59)
         ObservableList<String> minutes = FXCollections.observableArrayList();
         for (int i = 0; i < 60; i++) {
             minutes.add(String.format("%02d", i));
         }
         minuteComboBox.setItems(minutes);
         
-
+        // Spinner setup (1-10)
         SpinnerValueFactory<Integer> valueFactory = 
                 new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 10, 1);
         foisSpinner.setValueFactory(valueFactory);
     }
     
     private void loadTableColumns() {
-        idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
+//        idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
         dureeColumn.setCellValueFactory(cellData -> {
             LocalDateTime dateTime = cellData.getValue().getDureeTraitement();
-            return new SimpleStringProperty(dateTime != null ? dateTime.toString() : "");
+            if (dateTime != null) {
+                // Format date and time in a readable way
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+                return new SimpleStringProperty(dateTime.format(formatter));
+            } else {
+                return new SimpleStringProperty("");
+            }
         });
         medicamentColumn.setCellValueFactory(new PropertyValueFactory<>("nomMedicament"));
         foisColumn.setCellValueFactory(new PropertyValueFactory<>("nombresFois"));
@@ -112,7 +119,7 @@ public class ReservationController implements Initializable {
     
     @FXML
     private void handleSave() {
-
+        // Validate form and collect validation errors
         List<String> validationErrors = validateForm();
         if (!validationErrors.isEmpty()) {
             showValidationErrorAlert(validationErrors);
@@ -126,7 +133,7 @@ public class ReservationController implements Initializable {
             reservation = new Reservation();
         }
         
-
+        // Fix for the LocalDateTime creation
         LocalDateTime dateTime = datePicker.getValue().atTime(
             Integer.parseInt(hourComboBox.getValue()),
             Integer.parseInt(minuteComboBox.getValue()),
@@ -138,7 +145,6 @@ public class ReservationController implements Initializable {
         reservation.setNombresFois(foisSpinner.getValue());
         
         boolean success = reservationService.saveReservation(reservation);
-        
         if (success) {
             loadReservations();
             clearForm();
@@ -151,18 +157,17 @@ public class ReservationController implements Initializable {
     private List<String> validateForm() {
         List<String> errors = new ArrayList<>();
         
-
+        // Validate date
         if (datePicker.getValue() == null) {
             errors.add("Treatment date is required");
         } else if (datePicker.getValue().isBefore(LocalDate.now())) {
             errors.add("Treatment date cannot be in the past");
         }
         
-
+        // Validate time
         if (hourComboBox.getValue() == null) {
             errors.add("Hour is required");
         }
-        
         if (minuteComboBox.getValue() == null) {
             errors.add("Minute is required");
         }
@@ -176,21 +181,20 @@ public class ReservationController implements Initializable {
             errors.add("Medication name contains invalid characters");
         }
         
-
+        // Validate times per day
         if (foisSpinner.getValue() == null) {
             errors.add("Times per day is required");
         } else if (foisSpinner.getValue() <= 0) {
             errors.add("Times per day must be greater than 0");
         }
         
-
+        // Check if selected date and time is in the future
         if (datePicker.getValue() != null && hourComboBox.getValue() != null && minuteComboBox.getValue() != null) {
             LocalDateTime selectedDateTime = datePicker.getValue().atTime(
                 Integer.parseInt(hourComboBox.getValue()),
                 Integer.parseInt(minuteComboBox.getValue()),
                 0, 0
             );
-            
             if (selectedDateTime.isBefore(LocalDateTime.now())) {
                 errors.add("The treatment date and time must be in the future");
             }
@@ -203,13 +207,11 @@ public class ReservationController implements Initializable {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Validation Error");
         alert.setHeaderText("Please correct the following errors:");
-        
-
+        // Create formatted content with bullet points for each error
         StringBuilder errorContent = new StringBuilder();
         for (String error : errors) {
             errorContent.append("• ").append(error).append("\n");
         }
-        
         alert.setContentText(errorContent.toString());
         alert.showAndWait();
     }
@@ -230,7 +232,6 @@ public class ReservationController implements Initializable {
             Optional<ButtonType> result = alert.showAndWait();
             if (result.isPresent() && result.get() == ButtonType.OK) {
                 boolean success = reservationService.deleteReservation(selectedReservation.getId());
-                
                 if (success) {
                     loadReservations();
                     clearForm();

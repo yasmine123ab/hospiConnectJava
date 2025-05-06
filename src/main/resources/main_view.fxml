@@ -1,33 +1,55 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.StackPane?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Text?>
 
-<BorderPane prefHeight="684.0" prefWidth="730.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.hospiconnect.controller.MainController">
+<BorderPane xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" 
+            fx:controller="org.hospiconnect.controller.MainController"
+            stylesheets="@styles/modern-style.css">
     <top>
-        <VBox spacing="10">
-            <padding>
-                <Insets bottom="20" left="20" right="20" top="20" />
-            </padding>
+        <VBox>
+            <!-- Header section -->
+            <VBox styleClass="header">
+                <HBox alignment="CENTER_LEFT" spacing="15">
+                    <!-- Logo placeholder - replaced with text for now -->
+                    <Label text="HospiConnect" styleClass="header-title"/>
+                </HBox>
+            </VBox>
             
-            <Label style="-fx-font-size: 24; -fx-font-weight: bold;" text="HospiConnect Management System" />
-            
-            <HBox spacing="10">
-                <Button onAction="#openConsultations" prefWidth="150" text="Consultations" />
-                <Button onAction="#openReservations" prefWidth="200" text="Medication Reservations" />
-                <Button fx:id="menuHomeButton" prefWidth="200" text="Home" />
+            <!-- Navigation section -->
+            <HBox styleClass="nav-container" spacing="10" alignment="CENTER_LEFT">
+                <Button text="Consultations" onAction="#openConsultations" styleClass="nav-button"/>
+                <Button text="Medication Reservations" onAction="#openReservations" styleClass="nav-button"/>
+                <Button text="Home" fx:id="menuHomeButton" styleClass="nav-button"/>
+
             </HBox>
         </VBox>
     </top>
     
     <center>
-        <StackPane fx:id="contentArea">
-            <Label alignment="CENTER" style="-fx-font-size: 16;" text="Welcome to HospiConnect. Please select a module from the menu above." />
-        </StackPane>
+        <VBox spacing="20" alignment="CENTER">
+            <padding>
+                <Insets top="20" right="20" bottom="20" left="20"/>
+            </padding>
+            
+            <StackPane fx:id="contentArea" styleClass="content-area" VBox.vgrow="ALWAYS">
+                <VBox alignment="CENTER" spacing="20">
+                    <!-- Removed ImageView that was causing the error -->
+                    <Label text="HospiConnect" styleClass="header-title" style="-fx-text-fill: #3498db;"/>
+                    <Label text="Welcome to HospiConnect Management System" 
+                        styleClass="welcome-text"/>
+                    <Text text="Select a module from the navigation bar above to get started." 
+                        styleClass="welcome-text"/>
+                </VBox>
+            </StackPane>
+        </VBox>
     </center>
+    
+    <bottom>
+        <HBox styleClass="status-bar" alignment="CENTER_RIGHT">
+            <Label text="© 2025 HospiConnect - Medical Management System" styleClass="status-text"/>
+        </HBox>
+    </bottom>
 </BorderPane>

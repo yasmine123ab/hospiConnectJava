@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox spacing="15" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" 
+      fx:controller="org.hospiconnect.controller.ReservationListController"
+      stylesheets="@styles/modern-style.css">
+    <padding>
+        <Insets bottom="20" left="20" right="20" top="20"/>
+    </padding>
+    
+    <HBox alignment="CENTER_LEFT" spacing="20">
+        <Label text="Medication Reservations Management" styleClass="section-header"/>
+        <Region HBox.hgrow="ALWAYS"/>
+        <Button text="Add New Reservation" onAction="#handleAddNew" 
+                styleClass="button, action-button" style="-fx-background-color: #3498db;"/>
+    </HBox>
+    
+    <VBox spacing="10" styleClass="content-area" VBox.vgrow="ALWAYS">
+        <padding>
+            <Insets bottom="15" left="15" right="15" top="15"/>
+        </padding>
+        
+        <Label text="Medication Reservation Records" styleClass="section-header"/>
+        
+        <TableView fx:id="reservationTable" VBox.vgrow="ALWAYS">
+            <columns>
+                <TableColumn fx:id="idColumn" text="ID" prefWidth="50"/>
+                <TableColumn fx:id="dureeColumn" text="Treatment Date/Time" prefWidth="150"/>
+                <TableColumn fx:id="medicamentColumn" text="Medication" prefWidth="150"/>
+                <TableColumn fx:id="foisColumn" text="Times per Day" prefWidth="80"/>
+                <TableColumn fx:id="noteColumn" text="Notes" prefWidth="200"/>
+            </columns>
+            <placeholder>
+                <Label text="No medication reservations available"/>
+            </placeholder>
+        </TableView>
+        
+        <HBox spacing="10" alignment="CENTER_RIGHT" style="-fx-padding: 10 0 0 0;">
+            <Button fx:id="editButton" text="Edit" onAction="#handleEdit" 
+                    styleClass="button, action-button" disable="true"/>
+            <Button fx:id="deleteButton" text="Delete" onAction="#handleDelete" 
+                    styleClass="button, action-button, delete-button" disable="true"/>
+        </HBox>
+    </VBox>
+</VBox>

@@ -28,15 +28,15 @@ public class MainController implements Initializable {
 
     @FXML
     private void openConsultations() {
-        loadView("consultation_view.fxml");
+        loadView("consultation_list_view.fxml");
     }
 
     @FXML
     private void openReservations() {
-        loadView("reservation_view.fxml");
+        loadView("reservation_list_view.fxml");
     }
 
-    private void loadView(String fxmlPath) {
+    public void loadView(String fxmlPath) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource(fxmlPath));
             Parent view = loader.load();
