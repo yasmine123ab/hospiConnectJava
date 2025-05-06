@@ -17,6 +17,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import org.hospiconnect.controller.laboratoire.SceneUtils;
 import org.hospiconnect.model.RendezVous;
 import org.hospiconnect.service.RendezVousService;
 
@@ -38,12 +39,16 @@ public class ListeRendezVousController implements Initializable {
     @FXML private ComboBox<String> sortComboBox;
     @FXML private VBox tableContainer;
     @FXML private VBox dataRows;
+    @FXML
+    private Button menuHomeButton;
 
     private final ObservableList<RendezVous> data = FXCollections.observableArrayList();
     private RendezVousService rendezVousService;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        menuHomeButton.setOnAction(e -> SceneUtils.openNewScene(
+                "/HomePages/frontList.fxml", menuHomeButton.getScene(), null));
         rendezVousService = new RendezVousService();
 
         // Charger les données initiales
