@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.geometry.Pos?>
+<?import javafx.collections.FXCollections?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml"
+            fx:controller="org.hospiconnect.controller.User.TableReclamationController"
+            stylesheets="@/styles/table_reclamation.css">
+
+    <!-- EN-TÊTE -->
+    <top>
+        <VBox alignment="CENTER">
+            <!-- Titre principal -->
+            <Label text="Gestion des Réclamations" styleClass="titre-principal"/>
+
+            <!-- Ligne décorative -->
+            <HBox alignment="CENTER">
+                <Region
+                        prefHeight="2"
+                        maxHeight="2"
+                        prefWidth="320"
+                        maxWidth="320"
+                        style="-fx-background-color: #3a4c68;" />
+            </HBox>
+
+            <!-- Barre de recherche et bouton d'ajout -->
+            <HBox fx:id="searchBox" alignment="CENTER" spacing="20">
+                <padding>
+                    <Insets top="20" bottom="20" left="20" right="20"/>
+                </padding>
+                <Label text="🔍" styleClass="search-icon"/>
+                <TextField fx:id="searchField"
+                           promptText="Rechercher par Description, Catégorie, ou Status..."
+                           styleClass="search-field"/>
+                
+                <!-- ComboBox pour le tri par priorité -->
+                <ComboBox fx:id="priorityComboBox" promptText="Trier par priorité" styleClass="filter-combo"/>
+
+                <!-- ComboBox pour le filtrage par statut -->
+                <ComboBox fx:id="statusComboBox" promptText="Filtrer par statut" styleClass="filter-combo"/>
+
+                <!-- Bouton d'ajout de réclamation -->
+                <Button text="Ajouter une Réclamation"
+                        fx:id="btnAdd"
+                        styleClass="add-button"
+                        onAction="#handleAdd"
+                        alignment="CENTER" />
+            </HBox>
+        </VBox>
+    </top>
+
+    <!-- CONTENU : liste des réclamations -->
+    <center>
+        <ScrollPane style="-fx-background-color: transparent;" fitToHeight="true" fitToWidth="false" hbarPolicy="AS_NEEDED">
+            <HBox alignment="CENTER">
+                <VBox alignment="TOP_CENTER" minWidth="1400">
+                    <StackPane alignment="CENTER" styleClass="table-card" minWidth="800">
+                        <VBox alignment="TOP_CENTER" spacing="10" minWidth="1200">
+                            <!-- ✅ Liste des réclamations (centrée) -->
+                            <VBox fx:id="reclamationListContainer" alignment="CENTER" spacing="40" minWidth="1200"/>
+                        </VBox>
+                    </StackPane>
+                </VBox>
+            </HBox>
+        </ScrollPane>
+    </center>
+
+    <!-- PAGINATION -->
+    <bottom>
+        <HBox fx:id="paginationContainer" alignment="CENTER" spacing="10">
+            <padding>
+                <Insets top="20" right="20" bottom="20" left="20"/>
+            </padding>
+        </HBox>
+    </bottom>
+
+</BorderPane>

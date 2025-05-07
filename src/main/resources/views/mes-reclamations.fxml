@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.geometry.Insets?>
+
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="org.hospiconnect.controller.User.MesReclamationsController"
+      stylesheets="@/styles/mes-reclamations.css"
+      spacing="20"
+      style="-fx-background-color: #E0F0FF;">
+
+    <padding>
+        <Insets top="20" right="20" bottom="20" left="20"/>
+    </padding>
+
+    <Label text="Mes Réclamations" styleClass="title"/>
+
+    <ScrollPane fitToWidth="true" VBox.vgrow="ALWAYS">
+        <VBox fx:id="reclamationsContainer" spacing="15">
+            <Label fx:id="noReclamationsLabel" text="Aucune réclamation trouvée" styleClass="no-reclamations"/>
+        </VBox>
+    </ScrollPane>
+
+    <Button fx:id="btnAddReclamation" 
+            text="Nouvelle Réclamation" 
+            onAction="#handleAddReclamation"
+            styleClass="add-button"/>
+
+</VBox> 

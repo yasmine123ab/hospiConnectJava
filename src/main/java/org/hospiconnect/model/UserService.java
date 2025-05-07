@@ -1,8 +1,6 @@
 package org.hospiconnect.model;
 
-import org.hospiconnect.model.User;
 import org.hospiconnect.utils.DatabaseUtils;
-import org.hospiconnect.utils.PasswordUtils;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -80,11 +78,12 @@ public class UserService {
             ResultSet rs = ps.executeQuery();
 
             if (rs.next()) {
-                String hashedPassword = rs.getString("password");
-                if (PasswordUtils.checkPassword(passwordPlain, hashedPassword)) {
+                String storedPassword = rs.getString("password");
+                if (passwordPlain.equals(storedPassword)) {
                     return extractUser(rs);
                 }
             }
+
         } catch (SQLException e) {
             System.err.println("Erreur login : " + e.getMessage());
         }

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Pos?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane xmlns:fx="http://javafx.com/fxml" fx:controller="controller.EditReclamationController">
+    <VBox alignment="CENTER" spacing="15.0" padding="20.0" maxWidth="400.0">
+        <Label text="Modifier la Réclamation" font="Arial 18 bold"/>
+
+        <TextField fx:id="tfTitle" promptText="Titre" prefWidth="300.0"/>
+        <TextArea fx:id="taDescription" promptText="Description" prefWidth="300.0" prefHeight="100.0"/>
+
+        <DatePicker fx:id="dpDateReclamation" promptText="Date de Réclamation" prefWidth="300.0"/>
+
+        <ComboBox fx:id="comboStatus" promptText="Statut" prefWidth="300.0"/>
+        <ComboBox fx:id="comboCategory" promptText="Catégorie" prefWidth="300.0"/>
+        <ComboBox fx:id="comboPriority" promptText="Priorité" prefWidth="300.0"/>
+        <ComboBox fx:id="comboSeverity" promptText="Gravité" prefWidth="300.0"/>
+
+        <CheckBox fx:id="cbIsAnonymous" text="Anonyme" />
+
+        <TextField fx:id="tfAttachment" promptText="Pièce jointe" prefWidth="300.0"/>
+
+        <Button text="Enregistrer" onAction="#handleSave" style="-fx-background-color: #4CAF50; -fx-text-fill: white;"/>
+        <Button text="Annuler" onAction="#handleCancel" style="-fx-background-color: #f44336; -fx-text-fill: white;"/>
+    </VBox>
+</AnchorPane>

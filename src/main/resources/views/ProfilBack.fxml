@@ -6,22 +6,25 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.geometry.Pos?>
 
+<?import javafx.collections.FXCollections?>
+<?import java.lang.String?>
+
 <AnchorPane xmlns:fx="http://javafx.com/fxml"
-            fx:controller="org.hospiconnect.controller.ProfilController"
-            prefWidth="900" prefHeight="600"
+            fx:controller="org.hospiconnect.controller.User.ProfilController"
+            prefWidth="1000" prefHeight="700"
             stylesheets="@/styles/ProfilBack.css"
             style="-fx-background-color: white;">
 
-    <VBox alignment="TOP_CENTER" spacing="30" AnchorPane.topAnchor="20" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0">
+    <VBox alignment="TOP_CENTER" spacing="30" AnchorPane.topAnchor="20" AnchorPane.leftAnchor="50" AnchorPane.rightAnchor="50">
 
         <!-- Titre -->
         <Label text="MON PROFIL" style="-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: #3a4c68;"/>
 
         <!-- Contenu profil -->
-        <HBox spacing="40" alignment="CENTER" style="-fx-padding: 20;-fx-background-color:#fffcff; -fx-background-radius: 20; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 10, 0.2, 0, 4);" maxWidth="800">
+        <HBox spacing="40" alignment="CENTER" style="-fx-padding: 20;-fx-background-color:#fffcff; -fx-background-radius: 20; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 10, 0.2, 0, 4);" maxWidth="900">
 
-            <!-- Colonne Photo -->
-            <VBox alignment="CENTER" spacing="15">
+            <!-- Colonne Photo + Mots de passe -->
+            <VBox alignment="TOP_CENTER" spacing="15" style="-fx-padding: 0 20 0 0;">
                 <StackPane>
                     <ImageView fx:id="photoProfil" fitWidth="140" fitHeight="140"/>
                     <ImageView fx:id="editIcon" fitWidth="28" fitHeight="28"
@@ -29,52 +32,144 @@
                                onMouseClicked="#handleBrowsePhoto"
                                StackPane.alignment="BOTTOM_RIGHT"/>
                 </StackPane>
-                <Label fx:id="labelNomPrenom" style="-fx-font-size: 14px; -fx-font-weight: bold;-fx-text-fill: #3a4c68;"/>
+
+                <StackPane alignment="CENTER">
+                    <Label fx:id="labelNomPrenom" style="-fx-font-size: 14px; -fx-font-weight: bold;-fx-text-fill: #3a4c68;" />
+                </StackPane>
+
+
+                <!-- ProgressBar avec pourcentage -->
+                <VBox alignment="CENTER" spacing="5">
+                    <ProgressBar fx:id="progressBar" prefWidth="120" progress="0"
+                                 style="-fx-accent: #3a4c68;"/>
+                    <Label fx:id="progressPercentage" text="0%"
+                           style="-fx-font-size: 12px; -fx-text-fill: #3a4c68;"/>
+                </VBox>
+
+                <Label fx:id="alertMessage" layoutX="50" layoutY="300" text="" style="-fx-font-size: 12px; -fx-text-fill: green; -fx-wrap-text: true;"/>
+
+                <!-- Section Mots de passe -->
+                <Label text="Modifier Mot De Passe " style="-fx-font-size: 15px; -fx-font-weight: bold; -fx-text-fill: #3a4c68;"/>
+
+                <VBox spacing="12" alignment="CENTER_LEFT">
+                    <Label text="Mot de passe actuel" style="-fx-font-weight: bold;"/>
+                    <PasswordField fx:id="tfOldPassword" prefWidth="180"/>
+
+                    <Label text="Nouveau mot de passe" style="-fx-font-weight: bold;"/>
+                    <PasswordField fx:id="tfNewPassword" prefWidth="180"/>
+                </VBox>
             </VBox>
 
-            <!-- ✅ Séparateur vertical -->
-            <Separator orientation="VERTICAL" prefHeight="350"/>
+            <!-- Séparateur vertical -->
+            <Separator orientation="VERTICAL" prefHeight="400"/>
 
-            <!-- Colonne Formulaire -->
-            <VBox spacing="12" prefWidth="400">
+            <!-- Colonne Formulaire avec 2 sous-colonnes -->
+            <HBox spacing="30" alignment="CENTER_LEFT" prefWidth="600">
 
-                <Label text="Nom"/>
-                <TextField fx:id="tfNom"/>
+                <!-- Colonne gauche -->
+                <VBox alignment="CENTER_LEFT" spacing="12" prefWidth="280">
+                    <Label text="Nom" style="-fx-font-weight: bold;"/>
+                    <TextField fx:id="tfNom" prefWidth="260"/>
 
-                <Label text="Prénom"/>
-                <TextField fx:id="tfPrenom"/>
+                    <Label text="Prénom" style="-fx-font-weight: bold;"/>
+                    <TextField fx:id="tfPrenom" prefWidth="260"/>
 
-                <Label text="Email"/>
-                <TextField fx:id="tfEmail"/>
+                    <Label text="Email" style="-fx-font-weight: bold;"/>
+                    <TextField fx:id="tfEmail" prefWidth="260"/>
 
-                <Separator/>
+                    <Label text="Téléphone" style="-fx-font-weight: bold;"/>
+                    <TextField fx:id="tfTelephone" promptText="+216" prefWidth="260"/>
 
-                <Label text="Modifier le mot de passe" style="-fx-font-weight: bold;"/>
+                    <Label text="Adresse" style="-fx-font-weight: bold;"/>
+                    <TextField fx:id="tfAdresse" prefWidth="260"/>
+                </VBox>
 
-                <Label text="Mot de passe actuel"/>
-                <PasswordField fx:id="tfOldPassword"/>
+                <!-- Colonne droite -->
+                <VBox alignment="CENTER_LEFT" spacing="12" prefWidth="280">
+                    <Label text="Groupe sanguin" style="-fx-font-weight: bold;"/>
+                    <ComboBox fx:id="cbGroupeSanguin" prefWidth="260">
+                        <items>
+                            <FXCollections fx:factory="observableArrayList">
+                                <String fx:value="A+"/>
+                                <String fx:value="A-"/>
+                                <String fx:value="B+"/>
+                                <String fx:value="B-"/>
+                                <String fx:value="AB+"/>
+                                <String fx:value="AB-"/>
+                                <String fx:value="O+"/>
+                                <String fx:value="O-"/>
+                            </FXCollections>
+                        </items>
+                    </ComboBox>
 
-                <Label text="Nouveau mot de passe"/>
-                <PasswordField fx:id="tfNewPassword"/>
+                    <Label text="Gouvernorat" style="-fx-font-weight: bold;"/>
+                    <ComboBox fx:id="cbGouvernorat" prefWidth="260">
+                        <items>
+                            <FXCollections fx:factory="observableArrayList">
+                                <String fx:value="Ariana"/>
+                                <String fx:value="Béja"/>
+                                <String fx:value="Ben Arous"/>
+                                <String fx:value="Bizerte"/>
+                                <String fx:value="Gabès"/>
+                                <String fx:value="Gafsa"/>
+                                <String fx:value="Jendouba"/>
+                                <String fx:value="Kairouan"/>
+                                <String fx:value="Kasserine"/>
+                                <String fx:value="Kébili"/>
+                                <String fx:value="Le Kef"/>
+                                <String fx:value="Mahdia"/>
+                                <String fx:value="La Manouba"/>
+                                <String fx:value="Médenine"/>
+                                <String fx:value="Monastir"/>
+                                <String fx:value="Nabeul"/>
+                                <String fx:value="Sfax"/>
+                                <String fx:value="Sidi Bouzid"/>
+                                <String fx:value="Siliana"/>
+                                <String fx:value="Sousse"/>
+                                <String fx:value="Tataouine"/>
+                                <String fx:value="Tozeur"/>
+                                <String fx:value="Tunis"/>
+                                <String fx:value="Zaghouan"/>
+                            </FXCollections>
+                        </items>
+                    </ComboBox>
 
-                <Button text="Enregistrer" onAction="#handleSave"
-                        />
-                <HBox alignment="BOTTOM_RIGHT" prefWidth="Infinity">
-                    <padding>
-                        <Insets top="10" right="10" bottom="10" left="10"/>
-                    </padding>
-                    <Button fx:id="btnHistorique" onAction="#handleAfficherHistorique"
-                            styleClass="icon-button">
-                        <graphic>
-                            <ImageView fx:id="iconHistorique" fitWidth="18" fitHeight="18" />
-                        </graphic>
-                    </Button>
+                    <Label text="Code postal" style="-fx-font-weight: bold;"/>
+                    <TextField fx:id="tfZipCode" prefWidth="260"/>
+
+                    <HBox spacing="15" alignment="CENTER_LEFT">
+                        <VBox spacing="5">
+                            <Label text="Taille (cm)" style="-fx-font-weight: bold;"/>
+                            <TextField fx:id="tfTaille" prefWidth="120"/>
+                        </VBox>
+                        <VBox spacing="5">
+                            <Label text="Poids (kg)" style="-fx-font-weight: bold;"/>
+                            <TextField fx:id="tfPoids" prefWidth="120"/>
+                        </VBox>
+                    </HBox>
+                    <Label text="Diplôme" style="-fx-font-weight: bold;"/>
+                    <HBox spacing="10" alignment="CENTER_LEFT">
+                        <Button text="Parcourir" onAction="#handleBrowseDiplome"
+                                style="-fx-background-color: #3a4c68; -fx-text-fill: white; -fx-font-weight: bold;"/>
+                        <Label fx:id="labelDiplomePath" text="Aucun fichier choisi" style="-fx-font-size: 12px;"/>
+                    </HBox>
+
+                </VBox>
+            </HBox>
+        </HBox>
+
+        <!-- Boutons en bas -->
+        <HBox spacing="20" alignment="CENTER">
+            <Button text="Enregistrer" onAction="#handleSave"
+                    style="-fx-background-color: #3a4c68; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 8 20;"/>
+
+            <Button fx:id="btnHistorique" onAction="#handleAfficherHistorique"
+                    style="-fx-background-color: transparent; -fx-border-color: #3a4c68; -fx-text-fill: #3a4c68; -fx-font-weight: bold; -fx-padding: 8 20;">
+                <HBox spacing="5" alignment="CENTER">
+                    <ImageView fx:id="iconHistorique" fitWidth="16" fitHeight="16" />
+                    <Label text="Historique"/>
                 </HBox>
-            </VBox>
-            <!-- Icône historique en bas à droite -->
-
-
-
+            </Button>
         </HBox>
 
     </VBox>

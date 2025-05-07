@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.geometry.Pos?>
+<?import javafx.scene.image.ImageView?>
+
+<StackPane xmlns="http://javafx.com/javafx"
+           xmlns:fx="http://javafx.com/fxml"
+           fx:controller="org.hospiconnect.controller.User.ForgotPasswordController"
+           stylesheets="@/styles/signup.css"
+           style="-fx-background-color: #1E3A5F;">
+
+    <VBox alignment="CENTER" spacing="15" maxWidth="400"
+          style="-fx-background-color: #E6F0FA; -fx-padding: 30; -fx-background-radius: 15;">
+
+        <!-- LOGO -->
+        <ImageView fx:id="logoImage" fitHeight="80" fitWidth="120" pickOnBounds="true" preserveRatio="true" />
+
+        <!-- TITRE -->
+        <Label text="Réinitialiser le mot de passe"
+               style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #0D1B2A;" />
+        <Label text="Un code a été envoyé à votre adresse e-mail."
+               style="-fx-font-size: 12px; -fx-text-fill: #4A6FA5;" />
+
+
+        <!-- Code reçu -->
+        <TextField fx:id="txtCode" promptText="Code reçu par e-mail"
+                   style="-fx-background-radius: 6;" />
+
+        <!-- Nouveau mot de passe -->
+        <PasswordField fx:id="txtNewPassword" promptText="Nouveau mot de passe"
+                       style="-fx-background-radius: 6;" />
+
+        <!-- Confirmer mot de passe -->
+        <PasswordField fx:id="txtConfirmPassword" promptText="Confirmer le mot de passe"
+                       style="-fx-background-radius: 6;" />
+
+        <!-- Bouton -->
+        <Button fx:id="btnResetPassword" text="Réinitialiser le mot de passe"
+                styleClass="form-button" onAction="#handleResetPassword" />
+
+        <!-- Lien retour -->
+        <Hyperlink fx:id="linkLogin" text="Retour à la connexion"
+                   styleClass="hover-link" />
+
+    </VBox>
+</StackPane>

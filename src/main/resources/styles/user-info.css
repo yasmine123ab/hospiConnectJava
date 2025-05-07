@@ -1,0 +1,19 @@
+.info-box {
+    -fx-background-color: #eef6ff;
+    -fx-background-radius: 10;
+    -fx-padding: 20;
+}
+
+.label-title {
+    -fx-font-weight: bold;
+    -fx-text-fill: #003366;
+    -fx-min-width: 160px;
+}
+
+.label-value {
+    -fx-text-fill: #333;
+}
+
+.scroll-pane {
+    -fx-background-color: transparent;
+}

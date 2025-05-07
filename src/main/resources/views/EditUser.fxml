@@ -9,7 +9,7 @@
 <?import java.lang.String?>
 
 <AnchorPane xmlns:fx="http://javafx.com/fxml"
-            fx:controller="org.hospiconnect.controller.EditUserController"
+            fx:controller="org.hospiconnect.controller.User.EditUserController"
             prefWidth="500" prefHeight="500"
             stylesheets="@/styles/edit-user.css"
             styleClass="root">
