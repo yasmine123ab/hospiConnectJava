@@ -5,47 +5,45 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.geometry.Pos?>
 <?import javafx.scene.image.ImageView?>
+<?import javafx.scene.web.WebView?>
 
 <StackPane xmlns="http://javafx.com/javafx"
            xmlns:fx="http://javafx.com/fxml"
-           fx:controller="org.hospiconnect.controller.LoginController"
+           fx:controller="org.hospiconnect.controller.User.LoginController"
            stylesheets="@/styles/signup.css"
-           style="-fx-background-color: #0A2A63;"> <!-- Bleu foncé -->
+           style="-fx-background-color: #1E3A5F;">  <!-- Bleu foncé -->
 
     <VBox alignment="CENTER" spacing="20" maxWidth="450"
-          style="-fx-background-color: #E8F0FE; -fx-padding: 40; -fx-background-radius: 12;"
+          style="-fx-background-color: #E6F0FA; -fx-padding: 40; -fx-background-radius: 12;"
           StackPane.alignment="CENTER">
 
         <!-- Logo -->
-        <ImageView fx:id="logoImage" fitHeight="150" fitWidth="120" preserveRatio="true" />
+        <ImageView fx:id="logoImage" fitHeight="80" fitWidth="120" preserveRatio="true" />
 
         <!-- Titre -->
-        <Label text="Bonjour !" style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #0A2A63;" />
-        <Label text="Connectez-vous pour continuer." style="-fx-text-fill: #4A5D85;" />
+        <Label text="Bonjour !" style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #0D1B2A;" />
+        <Label text="Connectez-vous pour continuer." style="-fx-text-fill: #4A6FA5;" />
 
         <!-- Formulaire -->
         <VBox spacing="10" alignment="CENTER">
-            <Label text="Email:" style="-fx-font-weight: bold; -fx-text-fill: #0A2A63;" />
+            <Label text="Email:" style="-fx-font-weight: bold; -fx-text-fill: #0D1B2A;" />
             <TextField fx:id="txtEmail" promptText="Votre email"
-                       style="-fx-pref-width: 300; -fx-padding: 10; -fx-background-radius: 8; -fx-background-color: white;" />
+                       style="-fx-pref-width: 300; -fx-padding: 10; -fx-background-radius: 8;" />
 
-            <Label text="Mot de passe:" style="-fx-font-weight: bold; -fx-text-fill: #0A2A63;" />
+            <Label text="Mot de passe:" style="-fx-font-weight: bold; -fx-text-fill: #0D1B2A;" />
             <PasswordField fx:id="txtPassword" promptText="Votre mot de passe"
-                           style="-fx-pref-width: 300; -fx-padding: 10; -fx-background-radius: 8; -fx-background-color: white;" />
+                           style="-fx-pref-width: 300; -fx-padding: 10; -fx-background-radius: 8;" />
         </VBox>
 
         <Button fx:id="btnLogin" text="Se connecter"
-                styleClass="form-button" />
+                styleClass="form-button" onAction="#handleLogin" />
 
-        <Hyperlink fx:id="linkForgotPassword" text="Mot de passe oublié ?"
-                   onAction="#handleForgotPassword"
-                   style="-fx-font-size: 11px; -fx-text-fill: #4A5D85;" />
-
+        <Hyperlink text="Mot de passe oublié ?"
+                   style="-fx-font-size: 11px; -fx-text-fill: #4A6FA5;" onAction="#OublierMotDePasse"   />
 
         <!-- Séparateur -->
         <Separator prefWidth="300"/>
-        <Label text="Ou" style="-fx-text-fill: gray; -fx-font-size: 10px;"
-        />
+        <Label text="Ou" style="-fx-text-fill: gray; -fx-font-size: 10px;" />
 
         <!-- Google Login -->
         <Button text="Se connecter avec Google"
@@ -57,7 +55,7 @@
 
         <!-- Face ID Login -->
         <Button text="Se connecter avec Face ID"
-                styleClass="form-button">
+                styleClass="form-button" onAction="#handleFaceIDLogin">
             <graphic>
                 <ImageView fx:id="faceIcon" fitHeight="16" fitWidth="16" />
             </graphic>

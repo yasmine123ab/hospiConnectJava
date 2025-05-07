@@ -1,0 +1,113 @@
+.popup-container {
+    -fx-background-color: rgba(0, 0, 0, 0.5);
+}
+
+.popup-content {
+    -fx-background-color: white;
+    -fx-background-radius: 15;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 20, 0, 0, 0);
+    -fx-padding: 20;
+    -fx-min-width: 400;
+    -fx-max-width: 500;
+}
+
+.popup-header {
+    -fx-alignment: center;
+    -fx-spacing: 10;
+    -fx-padding: 0 0 20 0;
+}
+
+.popup-title {
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #333333;
+}
+
+.popup-close-button {
+    -fx-background-color: transparent;
+    -fx-text-fill: #666666;
+    -fx-font-size: 16px;
+    -fx-cursor: hand;
+    -fx-padding: 5;
+}
+
+.popup-close-button:hover {
+    -fx-text-fill: #e74c3c;
+}
+
+.user-info-grid {
+    -fx-vgap: 15;
+    -fx-hgap: 10;
+    -fx-padding: 10;
+}
+
+.info-label {
+    -fx-font-size: 14px;
+    -fx-text-fill: #666666;
+    -fx-font-weight: bold;
+}
+
+.info-value {
+    -fx-font-size: 14px;
+    -fx-text-fill: #333333;
+    -fx-background-color: #f8f9fa;
+    -fx-background-radius: 5;
+    -fx-padding: 8 12;
+}
+
+.popup-footer {
+    -fx-alignment: center;
+    -fx-spacing: 10;
+    -fx-padding: 20 0 0 0;
+}
+
+.popup-button {
+    -fx-background-color: #4a90e2;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-pref-height: 35;
+    -fx-pref-width: 120;
+    -fx-background-radius: 5;
+    -fx-cursor: hand;
+}
+
+.popup-button:hover {
+    -fx-background-color: #357abd;
+}
+
+.popup-edit-button {
+    -fx-background-color: #4a90e2;
+}
+
+.popup-delete-button {
+    -fx-background-color: #e74c3c;
+}
+
+.popup-delete-button:hover {
+    -fx-background-color: #c0392b;
+}
+
+.popup-status {
+    -fx-background-radius: 10;
+    -fx-padding: 5 10;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+}
+
+.popup-status-active {
+    -fx-background-color: #2ecc71;
+    -fx-text-fill: white;
+}
+
+.popup-status-inactive {
+    -fx-background-color: #e74c3c;
+    -fx-text-fill: white;
+}
+
+.popup-avatar {
+    -fx-background-radius: 50%;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 10, 0, 0, 0);
+    -fx-fit-width: 80;
+    -fx-fit-height: 80;
+} 

@@ -1,0 +1,174 @@
+.user-container {
+    -fx-background-color: #f8f9fa;
+    -fx-padding: 20;
+}
+
+.user-card {
+    -fx-background-color: white;
+    -fx-background-radius: 15;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 0);
+    -fx-padding: 30;
+    -fx-min-width: 800;
+    -fx-max-width: 1000;
+}
+
+.user-header {
+    -fx-alignment: center;
+    -fx-spacing: 20;
+    -fx-padding: 0 0 30 0;
+}
+
+.user-avatar {
+    -fx-background-radius: 50%;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 10, 0, 0, 0);
+    -fx-fit-width: 120;
+    -fx-fit-height: 120;
+}
+
+.user-name {
+    -fx-font-size: 28px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2c3e50;
+}
+
+.user-role {
+    -fx-font-size: 18px;
+    -fx-text-fill: #7f8c8d;
+}
+
+.user-info-section {
+    -fx-spacing: 25;
+    -fx-padding: 20 0;
+}
+
+.info-grid {
+    -fx-vgap: 15;
+    -fx-hgap: 20;
+    -fx-padding: 15;
+}
+
+.info-group {
+    -fx-spacing: 8;
+}
+
+.info-label {
+    -fx-font-size: 14px;
+    -fx-text-fill: #7f8c8d;
+    -fx-font-weight: bold;
+}
+
+.info-value {
+    -fx-font-size: 16px;
+    -fx-text-fill: #2c3e50;
+    -fx-background-color: #f8f9fa;
+    -fx-background-radius: 8;
+    -fx-padding: 10 15;
+    -fx-border-color: #e9ecef;
+    -fx-border-width: 1;
+    -fx-border-radius: 8;
+}
+
+.user-actions {
+    -fx-spacing: 20;
+    -fx-alignment: center;
+    -fx-padding: 20 0 0 0;
+}
+
+.action-button {
+    -fx-background-color: #3498db;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-pref-height: 45;
+    -fx-pref-width: 180;
+    -fx-background-radius: 8;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 5, 0, 0, 0);
+}
+
+.action-button:hover {
+    -fx-background-color: #2980b9;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 8, 0, 0, 0);
+}
+
+.edit-button {
+    -fx-background-color: #3498db;
+}
+
+.delete-button {
+    -fx-background-color: #e74c3c;
+}
+
+.delete-button:hover {
+    -fx-background-color: #c0392b;
+}
+
+.status-badge {
+    -fx-background-radius: 12;
+    -fx-padding: 6 12;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 3, 0, 0, 0);
+}
+
+.status-active {
+    -fx-background-color: #2ecc71;
+    -fx-text-fill: white;
+}
+
+.status-inactive {
+    -fx-background-color: #e74c3c;
+    -fx-text-fill: white;
+}
+
+.status-pending {
+    -fx-background-color: #f39c12;
+    -fx-text-fill: white;
+}
+
+.section-title {
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2c3e50;
+    -fx-padding: 0 0 15 0;
+}
+
+.section-divider {
+    -fx-background-color: #e9ecef;
+    -fx-pref-height: 1;
+    -fx-max-width: Infinity;
+    -fx-padding: 20 0;
+}
+
+.user-stats {
+    -fx-spacing: 20;
+    -fx-padding: 20 0;
+}
+
+.stat-card {
+    -fx-background-color: white;
+    -fx-background-radius: 10;
+    -fx-padding: 15;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.05), 5, 0, 0, 0);
+    -fx-min-width: 200;
+}
+
+.stat-value {
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2c3e50;
+}
+
+.stat-label {
+    -fx-font-size: 14px;
+    -fx-text-fill: #7f8c8d;
+}
+
+.scroll-pane {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+
+.scroll-pane .viewport {
+    -fx-background-color: transparent;
+} 

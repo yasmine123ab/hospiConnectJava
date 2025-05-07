@@ -5,7 +5,7 @@
 <?import javafx.collections.FXCollections?>
 
 <?import java.lang.String?>
-<AnchorPane xmlns:fx="http://javafx.com/fxml" fx:controller="org.hospiconnect.controller.AjoutAdminController"
+<AnchorPane xmlns:fx="http://javafx.com/fxml" fx:controller="org.hospiconnect.controller.User.AjoutAdminController"
             prefWidth="800" prefHeight="600" style="-fx-background-color: #f9f9f9;">
 
     <children>
@@ -55,15 +55,14 @@
             <!-- Champ Rôle -->
             <HBox spacing="10" alignment="CENTER_LEFT" GridPane.rowIndex="3" GridPane.columnIndex="0">
                 <Label text="Rôle :" />
-                <ComboBox fx:id="comboRole" prefWidth="150" disable="true">
+                <ComboBox fx:id="comboRole" prefWidth="150" >
                     <items>
                         <FXCollections fx:factory="observableArrayList">
-                            <String fx:value="ROLE_ADMIN" />
+                            <String fx:value="ADMIN" />
+                            <String fx:value="MEDECIN" />
+                            <String fx:value="PERSONNEL" />
                         </FXCollections>
                     </items>
-                    <value>
-                        <String fx:value="ROLE_ADMIN" />
-                    </value>
                 </ComboBox>
             </HBox>
 

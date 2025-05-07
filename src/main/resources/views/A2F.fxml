@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.geometry.Pos?>
+<?import javafx.scene.image.ImageView?>
+
+<StackPane xmlns="http://javafx.com/javafx"
+           xmlns:fx="http://javafx.com/fxml"
+           fx:controller="org.hospiconnect.controller.User.A2FController"
+           stylesheets="@/styles/signup.css"
+           style="-fx-background-color: #1E3A5F;">  <!-- Bleu foncé -->
+
+    <VBox alignment="CENTER" spacing="20" maxWidth="450"
+          style="-fx-background-color: #E6F0FA; -fx-padding: 40; -fx-background-radius: 12;"
+          StackPane.alignment="CENTER">
+
+        <!-- Logo -->
+        <ImageView fx:id="logoImage" fitHeight="80" fitWidth="120" preserveRatio="true" />
+
+        <!-- Titre -->
+        <Label text="Vérification du Code"
+               style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #0D1B2A;" />
+        <Label text="Entrez le code de vérification envoyé à votre adresse e-mail."
+               style="-fx-text-fill: #4A6FA5;" />
+
+        <!-- Champ de Code A2F -->
+        <TextField fx:id="txtVerificationCode" promptText="Entrez le code"
+                   style="-fx-pref-width: 300; -fx-padding: 10; -fx-background-radius: 8;" />
+
+        <!-- Bouton de soumission -->
+        <Button fx:id="btnVerifyCode" text="Vérifier le code"
+                styleClass="form-button" onAction="#handleVerifyCode" />
+
+        <!-- Lien retour -->
+        <Hyperlink text="Retour à la connexion"
+                   style="-fx-font-size: 11px; -fx-text-fill: #4A6FA5;" onAction="#handleBackToLogin" />
+
+    </VBox>
+</StackPane>

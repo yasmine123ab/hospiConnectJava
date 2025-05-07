@@ -1,10 +1,16 @@
 package org.hospiconnect.model;
 
+import java.sql.Date;
+import java.time.LocalDate;
+
 public class User {
     private int id;
     private String nom;
     private String prenom;
     private String email;
+
+
+
     private String password;
     private String roles;
     private String statut;
@@ -18,7 +24,28 @@ public class User {
     private float poids;
     private float taille;
     private float imc;
+    private String diplome;
+    private String A2F;
 
+    public String getDiplome() {
+        return diplome;
+    }
+
+    public void setDiplome(String diplome) {
+        this.diplome = diplome;
+    }
+
+    public String getA2F() {
+        return A2F;
+    }
+
+    public void setA2F(String a2F) {
+        A2F = a2F;
+    }
+
+    public String getFullName() {
+        return prenom + " " + nom;
+    }
 
     public String getSexe() {
         return Sexe;
@@ -106,14 +133,54 @@ public class User {
         this.prenom = prenom;
         this.email = email;
         this.password = password;
-        this.roles = "[\"ROLE_CLIENT\"]"; // chaîne JSON valide
+        this.roles = "[\"CLIENT\"]"; // chaîne JSON valide
         this.statut = "active";     // valeur par défaut
     }
 
+    public User(int id, String nom, String prenom, String email, String password, String roles, String statut, String photo, String groupe_Sanguin, String tel, String sexe, String zipCode, String adresse, String gouvernorat, float poids, float taille, float imc, String diplome, String a2F) {
+        this.id = id;
+        this.nom = nom;
+        this.prenom = prenom;
+        this.email = email;
+        this.password = password;
+        this.roles = roles;
+        this.statut = statut;
+        this.photo = photo;
+        Groupe_Sanguin = groupe_Sanguin;
+        Tel = tel;
+        Sexe = sexe;
+        ZipCode = zipCode;
+        Adresse = adresse;
+        Gouvernorat = gouvernorat;
+        this.poids = poids;
+        this.taille = taille;
+        this.imc = imc;
+        this.diplome = diplome;
+        A2F = a2F;
+    }
+
+    public User(String nom, String prenom, String email, String password, String roles, String statut, String photo, String groupe_Sanguin, String tel, String sexe, String zipCode, String adresse, String gouvernorat, float poids, float taille, float imc, String diplome, String a2F) {
+        this.nom = nom;
+        this.prenom = prenom;
+        this.email = email;
+        this.password = password;
+        this.roles = roles;
+        this.statut = statut;
+        this.photo = photo;
+        Groupe_Sanguin = groupe_Sanguin;
+        Tel = tel;
+        Sexe = sexe;
+        ZipCode = zipCode;
+        Adresse = adresse;
+        Gouvernorat = gouvernorat;
+        this.poids = poids;
+        this.taille = taille;
+        this.imc = imc;
+        this.diplome = diplome;
+        A2F = a2F;
+    }
 
     //ADDUSER
-
-
     public User(String nom, String prenom, String email, String password, String roles, String statut, String photo, String groupe_Sanguin, String tel, String sexe, String zipCode, String adresse, String gouvernorat, float poids, float taille, float imc) {
         this.nom = nom;
         this.prenom = prenom;
@@ -133,26 +200,8 @@ public class User {
         this.imc = imc;
     }
 
-    // Constructeur complet
-    public User(int id, String nom, String prenom, String email, String password, String roles, String statut) {
-        this.id = id;
-        this.nom = nom;
-        this.prenom = prenom;
-        this.email = email;
-        this.password = password;
-        this.roles = roles;
-        this.statut = statut;
-    }
-    public User(int id, String nom, String prenom, String email, String password, String roles, String statut, String photo) {
-        this.id = id;
-        this.nom = nom;
-        this.prenom = prenom;
-        this.email = email;
-        this.password = password;
-        this.roles = roles;
-        this.statut = statut;
-        this.photo = photo;
-    }
+
+
     // Getters
     public int getId() { return id; }
     public String getNom() { return nom; }
