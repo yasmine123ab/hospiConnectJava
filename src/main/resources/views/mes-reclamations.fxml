@@ -23,6 +23,10 @@
         </VBox>
     </ScrollPane>
 
+    <Button fx:id="homeButton"
+            text="Home"
+            styleClass="add-button"/>
+
     <Button fx:id="btnAddReclamation" 
             text="Nouvelle Réclamation" 
             onAction="#handleAddReclamation"

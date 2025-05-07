@@ -7,6 +7,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
+import org.hospiconnect.controller.laboratoire.SceneUtils;
 import org.hospiconnect.model.Reclamation;
 import org.hospiconnect.model.User;
 import org.hospiconnect.service.ReclamationService;
@@ -23,10 +24,18 @@ public class MesReclamationsController {
     private Label noReclamationsLabel;
 
     @FXML
+    private Button homeButton;
+    @FXML
     private Button btnAddReclamation;
 
     private User session;
     private ReclamationService reclamationService;
+
+    @FXML
+    public void initialize() {
+        homeButton.setOnAction(e -> SceneUtils.openNewScene(
+                "/HomePages/frontList.fxml", homeButton.getScene(), null));
+    }
 
     public MesReclamationsController() {
         reclamationService = new ReclamationService();

@@ -118,9 +118,9 @@ public class A2FController {
 
         // Vérification des rôles et appel de la méthode loadPage
         if (roles.contains("ADMIN") || roles.contains("SUPER_ADMIN")) {
-            loadPage("/dashboard.fxml", "Tableau de bord admin", session);
+            loadPage("/HomePages/backList.fxml", "Tableau de bord admin", session);
         } else if (roles.contains("MEDECIN") || roles.contains("PERSONNEL") || roles.contains("CLIENT")) {
-            loadPage("/front.fxml", "Espace client", session);
+            loadPage("/HomePages/frontList.fxml", "Espace client", session);
         } else if (roles.contains("ROLE_ARTISAN")) {
             loadPage("/artisan_dashboard.fxml", "Espace artisan", null);
         } else {
@@ -135,14 +135,13 @@ public class A2FController {
 
             // Vérifier si un utilisateur est passé pour initialiser les pages spécifiques
             if (userFromDb != null) {
-                if (fxmlPath.equals("/dashboard.fxml")) {
+                if (fxmlPath.equals("/HomePages/backList.fxml")) {
                     // Initialisation pour le DashboardController
-                    DashboardController controller = loader.getController();
-                    controller.initialize(userFromDb);  // Passer l'utilisateur au contrôleur
-                } else if (fxmlPath.equals("/front.fxml")) {
+                    DashboardController.setSession(userFromDb);  // Passer l'utilisateur au contrôleur
+                } else if (fxmlPath.equals("/HomePages/frontList.fxml")) {
                     // Initialisation pour le FrontClientController
-                    FrontClientController controller = loader.getController();
-                    controller.setSession(userFromDb);  // Passer l'utilisateur au contrôleur
+
+                    FrontClientController.setSession(userFromDb);  // Passer l'utilisateur au contrôleur
                 }
             }
 

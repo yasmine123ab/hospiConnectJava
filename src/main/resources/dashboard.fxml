@@ -47,6 +47,7 @@
               spacing="10" prefWidth="200">
 
             <!-- Dashboard -->
+            <Button fx:id="homeButton" text="Home" styleClass="sidebar-button"/>
             <Button fx:id="btnDashboard" text="📊 Dashboard" styleClass="sidebar-button"/>
 
             <!-- Utilisateurs + Réclamations -->

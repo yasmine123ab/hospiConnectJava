@@ -14,6 +14,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import javafx.stage.Stage;
+import org.hospiconnect.HospiConnectMain;
 import org.hospiconnect.model.User;
 import org.hospiconnect.service.HistoriqueConnexionService;
 import org.hospiconnect.service.UserService;
@@ -51,6 +52,7 @@ public class SignupController {
 
     @FXML
     public void initialize() {
+        setHostServices(HospiConnectMain.getAppHostServices());
         // Charger les images
         logoImage.setImage(new Image(getClass().getResourceAsStream("/HOSPI.png")));
         googleIcon.setImage(new Image(getClass().getResourceAsStream("/google.png")));
@@ -258,11 +260,10 @@ public class SignupController {
         System.out.println("✅ Inscription réussie pour : " + registeredUser.getEmail());
 
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/front.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/HomePages/frontList.fxml"));
             Parent frontRoot = loader.load();
 
-            FrontClientController frontController = loader.getController();
-            frontController.setSession(registeredUser);
+            FrontClientController.setSession(registeredUser);
 
             Stage stage = (Stage) btnRegister.getScene().getWindow();
             stage.setScene(new Scene(frontRoot));

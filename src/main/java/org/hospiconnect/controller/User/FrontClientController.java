@@ -27,30 +27,33 @@ public class FrontClientController {
     @FXML private StackPane contentPane;
     @FXML private Hyperlink linkAccueil;
     @FXML private Hyperlink linkReclamation;
-    private User session;
+    private static User session;
 
     private List<Object> navLinks;
 
-    public void setSession(User user) {
-        this.session = user;
+    public static void setSession(User user) {
+        session = user;
+
+    }
+
+    @FXML
+    public void initialize() {
+
         if (session != null) {
             // Chargement photo profil
             String photoPath = session.getPhoto();
             Image image;
             try {
-                image = new Image(getClass().getResourceAsStream("/assets/users/" + photoPath));
+                image = new Image(FrontClientController.class.getResourceAsStream("/assets/users/" + photoPath));
                 if (image.isError()) throw new Exception();
             } catch (Exception e) {
-                image = new Image(getClass().getResourceAsStream("/assets/userf.png"));
+                image = new Image(FrontClientController.class.getResourceAsStream("/assets/userf.png"));
             }
             userIcon.setImage(image);
             Circle clip = new Circle(16, 16, 16);
             userIcon.setClip(clip);
         }
-    }
 
-    @FXML
-    public void initialize() {
         logoImage.setImage(new Image(getClass().getResourceAsStream("/HOSPI.png")));
         
         // Ajout dans la liste de navigation

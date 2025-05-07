@@ -13,6 +13,8 @@ public class FrontListController {
     private Button ReduireFenetreButton;
 
     @FXML
+    private Button menuUserButton;
+    @FXML
     private Button menuLaboButton;
     @FXML
     private Button menuDonButton;
@@ -30,6 +32,8 @@ public class FrontListController {
         ReduireFenetreButton.setOnAction(e -> ((Stage) ReduireFenetreButton.getScene().getWindow()).setIconified(true));
 
         // Menu navigation
+        menuUserButton.setOnAction(e -> SceneUtils.openNewScene(
+                "/views/mes-reclamations.fxml", menuUserButton.getScene(), null));
         menuLaboButton.setOnAction(e -> SceneUtils.openNewScene(
                 "/laboratoireFront/rdvAnalyse/listRdvAnalyse.fxml", menuLaboButton.getScene(), null));
         menuDonButton.setOnAction(e -> SceneUtils.openNewScene(

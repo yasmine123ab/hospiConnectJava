@@ -14,6 +14,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
 
+import org.hospiconnect.controller.laboratoire.SceneUtils;
 import org.hospiconnect.model.User;
 
 import java.io.IOException;
@@ -22,6 +23,7 @@ public class DashboardController {
 
     public Button btnCommande;
     @FXML private Button btnDashboard;
+    @FXML private Button homeButton;
     @FXML private Button btnTableUtilisateurs;
     @FXML private Button btnTableRéclamation;
 
@@ -33,10 +35,17 @@ public class DashboardController {
     @FXML private ImageView logoImage;
 
     private final ContextMenu contextMenu = new ContextMenu();
-    private User session;
+    private static User session;
 
-    public void initialize(User user) {
-        this.session = user;
+    public static void setSession(User user){
+        session = user;
+    }
+
+    @FXML
+    public void initialize() {
+
+        homeButton.setOnAction(e -> SceneUtils.openNewScene(
+                "/HomePages/backList.fxml", homeButton.getScene(), null));
 
         // Actions sur les boutons
         btnDashboard.setOnAction(e -> loadDashboardHome());

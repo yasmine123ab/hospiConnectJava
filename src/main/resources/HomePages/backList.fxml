@@ -15,7 +15,7 @@
                <image>
                   <Image url="@../imagesLabo/logo.png" />
                </image></ImageView>
-            <Button fx:id="menuUserButton" graphicTextGap="15.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="231.0" style="-fx-background-color: #ADD8E5;" text="Utilisateur" textFill="#0e046e">
+            <Button fx:id="menuUserButton" graphicTextGap="15.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="231.0" style="-fx-background-color: #ADD8E5;" text="Utilisateurs" textFill="#0e046e">
                <font>
                   <Font name="System Bold" size="15.0" />
                </font>
